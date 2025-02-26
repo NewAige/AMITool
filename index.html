@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BCSB Assistant</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+  <style>
+    :root {
+      --primary-color: #006648;
+      --primary-light: #007f5a;
+      --primary-dark: #00543a;
+      --neutral-50: #fafafa;
+      --neutral-100: #f5f5f5;
+      --neutral-200: #e5e5e5;
+      --neutral-300: #d4d4d4;
+      --neutral-400: #a3a3a3;
+      --neutral-500: #737373;
+      --neutral-600: #525252;
+      --neutral-700: #404040;
+      --neutral-800: #262626;
+      --neutral-900: #171717;
+      --white: #ffffff;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --transition: all 0.2s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: var(--neutral-100);
+      color: var(--neutral-800);
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    /* Chat container */
+    #chat-container {
+      width: calc(100% - max(40px, min(100px, 10vw)));
+      height: calc(100% - max(40px, min(100px, 10vh)));
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+    
+    /* Chat header */
+    #chat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      background-color: var(--primary-color);
+      color: var(--white);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    #chat-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    #chat-title-icon {
+      display: flex;
+      align-items: center;
+    }
+    
+    /* Chat body */
+    #chat-body {
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      scroll-behavior: smooth;
+    }
+    
+    #chat-body::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    #chat-body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    #chat-body::-webkit-scrollbar-thumb {
+      background-color: var(--neutral-300);
+      border-radius: 20px;
+    }
+    
+    /* Chat messages */
+    .chat-message {
+      display: flex;
+      flex-direction: column;
+      max-width: 80%;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      position: relative;
+      transition: var(--transition);
+      line-height: 1.5;
+    }
+    
+    .chat-message.user {
+      background-color: var(--primary-color);
+      color: var(--white);
+      border-radius: var(--radius-md) var(--radius-md) 0 var(--radius-md);
+      align-self: flex-end;
+      margin-left: auto;
+    }
+    
+    .chat-message.bot {
+      background-color: var(--neutral-100);
+      color: var(--neutral-800);
+      border-radius: var(--radius-md) var(--radius-md) var(--radius-md) 0;
+      align-self: flex-start;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .chat-message.bot p {
+      margin-bottom: 12px;
+    }
+    
+    .chat-message.bot p:last-child {
+      margin-bottom: 0;
+    }
+    
+    .chat-message.bot h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 16px 0 8px;
+      color: var(--neutral-900);
+    }
+    
+    /* Hide lists of towns - they should only appear in the form dropdown */
+    .chat-message.bot ul:not(.ami-details ul) {
+      display: none;
+    }
+    
+    .chat-message.bot ul.ami-details ul {
+      margin: 8px 0;
+      padding-left: 24px;
+    }
+    
+    .chat-message.bot li {
+      margin-bottom: 6px;
+    }
+    
+    /* Typing indicator */
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      background-color: var(--neutral-100);
+      padding: 14px 18px;
+      border-radius: var(--radius-md) var(--radius-md) var(--radius-md) 0;
+      align-self: flex-start;
+      box-shadow: var(--shadow-sm);
+      gap: 4px;
+    }
+    
+    .typing-indicator span {
+      height: 8px;
+      width: 8px;
+      background-color: var(--primary-color);
+      border-radius: 50%;
+      display: inline-block;
+      opacity: 0.7;
+      animation: bouncingDots 1.4s infinite ease-in-out;
+    }
+    
+    .typing-indicator span:nth-child(1) {
+      animation-delay: 0s;
+    }
+    
+    .typing-indicator span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    
+    .typing-indicator span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    
+    @keyframes bouncingDots {
+      0%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-8px); }
+    }
+    
+    /* Chat footer */
+    #chat-footer {
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background-color: var(--white);
+      border-top: 1px solid var(--neutral-200);
+    }
+    
+    #chat-message {
+      flex: 1;
+      border: 1px solid var(--neutral-300);
+      border-radius: 24px;
+      padding: 12px 20px;
+      font-size: 1rem;
+      outline: none;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+    
+    #chat-message:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(0, 102, 72, 0.2);
+    }
+    
+    #chat-send {
+      background-color: var(--primary-color);
+      color: var(--white);
+      border: none;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    #chat-send:hover {
+      background-color: var(--primary-light);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    #chat-send:active {
+      background-color: var(--primary-dark);
+      transform: translateY(0);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    /* AMI lookup widget styles */
+    .ami-result-card, .town-selection-form {
+      margin-top: 16px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background-color: var(--white);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--neutral-200);
+      transition: var(--transition);
+    }
+    
+    .ami-result-card:hover, .town-selection-form:hover {
+      box-shadow: var(--shadow-lg);
+    }
+    
+    /* Stronger selector for form and card headings to ensure they're white */
+    .town-selection-form h3, 
+    .ami-result-card h3 {
+      background-color: var(--primary-color);
+      color: #ffffff !important; /* Force white color with !important */
+      margin: 0;
+      padding: 12px 16px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    
+    .ami-details, .ami-form {
+      padding: 16px;
+    }
+    
+    .ami-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      box-shadow: var(--shadow-sm);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    
+    .ami-table th, .ami-table td {
+      border: 1px solid var(--neutral-200);
+      padding: 10px;
+      text-align: left;
+    }
+    
+    .ami-table th {
+      background-color: var(--neutral-100);
+      font-weight: 600;
+    }
+    
+    .ami-table tr:nth-child(even) {
+      background-color: var(--neutral-50);
+    }
+    
+    .ami-table tr:hover {
+      background-color: rgba(0, 102, 72, 0.05);
+    }
+    
+    .form-group {
+      margin-bottom: 16px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: var(--neutral-700);
+    }
+    
+    .form-group select, .form-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--neutral-300);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: var(--transition);
+    }
+    
+    .form-group select:focus, .form-group input:focus {
+      border-color: var(--primary-color);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(0, 102, 72, 0.1);
+    }
+    
+    .ami-submit-btn {
+      background-color: var(--primary-color);
+      color: var(--white);
+      border: none;
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+    
+    .ami-submit-btn:hover {
+      background-color: var(--primary-light);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .ami-submit-btn:active {
+      background-color: var(--primary-dark);
+      transform: translateY(0);
+    }
+    
+    .error-message {
+      color: #e53e3e;
+      padding: 8px 12px;
+      background-color: rgba(229, 62, 62, 0.1);
+      border-radius: var(--radius-sm);
+      margin-top: 8px;
+      font-size: 0.9rem;
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+      #chat-container {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+      }
+      
+      .chat-message {
+        max-width: 90%;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      #chat-header, #chat-footer {
+        padding: 12px 16px;
+      }
+      
+      #chat-body {
+        padding: 16px;
+      }
+      
+      #chat-title {
+        font-size: 1.1rem;
+      }
+      
+      .chat-message {
+        padding: 12px 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="chat-container">
+    <div id="chat-header">
+      <h3 id="chat-title">
+        <span id="chat-title-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="16"></line>
+            <line x1="8" y1="12" x2="16" y2="12"></line>
+          </svg>
+        </span>
+        Chat with Hal
+      </h3>
+    </div>
+    <div id="chat-body">
+      <!-- Chat messages will appear here -->
+    </div>
+    <div id="chat-footer">
+      <input type="text" id="chat-message" placeholder="Type your message..." />
+      <button id="chat-send">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </div>
+  </div>
+  
+  <script>
+    // Select DOM elements
+    const chatBody = document.getElementById('chat-body');
+    const chatSend = document.getElementById('chat-send');
+    const chatMessageInput = document.getElementById('chat-message');
+
+    // Global conversation history to track the dialogue
+    let conversationHistory = [];
+
+    /**
+     * formatMessage converts plain text into HTML with bullet points and headers.
+     */
+    function formatMessage(text) {
+      const lines = text.split('\n');
+      let formatted = '';
+      let inList = false;
+      lines.forEach(line => {
+        const trimmed = line.trim();
+        if (trimmed.startsWith('**') && trimmed.includes('**:')) {
+          if (inList) {
+            formatted += '</ul>';
+            inList = false;
+          }
+          const headerMatch = trimmed.match(/^\*\*(.+?)\*\*:\s*(.*)/);
+          if (headerMatch) {
+            const headerText = headerMatch[1].trim();
+            const remainder = headerMatch[2].trim();
+            formatted += `<h3>${headerText}</h3>`;
+            if (remainder) {
+              formatted += `<p>${remainder}</p>`;
+            }
+            return;
+          }
+        }
+        if (trimmed.startsWith('* ')) {
+          if (!inList) {
+            formatted += '<ul>';
+            inList = true;
+          }
+          formatted += `<li>${trimmed.substring(2)}</li>`;
+        } else {
+          if (inList) {
+            formatted += '</ul>';
+            inList = false;
+          }
+          if (trimmed) {
+            formatted += `<p>${trimmed}</p>`;
+          }
+        }
+      });
+      if (inList) formatted += '</ul>';
+      return formatted;
+    }
+
+    /**
+     * Creates a rich AMI result card when function data is available.
+     */
+    function createAmiResultCard(functionData) {
+      if (!functionData || functionData.error) {
+        return `<div class="error-message">Error retrieving AMI data: ${functionData.error || 'Unknown error'}</div>`;
+      }
+      const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: 0
+      });
+      return `
+        <div class="ami-result-card">
+          <h3 style="color: #ffffff;">AMI Limits for ${functionData.town_name}</h3>
+          <div class="ami-details">
+            <p><strong>Year:</strong> ${functionData.year}</p>
+            <p><strong>Household Size:</strong> ${functionData.household_size} person${functionData.household_size > 1 ? 's' : ''}</p>
+            <table class="ami-table">
+              <tr>
+                <th>AMI Percentage</th>
+                <th>Income Limit</th>
+              </tr>
+              <!-- Removed 50% AMI row as requested -->
+              <tr>
+                <td>80% AMI</td>
+                <td>${formatter.format(functionData.income_limit_80)}</td>
+              </tr>
+              <tr>
+                <td>100% AMI</td>
+                <td>${formatter.format(functionData.income_limit_100)}</td>
+              </tr>
+              <tr>
+                <td>120% AMI</td>
+                <td>${formatter.format(functionData.income_limit_120)}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    /**
+     * Creates a town selection form when town list data is available.
+     */
+    function createTownSelectionForm(functionData, state) {
+      if (!functionData || functionData.error || !functionData.towns || !functionData.towns.length) {
+        return `<div class="error-message">Error retrieving town list: ${functionData.error || 'No towns found'}</div>`;
+      }
+      const towns = functionData.towns;
+      
+      // Process town names to remove " City" or " town" suffix
+      const options = towns.map(town => {
+        let displayName = town.name;
+        // Remove common suffixes
+        if (displayName.endsWith(" City")) {
+          displayName = displayName.slice(0, -5);
+        } else if (displayName.endsWith(" town")) {
+          displayName = displayName.slice(0, -5);
+        }
+        return `<option value="${town.fips_code}">${displayName}</option>`;
+      }).join('');
+      
+      return `
+        <div class="town-selection-form">
+          <h3 style="color: #ffffff;">Select a Town/City in ${state}</h3>
+          <form id="ami-lookup-form" class="ami-form">
+            <input type="hidden" id="ami-state" value="${state}">
+            <div class="form-group">
+              <label for="ami-town">Town/City:</label>
+              <select id="ami-town" required>
+                <option value="">-- Select a Town/City --</option>
+                ${options}
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="ami-household-size">Household Size:</label>
+              <input type="number" id="ami-household-size" min="1" max="8" value="4" required>
+            </div>
+            <button type="submit" class="ami-submit-btn">Look Up AMI Limits</button>
+          </form>
+        </div>
+      `;
+    }
+
+    /**
+     * Append a message to the chat body.
+     */
+    function appendMessage(sender, text, functionData = null) {
+      const msgElem = document.createElement('div');
+      msgElem.className = `chat-message ${sender}`;
+      if (sender === 'bot') {
+        if (functionData) {
+          if (functionData.towns) {
+            const state = functionData.towns.length > 0 ? (functionData.state || 'MA') : 'MA';
+            const formHtml = createTownSelectionForm(functionData, state);
+            msgElem.innerHTML = formatMessage(text) + formHtml;
+          } else if (functionData.income_limit_80) { // Changed from income_limit_50 to income_limit_80
+            const cardHtml = createAmiResultCard(functionData);
+            msgElem.innerHTML = formatMessage(text) + cardHtml;
+          } else {
+            msgElem.innerHTML = formatMessage(text);
+          }
+        } else {
+          msgElem.innerHTML = formatMessage(text);
+        }
+      } else {
+        msgElem.textContent = text;
+      }
+      chatBody.appendChild(msgElem);
+      chatBody.scrollTop = chatBody.scrollHeight;
+      
+      // Add event listener for AMI lookup form if present
+      const amiForm = document.getElementById('ami-lookup-form');
+      if (amiForm) {
+        amiForm.addEventListener('submit', handleAmiFormSubmit);
+      }
+    }
+
+    /**
+     * Handle the AMI lookup form submission.
+     */
+    function handleAmiFormSubmit(event) {
+      event.preventDefault();
+      const state = document.getElementById('ami-state').value;
+      const townFipsCode = document.getElementById('ami-town').value;
+      const householdSize = document.getElementById('ami-household-size').value;
+      if (!state || !townFipsCode || !householdSize) {
+        alert('Please fill out all fields');
+        return;
+      }
+      const userMessage = `I want to check the AMI for ${state} with FIPS code ${townFipsCode} for a household of ${householdSize} people.`;
+      appendMessage('user', userMessage);
+      conversationHistory.push({ sender: 'user', text: userMessage });
+      const typingIndicator = document.createElement('div');
+      typingIndicator.className = 'typing-indicator';
+      typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+      chatBody.appendChild(typingIndicator);
+      chatBody.scrollTop = chatBody.scrollHeight;
+      
+      // Send request using fips_code parameter
+      fetch('https://bcsb-chat-995687938288.us-east1.run.app/direct-ami-lookup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          state: state,
+          fips_code: townFipsCode,
+          household_size: parseInt(householdSize, 10),
+          year: "2024"
+        })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Server response was not OK');
+        }
+        return response.json();
+      })
+      .then(data => {
+        typingIndicator.remove();
+        const townSelect = document.getElementById('ami-town');
+        let townName = "your selected location";
+        if (townSelect && townSelect.selectedIndex > 0) {
+          townName = townSelect.options[townSelect.selectedIndex].text;
+        }
+        const botResponse = `Here are the AMI limits for ${townName} with a household size of ${householdSize}:`;
+        appendMessage('bot', botResponse, data.function_data);
+        conversationHistory.push({ sender: 'bot', text: botResponse });
+      })
+      .catch(err => {
+        typingIndicator.remove();
+        console.error('Error connecting to server:', err);
+        appendMessage('bot', 'Error: Could not retrieve AMI data. Please try again later.');
+        conversationHistory.push({ sender: 'bot', text: 'Error: Could not retrieve AMI data. Please try again later.' });
+      });
+    }
+
+    /**
+     * Send a message using the non-streaming /chat endpoint.
+     */
+    function sendMessage() {
+      const message = chatMessageInput.value.trim();
+      if (!message) return;
+      appendMessage('user', message);
+      conversationHistory.push({ sender: 'user', text: message });
+      chatMessageInput.value = '';
+      
+      const typingIndicator = document.createElement('div');
+      typingIndicator.className = 'typing-indicator';
+      typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+      chatBody.appendChild(typingIndicator);
+      chatBody.scrollTop = chatBody.scrollHeight;
+      
+      fetch('https://bcsb-chat-995687938288.us-east1.run.app/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          chat: message,
+          history: conversationHistory
+        })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Server response was not OK');
+        }
+        return response.json();
+      })
+      .then(data => {
+        typingIndicator.remove();
+        if (data.text) {
+          appendMessage('bot', data.text, data.function_data);
+          conversationHistory.push({ sender: 'bot', text: data.text });
+        }
+      })
+      .catch(err => {
+        console.error('Error connecting to server:', err);
+        typingIndicator.remove();
+        appendMessage('bot', 'Error: Could not connect to chat service.');
+      });
+    }
+
+    // Add welcome message on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const welcomeMessage = "Hi, I'm Hal, an AI assistant from BCSB. I'm here to provide you with information about our services, programs, and resources. I can also help you look up Area Median Income (AMI) limits for locations in Massachusetts and Rhode Island. How can I help you today?";
+      appendMessage('bot', welcomeMessage);
+      conversationHistory.push({ sender: 'bot', text: welcomeMessage });
+    });
+
+    // Attach event listeners for sending messages
+    chatSend.addEventListener('click', sendMessage);
+    chatMessageInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
