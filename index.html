@@ -59,6 +59,7 @@
       border-radius: var(--radius-lg);
       overflow: hidden;
       box-shadow: var(--shadow-lg);
+      position: relative;
     }
     
     /* Chat header */
@@ -83,6 +84,56 @@
     #chat-title-icon {
       display: flex;
       align-items: center;
+    }
+    
+    /* Export buttons container */
+    #export-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .export-btn {
+      background-color: var(--primary-dark);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 6px 10px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: var(--transition);
+    }
+    
+    .export-btn:hover {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+    
+    .export-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+    
+    /* Toast notification */
+    #toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: var(--primary-color);
+      color: var(--white);
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-md);
+      z-index: 1000;
+      transform: translateY(-100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    #toast.show {
+      transform: translateY(0);
+      opacity: 1;
     }
     
     /* Chat body */
@@ -374,6 +425,57 @@
       margin-top: 8px;
       font-size: 0.9rem;
     }
+
+    /* Print styles for PDF export */
+    @media print {
+      body {
+        background: white;
+        height: auto;
+        overflow: visible;
+      }
+      
+      #chat-container {
+        box-shadow: none;
+        height: auto;
+        max-height: none;
+        width: 100%;
+        max-width: 100%;
+        overflow: visible;
+      }
+      
+      #chat-header {
+        border-bottom: 2px solid #ccc;
+      }
+      
+      #export-buttons, #chat-footer {
+        display: none;
+      }
+      
+      #chat-body {
+        overflow: visible;
+        height: auto;
+      }
+      
+      .chat-message {
+        page-break-inside: avoid;
+        break-inside: avoid;
+        max-width: 90%;
+      }
+      
+      .ami-result-card, .town-selection-form {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+      
+      .ami-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      
+      .ami-table th, .ami-table td {
+        border: 1px solid #000;
+      }
+    }
     
     /* Responsive design */
     @media (max-width: 768px) {
@@ -385,6 +487,15 @@
       
       .chat-message {
         max-width: 90%;
+      }
+      
+      #export-buttons {
+        gap: 4px;
+      }
+      
+      .export-btn {
+        padding: 4px 8px;
+        font-size: 0.8rem;
       }
     }
     
@@ -404,6 +515,10 @@
       .chat-message {
         padding: 12px 14px;
       }
+      
+      .export-btn span {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -420,6 +535,25 @@
         </span>
         Chat with Hal
       </h3>
+      <div id="export-buttons">
+        <button id="copy-btn" class="export-btn" title="Copy conversation">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span>Copy</span>
+        </button>
+        <button id="pdf-btn" class="export-btn" title="Save as PDF">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          <span>PDF</span>
+        </button>
+      </div>
     </div>
     <div id="chat-body">
       <!-- Chat messages will appear here -->
@@ -435,14 +569,59 @@
     </div>
   </div>
   
+  <!-- Toast notification -->
+  <div id="toast">Conversation copied to clipboard!</div>
+  
   <script>
     // Select DOM elements
     const chatBody = document.getElementById('chat-body');
     const chatSend = document.getElementById('chat-send');
     const chatMessageInput = document.getElementById('chat-message');
+    const copyBtn = document.getElementById('copy-btn');
+    const pdfBtn = document.getElementById('pdf-btn');
+    const toast = document.getElementById('toast');
 
     // Global conversation history to track the dialogue
     let conversationHistory = [];
+
+    /**
+     * Shows a toast notification with a message
+     */
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    /**
+     * Copy the conversation to clipboard
+     */
+    function copyConversation() {
+      let conversationText = "";
+      
+      conversationHistory.forEach(message => {
+        const role = message.sender === 'user' ? 'You' : 'Hal';
+        conversationText += `${role}: ${message.text}\n\n`;
+      });
+      
+      navigator.clipboard.writeText(conversationText)
+        .then(() => {
+          showToast('Conversation copied to clipboard!');
+        })
+        .catch(err => {
+          console.error('Error copying text: ', err);
+          showToast('Failed to copy conversation.');
+        });
+    }
+
+    /**
+     * Export the conversation as PDF (using browser print functionality)
+     */
+    function savePDF() {
+      window.print();
+    }
 
     /**
      * formatMessage converts plain text into HTML with bullet points and headers.
@@ -716,6 +895,10 @@
       const welcomeMessage = "Hi, I'm Hal, an AI assistant from BCSB. I'm here to provide you with information about our services, programs, and resources. I can also help you look up Area Median Income (AMI) limits for locations in Massachusetts and Rhode Island. How can I help you today?";
       appendMessage('bot', welcomeMessage);
       conversationHistory.push({ sender: 'bot', text: welcomeMessage });
+
+      // Add event listeners for export buttons
+      copyBtn.addEventListener('click', copyConversation);
+      pdfBtn.addEventListener('click', savePDF);
     });
 
     // Attach event listeners for sending messages
