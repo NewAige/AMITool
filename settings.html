@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HUD AMI Tool - Admin Settings</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <link href="settings.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>HUD AMI Tool - Admin Settings</h1>
+            <div class="subtitle">Configure program parameters and eligibility criteria</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-cog"></i> General Settings
+            </div>
+            <div class="card-body">
+                <form id="general-settings-form">
+                    <div class="form-group">
+                        <label for="settings-year">Default Year:</label>
+                        <div class="select-wrapper">
+                            <select id="settings-year" name="settings-year" required>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="button-container">
+                        <button type="submit" class="btn btn-primary">Save General Settings</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-hand-holding-usd"></i> Down Payment Assistance Programs
+            </div>
+            <div class="card-body">
+                <div id="dpa-programs-container">
+                    <!-- Programs will be populated here dynamically -->
+                </div>
+                <button id="add-dpa-program" class="btn btn-outline add-btn">
+                    <i class="fas fa-plus"></i> Add New DPA Program
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-home"></i> First Mortgage Products
+            </div>
+            <div class="card-body">
+                <div id="mortgage-programs-container">
+                    <!-- Programs will be populated here dynamically -->
+                </div>
+                <button id="add-mortgage-program" class="btn btn-outline add-btn">
+                    <i class="fas fa-plus"></i> Add New Mortgage Product
+                </button>
+            </div>
+        </div>
+
+        <div class="button-container settings-nav">
+            <button id="save-all-settings" class="btn btn-primary">
+                <i class="fas fa-save"></i> Save All Changes
+            </button>
+            <a href="index.html" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Main Tool
+            </a>
+        </div>
+    </div>
+
+    <!-- Program Template (hidden) -->
+    <template id="program-template">
+        <div class="program-settings-card">
+            <div class="program-settings-header">
+                <input type="text" class="program-name" placeholder="Program Name">
+                <div class="program-controls">
+                    <div class="program-active-container">
+                        <label class="switch-label">Active</label>
+                        <label class="toggle-switch-mini">
+                            <input type="checkbox" class="program-active" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <button type="button" class="btn-icon delete-program">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="program-settings-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Location Eligibility:</label>
+                        <div class="eligibility-tabs">
+                            <div class="tab-header">
+                                <button type="button" class="tab-btn active" data-tab="state-level">State Level</button>
+                                <button type="button" class="tab-btn" data-tab="county-level">County Level</button>
+                                <button type="button" class="tab-btn" data-tab="town-level">Town Level</button>
+                            </div>
+                            <div class="tab-content active" data-tab="state-level">
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" class="state-ma" checked> Massachusetts (all)
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" class="state-ri" checked> Rhode Island (all)
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="tab-content" data-tab="county-level">
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" class="county-bristol" checked> Bristol County (MA)
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" class="county-providence" checked> Providence County (RI)
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" class="county-other"> Other Counties
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="tab-content" data-tab="town-level">
+                                <div class="form-group">
+                                    <label>Select Towns in Massachusetts:</label>
+                                    <select class="town-select-ma" multiple>
+                                        <!-- Will be populated dynamically -->
+                                        <option disabled>Loading towns...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Select Towns in Rhode Island:</label>
+                                    <select class="town-select-ri" multiple>
+                                        <!-- Will be populated dynamically -->
+                                        <option disabled>Loading towns...</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Eligible Income Brackets:</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="income-80" checked> ≤ 80% AMI
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="income-80-100"> 80.01% - 100% AMI
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="income-100-120"> 100.01% - 120% AMI
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="income-above-120"> > 120% AMI
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description Line 1:</label>
+                    <input type="text" class="program-desc-1" placeholder="Enter description line 1">
+                </div>
+                <div class="form-group">
+                    <label>Description Line 2:</label>
+                    <input type="text" class="program-desc-2" placeholder="Enter description line 2">
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="settings.js"></script>
+</body>
+</html>
