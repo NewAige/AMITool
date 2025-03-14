@@ -354,8 +354,10 @@ let userData = {
 // Town to county mapping for eligibility checking
 const countyMapping = {
     // Massachusetts - Bristol County towns
+    'Acushnet': 'Bristol',
     'Attleboro': 'Bristol',
     'Berkley': 'Bristol',
+    'Dartmouth': 'Bristol',
     'Dighton': 'Bristol',
     'Easton': 'Bristol',
     'Fairhaven': 'Bristol',
@@ -373,6 +375,7 @@ const countyMapping = {
     'Taunton': 'Bristol',
     'Westport': 'Bristol',
     // Rhode Island - Providence County towns
+    'Burrillville': 'Providence',
     'Central Falls': 'Providence',
     'Cranston': 'Providence',
     'Cumberland': 'Providence',
