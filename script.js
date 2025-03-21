@@ -1,4 +1,4 @@
-// Load settings from localStorage
+// Load settings from localStorage or server with fallback to defaults
 function loadAmiToolSettings() {
     try {
         const savedSettings = localStorage.getItem('amiToolSettings');
@@ -6,17 +6,113 @@ function loadAmiToolSettings() {
             return JSON.parse(savedSettings);
         }
     } catch (error) {
-        console.error('Error loading settings:', error);
+        console.error('Error loading settings from localStorage:', error);
     }
     
     // Return default settings if nothing is saved or there's an error
     return {
         year: "2024",
         dpaPrograms: [
-            // Default programs would be included here...
+            {
+                id: "bcsb1",
+                name: "BCSB DPA: $20,000 Downpayment Assistance",
+                active: true,
+                eligibilityType: "county",
+                states: {
+                    ma: true,
+                    ri: true
+                },
+                counties: {
+                    bristol: true,
+                    providence: true
+                },
+                towns: {
+                    ma: [],
+                    ri: []
+                },
+                incomeRanges: {
+                    below80: true,
+                    from80to100: false,
+                    from100to120: false,
+                    above120: false
+                },
+                description1: "For households with income at or below 80% AMI",
+                description2: "Provides $20,000 in downpayment assistance"
+            },
+            {
+                id: "bcsb2",
+                name: "BCSB DPA: $15,000 Downpayment Assistance",
+                active: true,
+                eligibilityType: "county",
+                counties: {
+                    bristol: true,
+                    providence: true
+                },
+                incomeRanges: {
+                    below80: false,
+                    from80to100: true,
+                    from100to120: false,
+                    above120: false
+                },
+                description1: "For households with income between 80.01% and 100% AMI",
+                description2: "Provides $15,000 in downpayment assistance"
+            },
+            {
+                id: "bcsb3",
+                name: "BCSB DPA: $10,000 Downpayment Assistance",
+                active: true,
+                eligibilityType: "county",
+                counties: {
+                    bristol: true,
+                    providence: true
+                },
+                incomeRanges: {
+                    below80: false,
+                    from80to100: false,
+                    from100to120: true,
+                    above120: false
+                },
+                description1: "For households with income between 100.01% and 120% AMI",
+                description2: "Provides $10,000 in downpayment assistance"
+            }
         ],
         mortgagePrograms: [
-            // Default mortgage programs would be included here...
+            {
+                id: "fthb",
+                name: "First Time Homebuyer",
+                active: true,
+                eligibilityType: "county",
+                counties: {
+                    bristol: true,
+                    providence: true
+                },
+                incomeRanges: {
+                    below80: true,
+                    from80to100: true,
+                    from100to120: true,
+                    above120: true
+                },
+                description1: "No income limit, but must be a first-time homebuyer",
+                description2: "Available in Providence County, RI or Bristol County, MA"
+            },
+            {
+                id: "pcp",
+                name: "Providence County Pathway",
+                active: true,
+                eligibilityType: "county",
+                counties: {
+                    bristol: false,
+                    providence: true
+                },
+                incomeRanges: {
+                    below80: true,
+                    from80to100: true,
+                    from100to120: true,
+                    above120: false
+                },
+                description1: "Must be at or below 120% AMI",
+                description2: "Only available in Providence County, RI"
+            }
         ]
     };
 }
@@ -618,8 +714,7 @@ function updateResults(incomeLimit50, incomeLimit80, householdSize) {
     debug('Results updated successfully');
 }
 
-// Check eligibility - For Step 4
-// Replace the checkEligibility function with this updated version
+// Enhanced CheckEligibility function with better debugging
 function checkEligibility() {
     debug('Checking eligibility');
     debug('Current userData:', userData);
@@ -645,17 +740,25 @@ function checkEligibility() {
         }
     }
     
+    // Force debug output of critical data for diagnosis
+    console.log('Income value for eligibility check:', incomeValue);
+    console.log('Town data:', userData.townName, userData.county);
+    console.log('Is eligible county:', userData.isEligibleCounty);
+    
     // Set county eligibility notice
     const countyNote = document.getElementById('county-eligibility-note');
     
-    // Double-check that we have the town name
-    if (!userData.townName || userData.townName === '') {
+    // Double-check that we have the town name and county
+    if (!userData.townName || userData.townName === '' || !userData.county) {
         // Try to retrieve it one more time
         const townSelect = document.getElementById('town');
         if (townSelect && townSelect.selectedIndex > 0) {
             const selectedOption = townSelect.options[townSelect.selectedIndex];
             userData.townName = selectedOption.dataset.cleanName || cleanTownNameString(selectedOption.textContent);
             userData.county = selectedOption.dataset.county || '';
+            userData.isEligibleCounty = (userData.county === 'Bristol' || userData.county === 'Providence');
+            
+            console.log('Retrieved town data again:', userData.townName, userData.county, userData.isEligibleCounty);
         }
         
         // If still empty, use a fallback
@@ -700,35 +803,51 @@ function checkEligibility() {
         return;
     }
 
+    // Load settings - ENHANCED to ensure we always get settings
+    const settings = loadAmiToolSettings();
+    console.log('Loaded settings for eligibility check:', settings);
+    
     // Only display program options if in eligible county
     if (userData.isEligibleCounty) {
-        // Load settings
-        const settings = loadAmiToolSettings();
-        
         // Determine which income bracket the user falls into
         const isBelow80 = incomeValue <= userData.incomeLimit80;
         const is80to100 = incomeValue > userData.incomeLimit80 && incomeValue <= userData.incomeLimit100;
         const is100to120 = incomeValue > userData.incomeLimit100 && incomeValue <= userData.incomeLimit120;
         const isAbove120 = incomeValue > userData.incomeLimit120;
         
+        console.log('Income brackets:', {isBelow80, is80to100, is100to120, isAbove120});
+        
         // Determine which county the user is in
         const isBristolCounty = userData.county === 'Bristol';
         const isProvidenceCounty = userData.county === 'Providence';
         
         // Process DPA Programs
-        if (settings.dpaPrograms && dpaContainer) {
+        if (settings.dpaPrograms && settings.dpaPrograms.length > 0 && dpaContainer) {
+            console.log('Processing DPA programs:', settings.dpaPrograms.length);
+            let programsAdded = 0;
+            
             settings.dpaPrograms.forEach(program => {
                 // Skip inactive programs
                 if (!program.active) return;
                 
-                // Check county eligibility
+                // Check county eligibility - make sure program.counties exists
+                if (!program.counties) {
+                    program.counties = { bristol: true, providence: true };
+                    console.log('Default counties created for program:', program.name);
+                }
+                
                 const isCountyEligible = 
                     (isBristolCounty && program.counties.bristol) || 
                     (isProvidenceCounty && program.counties.providence);
                 
                 if (!isCountyEligible) return;
                 
-                // Check income eligibility
+                // Check income eligibility - make sure program.incomeRanges exists
+                if (!program.incomeRanges) {
+                    program.incomeRanges = { below80: true, from80to100: false, from100to120: false, above120: false };
+                    console.log('Default income ranges created for program:', program.name);
+                }
+                
                 const isIncomeEligible = 
                     (isBelow80 && program.incomeRanges.below80) ||
                     (is80to100 && program.incomeRanges.from80to100) ||
@@ -747,29 +866,70 @@ function checkEligibility() {
                             ${isIncomeEligible ? 'Eligible' : 'Not Eligible'}
                         </span>
                     </div>
-                    <p>${program.description1}</p>
-                    <p>${program.description2}</p>
+                    <p>${program.description1 || 'No description available'}</p>
+                    <p>${program.description2 || ''}</p>
                     <p>Your income: ${formatter.format(incomeValue)}</p>
                 `;
                 
                 dpaContainer.appendChild(programCard);
+                programsAdded++;
             });
+            
+            console.log('DPA programs added:', programsAdded);
+            
+            // If no programs were added, show a fallback message
+            if (programsAdded === 0) {
+                const noPrograms = document.createElement('div');
+                noPrograms.className = 'program-card';
+                noPrograms.innerHTML = `
+                    <div class="program-card-header">
+                        No DPA Programs Available
+                    </div>
+                    <p>There are currently no downpayment assistance programs available for your location and income level.</p>
+                `;
+                dpaContainer.appendChild(noPrograms);
+            }
+        } else {
+            console.log('No DPA programs found in settings or container missing');
+            // Add fallback message if no programs exist
+            const noPrograms = document.createElement('div');
+            noPrograms.className = 'program-card';
+            noPrograms.innerHTML = `
+                <div class="program-card-header">
+                    No DPA Programs Available
+                </div>
+                <p>There are currently no downpayment assistance programs configured in the system.</p>
+            `;
+            dpaContainer.appendChild(noPrograms);
         }
         
         // Process Mortgage Programs
-        if (settings.mortgagePrograms && mortgageContainer) {
+        if (settings.mortgagePrograms && settings.mortgagePrograms.length > 0 && mortgageContainer) {
+            console.log('Processing mortgage programs:', settings.mortgagePrograms.length);
+            let programsAdded = 0;
+            
             settings.mortgagePrograms.forEach(program => {
                 // Skip inactive programs
                 if (!program.active) return;
                 
-                // Check county eligibility
+                // Check county eligibility - make sure program.counties exists
+                if (!program.counties) {
+                    program.counties = { bristol: true, providence: true };
+                    console.log('Default counties created for program:', program.name);
+                }
+                
                 const isCountyEligible = 
                     (isBristolCounty && program.counties.bristol) || 
                     (isProvidenceCounty && program.counties.providence);
                 
                 if (!isCountyEligible) return;
                 
-                // Check income eligibility
+                // Check income eligibility - make sure program.incomeRanges exists
+                if (!program.incomeRanges) {
+                    program.incomeRanges = { below80: true, from80to100: true, from100to120: true, above120: false };
+                    console.log('Default income ranges created for program:', program.name);
+                }
+                
                 const isIncomeEligible = 
                     (isBelow80 && program.incomeRanges.below80) ||
                     (is80to100 && program.incomeRanges.from80to100) ||
@@ -788,13 +948,41 @@ function checkEligibility() {
                             ${isIncomeEligible ? 'Eligible' : 'Not Eligible'}
                         </span>
                     </div>
-                    <p>${program.description1}</p>
-                    <p>${program.description2}</p>
+                    <p>${program.description1 || 'No description available'}</p>
+                    <p>${program.description2 || ''}</p>
                     <p>Your income: ${formatter.format(incomeValue)}</p>
                 `;
                 
                 mortgageContainer.appendChild(programCard);
+                programsAdded++;
             });
+            
+            console.log('Mortgage programs added:', programsAdded);
+            
+            // If no programs were added, show a fallback message
+            if (programsAdded === 0) {
+                const noPrograms = document.createElement('div');
+                noPrograms.className = 'program-card';
+                noPrograms.innerHTML = `
+                    <div class="program-card-header">
+                        No Mortgage Programs Available
+                    </div>
+                    <p>There are currently no mortgage programs available for your location and income level.</p>
+                `;
+                mortgageContainer.appendChild(noPrograms);
+            }
+        } else {
+            console.log('No mortgage programs found in settings or container missing');
+            // Add fallback message if no programs exist
+            const noPrograms = document.createElement('div');
+            noPrograms.className = 'program-card';
+            noPrograms.innerHTML = `
+                <div class="program-card-header">
+                    No Mortgage Programs Available
+                </div>
+                <p>There are currently no mortgage programs configured in the system.</p>
+            `;
+            mortgageContainer.appendChild(noPrograms);
         }
     } else {
         // Not in eligible county
@@ -831,6 +1019,115 @@ function checkEligibility() {
     // Update progress bar
     updateProgressBar();
 }
+
+// Town selection handler with improved county detection
+function handleTownSelection() {
+    const townSelect = document.getElementById('town');
+    const selectedOption = townSelect.options[townSelect.selectedIndex];
+    
+    if (selectedOption && selectedOption.value) {
+        let county = selectedOption.dataset.county;
+        const cleanName = selectedOption.dataset.cleanName || cleanTownNameString(selectedOption.textContent);
+        const originalName = selectedOption.dataset.originalName || selectedOption.textContent;
+        
+        // If county isn't in the dataset, try to get it from the mapping
+        if (!county) {
+            county = findCountyFromTownName(originalName);
+            
+            // Store the county in the dataset for future reference
+            if (county) {
+                selectedOption.dataset.county = county;
+            }
+        }
+        
+        // Check if county detection succeeded
+        if (county) {
+            console.log(`Town selected: ${originalName}, County detected: ${county}`);
+            
+            userData.county = county;
+            userData.townName = cleanName;
+            userData.originalTownName = originalName;
+            userData.isEligibleCounty = (county === 'Bristol' || county === 'Providence');
+            
+            // Show county information if available
+            const countyInfo = document.getElementById('county-info');
+            if (countyInfo) {
+                if (userData.isEligibleCounty) {
+                    countyInfo.innerHTML = `<i class="fas fa-check-circle" style="color: var(--success);"></i> ${cleanName} is in ${county} County and eligible for assistance programs.`;
+                } else {
+                    countyInfo.innerHTML = `<i class="fas fa-exclamation-triangle" style="color: var(--warning);"></i> ${cleanName} is in ${county} County and not eligible for assistance programs.`;
+                }
+            }
+        } else {
+            // County detection failed
+            console.warn(`Failed to determine county for town: ${originalName}`);
+            
+            userData.county = '';
+            userData.townName = cleanName;
+            userData.originalTownName = originalName;
+            userData.isEligibleCounty = false;
+            
+            // Show county information if available
+            const countyInfo = document.getElementById('county-info');
+            if (countyInfo) {
+                countyInfo.innerHTML = `<i class="fas fa-exclamation-triangle" style="color: var(--warning);"></i> Could not determine county for ${cleanName}.`;
+            }
+        }
+    } else {
+        // No town selected
+        userData.county = '';
+        userData.townName = '';
+        userData.originalTownName = '';
+        userData.isEligibleCounty = false;
+        
+        const countyInfo = document.getElementById('county-info');
+        if (countyInfo) {
+            countyInfo.innerHTML = '';
+        }
+    }
+}
+
+// Add county information to town options when populating the dropdown
+function populateTownDropdown(towns, stateCode) {
+    const townSelect = document.getElementById('town');
+    if (!townSelect) return;
+    
+    townSelect.innerHTML = '<option value="">-- Select a city/town --</option>';
+    
+    towns.forEach(town => {
+        if (town.town_name) {
+            // Clean up town name by removing any suffixes
+            const cleanTownName = cleanTownNameString(town.town_name);
+            
+            const option = document.createElement('option');
+            option.value = town.fips_code;
+            
+            // Display the clean name in the dropdown
+            option.textContent = cleanTownName;
+            
+            // Store both original and clean names
+            option.dataset.originalName = town.town_name;
+            option.dataset.cleanName = cleanTownName;
+            
+            // Find county for this town
+            const county = findCountyFromTownName(town.town_name);
+            if (county) {
+                option.dataset.county = county;
+            }
+            
+            // Log for debugging
+            debug(`Adding town: ${town.town_name}, Clean: ${cleanTownName}, County: ${county || 'unknown'}`);
+            
+            townSelect.appendChild(option);
+        }
+    });
+    
+    // Add change event to detect county change
+    townSelect.addEventListener('change', handleTownSelection);
+}
+
+
+
 
 // Function to completely reset the application state
 function resetToInitialState() {
