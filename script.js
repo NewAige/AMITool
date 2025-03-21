@@ -851,7 +851,7 @@ function updateResults(incomeLimit50, incomeLimit80, householdSize) {
     debug('Results updated successfully');
 }
 
-// Enhanced CheckEligibility function with better debugging
+// Fixed checkEligibility function with proper state-level eligibility
 function checkEligibility() {
     debug('Checking eligibility');
     debug('Current userData:', userData);
@@ -880,22 +880,19 @@ function checkEligibility() {
     // Force debug output of critical data for diagnosis
     console.log('Income value for eligibility check:', incomeValue);
     console.log('Town data:', userData.townName, userData.county);
-    console.log('Is eligible county:', userData.isEligibleCounty);
+    console.log('State:', userData.state);
     
     // Set county eligibility notice
     const countyNote = document.getElementById('county-eligibility-note');
     
-    // Double-check that we have the town name and county
-    if (!userData.townName || userData.townName === '' || !userData.county) {
+    // Double-check that we have the town name
+    if (!userData.townName || userData.townName === '') {
         // Try to retrieve it one more time
         const townSelect = document.getElementById('town');
         if (townSelect && townSelect.selectedIndex > 0) {
             const selectedOption = townSelect.options[townSelect.selectedIndex];
             userData.townName = selectedOption.dataset.cleanName || cleanTownNameString(selectedOption.textContent);
             userData.county = selectedOption.dataset.county || '';
-            userData.isEligibleCounty = (userData.county === 'Bristol' || userData.county === 'Providence');
-            
-            console.log('Retrieved town data again:', userData.townName, userData.county, userData.isEligibleCounty);
         }
         
         // If still empty, use a fallback
@@ -904,11 +901,14 @@ function checkEligibility() {
         }
     }
     
+    // Update county eligibility message
     if (countyNote) {
-        if (userData.isEligibleCounty) {
-            countyNote.innerHTML = `<i class="fas fa-check-circle" style="color: var(--success);"></i> ${userData.townName} is in ${userData.county} County and is eligible for downpayment assistance programs.`;
+        if (userData.county === 'Bristol' || userData.county === 'Providence') {
+            userData.isEligibleCounty = true;
+            countyNote.innerHTML = `<i class="fas fa-check-circle" style="color: var(--success);"></i> ${userData.townName} is in ${userData.county} County and is eligible for all downpayment assistance programs.`;
         } else {
-            countyNote.innerHTML = `<i class="fas fa-exclamation-triangle" style="color: var(--warning);"></i> ${userData.townName} is not in Bristol or Providence County and is not eligible for downpayment assistance programs.`;
+            userData.isEligibleCounty = false;
+            countyNote.innerHTML = `<i class="fas fa-exclamation-triangle" style="color: var(--warning);"></i> ${userData.townName} is in ${userData.county || 'a different'} County and is only eligible for state-level programs.`;
         }
     }
 
@@ -944,196 +944,200 @@ function checkEligibility() {
     const settings = loadAmiToolSettings();
     console.log('Loaded settings for eligibility check:', settings);
     
-    // Only display program options if in eligible county
-    if (userData.isEligibleCounty) {
-        // Determine which income bracket the user falls into
-        const isBelow80 = incomeValue <= userData.incomeLimit80;
-        const is80to100 = incomeValue > userData.incomeLimit80 && incomeValue <= userData.incomeLimit100;
-        const is100to120 = incomeValue > userData.incomeLimit100 && incomeValue <= userData.incomeLimit120;
-        const isAbove120 = incomeValue > userData.incomeLimit120;
+    // Determine which income bracket the user falls into
+    const isBelow80 = incomeValue <= userData.incomeLimit80;
+    const is80to100 = incomeValue > userData.incomeLimit80 && incomeValue <= userData.incomeLimit100;
+    const is100to120 = incomeValue > userData.incomeLimit100 && incomeValue <= userData.incomeLimit120;
+    const isAbove120 = incomeValue > userData.incomeLimit120;
+    
+    console.log('Income brackets:', {isBelow80, is80to100, is100to120, isAbove120});
+    
+    // Determine county, state, and eligibility
+    const isBristolCounty = userData.county === 'Bristol';
+    const isProvidenceCounty = userData.county === 'Providence';
+    const isMA = userData.state === 'MA';
+    const isRI = userData.state === 'RI';
+    
+    // Process DPA Programs
+    if (settings.dpaPrograms && settings.dpaPrograms.length > 0 && dpaContainer) {
+        console.log('Processing DPA programs:', settings.dpaPrograms.length);
+        let programsAdded = 0;
         
-        console.log('Income brackets:', {isBelow80, is80to100, is100to120, isAbove120});
-        
-        // Determine which county the user is in
-        const isBristolCounty = userData.county === 'Bristol';
-        const isProvidenceCounty = userData.county === 'Providence';
-        
-        // Process DPA Programs
-        if (settings.dpaPrograms && settings.dpaPrograms.length > 0 && dpaContainer) {
-            console.log('Processing DPA programs:', settings.dpaPrograms.length);
-            let programsAdded = 0;
+        settings.dpaPrograms.forEach(program => {
+            // Skip inactive programs
+            if (!program.active) return;
             
-            settings.dpaPrograms.forEach(program => {
-                // Skip inactive programs
-                if (!program.active) return;
-                
-                // Check county eligibility - make sure program.counties exists
-                if (!program.counties) {
-                    program.counties = { bristol: true, providence: true };
-                    console.log('Default counties created for program:', program.name);
-                }
-                
-                const isCountyEligible = 
-                    (isBristolCounty && program.counties.bristol) || 
-                    (isProvidenceCounty && program.counties.providence);
-                
-                if (!isCountyEligible) return;
-                
-                // Check income eligibility - make sure program.incomeRanges exists
-                if (!program.incomeRanges) {
-                    program.incomeRanges = { below80: true, from80to100: false, from100to120: false, above120: false };
-                    console.log('Default income ranges created for program:', program.name);
-                }
-                
-                const isIncomeEligible = 
-                    (isBelow80 && program.incomeRanges.below80) ||
-                    (is80to100 && program.incomeRanges.from80to100) ||
-                    (is100to120 && program.incomeRanges.from100to120) ||
-                    (isAbove120 && program.incomeRanges.above120);
-                
-                // Create program card
-                const programCard = document.createElement('div');
-                programCard.className = 'program-card';
-                programCard.classList.add(isIncomeEligible ? 'eligible' : 'ineligible');
-                
-                programCard.innerHTML = `
-                    <div class="program-card-header">
-                        ${program.name}
-                        <span class="badge ${isIncomeEligible ? 'badge-success' : 'badge-danger'}">
-                            ${isIncomeEligible ? 'Eligible' : 'Not Eligible'}
-                        </span>
-                    </div>
-                    <p>${program.description1 || 'No description available'}</p>
-                    <p>${program.description2 || ''}</p>
-                    <p>Your income: ${formatter.format(incomeValue)}</p>
-                `;
-                
-                dpaContainer.appendChild(programCard);
-                programsAdded++;
-            });
+            // Determine location eligibility based on program type
+            let isLocationEligible = false;
             
-            console.log('DPA programs added:', programsAdded);
-            
-            // If no programs were added, show a fallback message
-            if (programsAdded === 0) {
-                const noPrograms = document.createElement('div');
-                noPrograms.className = 'program-card';
-                noPrograms.innerHTML = `
-                    <div class="program-card-header">
-                        No DPA Programs Available
-                    </div>
-                    <p>There are currently no downpayment assistance programs available for your location and income level.</p>
-                `;
-                dpaContainer.appendChild(noPrograms);
+            // Check eligibility based on eligibility type
+            if (program.eligibilityType === "state") {
+                // State-level eligibility - check if the user's state matches program states
+                isLocationEligible = (isMA && program.states && program.states.ma) || 
+                                    (isRI && program.states && program.states.ri);
+                                    
+                console.log(`State-level program "${program.name}": eligible=${isLocationEligible}, userState=${userData.state}`);
+            } else if (program.eligibilityType === "county" || !program.eligibilityType) {
+                // County-level eligibility (default)
+                isLocationEligible = (isBristolCounty && program.counties && program.counties.bristol) || 
+                                     (isProvidenceCounty && program.counties && program.counties.providence);
+                                     
+                console.log(`County-level program "${program.name}": eligible=${isLocationEligible}, userCounty=${userData.county}`);
+            } else if (program.eligibilityType === "town") {
+                // Town-level eligibility would go here if needed
+                // For now, we're not implementing town-level since it's not being used
+                isLocationEligible = false;
             }
-        } else {
-            console.log('No DPA programs found in settings or container missing');
-            // Add fallback message if no programs exist
+            
+            // Skip if not eligible by location
+            if (!isLocationEligible) return;
+            
+            // Check income eligibility - make sure program.incomeRanges exists
+            if (!program.incomeRanges) {
+                program.incomeRanges = { below80: true, from80to100: false, from100to120: false, above120: false };
+                console.log('Default income ranges created for program:', program.name);
+            }
+            
+            const isIncomeEligible = 
+                (isBelow80 && program.incomeRanges.below80) ||
+                (is80to100 && program.incomeRanges.from80to100) ||
+                (is100to120 && program.incomeRanges.from100to120) ||
+                (isAbove120 && program.incomeRanges.above120);
+            
+            // Create program card
+            const programCard = document.createElement('div');
+            programCard.className = 'program-card';
+            programCard.classList.add(isIncomeEligible ? 'eligible' : 'ineligible');
+            
+            programCard.innerHTML = `
+                <div class="program-card-header">
+                    ${program.name}
+                    <span class="badge ${isIncomeEligible ? 'badge-success' : 'badge-danger'}">
+                        ${isIncomeEligible ? 'Eligible' : 'Not Eligible'}
+                    </span>
+                </div>
+                <p>${program.description1 || 'No description available'}</p>
+                <p>${program.description2 || ''}</p>
+                <p>Your income: ${formatter.format(incomeValue)}</p>
+            `;
+            
+            dpaContainer.appendChild(programCard);
+            programsAdded++;
+        });
+        
+        console.log('DPA programs added:', programsAdded);
+        
+        // If no programs were added, show a fallback message
+        if (programsAdded === 0) {
             const noPrograms = document.createElement('div');
             noPrograms.className = 'program-card';
             noPrograms.innerHTML = `
                 <div class="program-card-header">
                     No DPA Programs Available
                 </div>
-                <p>There are currently no downpayment assistance programs configured in the system.</p>
+                <p>There are currently no downpayment assistance programs available for your location and income level.</p>
             `;
             dpaContainer.appendChild(noPrograms);
         }
+    } else {
+        console.log('No DPA programs found in settings or container missing');
+        // Add fallback message if no programs exist
+        const noPrograms = document.createElement('div');
+        noPrograms.className = 'program-card';
+        noPrograms.innerHTML = `
+            <div class="program-card-header">
+                No DPA Programs Available
+            </div>
+            <p>There are currently no downpayment assistance programs configured in the system.</p>
+        `;
+        dpaContainer.appendChild(noPrograms);
+    }
+    
+    // Process Mortgage Programs with similar logic as DPA programs
+    if (settings.mortgagePrograms && settings.mortgagePrograms.length > 0 && mortgageContainer) {
+        console.log('Processing mortgage programs:', settings.mortgagePrograms.length);
+        let programsAdded = 0;
         
-        // Process Mortgage Programs
-        if (settings.mortgagePrograms && settings.mortgagePrograms.length > 0 && mortgageContainer) {
-            console.log('Processing mortgage programs:', settings.mortgagePrograms.length);
-            let programsAdded = 0;
+        settings.mortgagePrograms.forEach(program => {
+            // Skip inactive programs
+            if (!program.active) return;
             
-            settings.mortgagePrograms.forEach(program => {
-                // Skip inactive programs
-                if (!program.active) return;
-                
-                // Check county eligibility - make sure program.counties exists
-                if (!program.counties) {
-                    program.counties = { bristol: true, providence: true };
-                    console.log('Default counties created for program:', program.name);
-                }
-                
-                const isCountyEligible = 
-                    (isBristolCounty && program.counties.bristol) || 
-                    (isProvidenceCounty && program.counties.providence);
-                
-                if (!isCountyEligible) return;
-                
-                // Check income eligibility - make sure program.incomeRanges exists
-                if (!program.incomeRanges) {
-                    program.incomeRanges = { below80: true, from80to100: true, from100to120: true, above120: false };
-                    console.log('Default income ranges created for program:', program.name);
-                }
-                
-                const isIncomeEligible = 
-                    (isBelow80 && program.incomeRanges.below80) ||
-                    (is80to100 && program.incomeRanges.from80to100) ||
-                    (is100to120 && program.incomeRanges.from100to120) ||
-                    (isAbove120 && program.incomeRanges.above120);
-                
-                // Create program card
-                const programCard = document.createElement('div');
-                programCard.className = 'program-card';
-                programCard.classList.add(isIncomeEligible ? 'eligible' : 'ineligible');
-                
-                programCard.innerHTML = `
-                    <div class="program-card-header">
-                        ${program.name}
-                        <span class="badge ${isIncomeEligible ? 'badge-success' : 'badge-danger'}">
-                            ${isIncomeEligible ? 'Eligible' : 'Not Eligible'}
-                        </span>
-                    </div>
-                    <p>${program.description1 || 'No description available'}</p>
-                    <p>${program.description2 || ''}</p>
-                    <p>Your income: ${formatter.format(incomeValue)}</p>
-                `;
-                
-                mortgageContainer.appendChild(programCard);
-                programsAdded++;
-            });
+            // Determine location eligibility based on program type
+            let isLocationEligible = false;
             
-            console.log('Mortgage programs added:', programsAdded);
-            
-            // If no programs were added, show a fallback message
-            if (programsAdded === 0) {
-                const noPrograms = document.createElement('div');
-                noPrograms.className = 'program-card';
-                noPrograms.innerHTML = `
-                    <div class="program-card-header">
-                        No Mortgage Programs Available
-                    </div>
-                    <p>There are currently no mortgage programs available for your location and income level.</p>
-                `;
-                mortgageContainer.appendChild(noPrograms);
+            // Check eligibility based on eligibility type
+            if (program.eligibilityType === "state") {
+                // State-level eligibility
+                isLocationEligible = (isMA && program.states && program.states.ma) || 
+                                    (isRI && program.states && program.states.ri);
+            } else if (program.eligibilityType === "county" || !program.eligibilityType) {
+                // County-level eligibility (default)
+                isLocationEligible = (isBristolCounty && program.counties && program.counties.bristol) || 
+                                     (isProvidenceCounty && program.counties && program.counties.providence);
             }
-        } else {
-            console.log('No mortgage programs found in settings or container missing');
-            // Add fallback message if no programs exist
+            
+            // Skip if not eligible by location
+            if (!isLocationEligible) return;
+            
+            // Check income eligibility
+            if (!program.incomeRanges) {
+                program.incomeRanges = { below80: true, from80to100: true, from100to120: true, above120: false };
+                console.log('Default income ranges created for program:', program.name);
+            }
+            
+            const isIncomeEligible = 
+                (isBelow80 && program.incomeRanges.below80) ||
+                (is80to100 && program.incomeRanges.from80to100) ||
+                (is100to120 && program.incomeRanges.from100to120) ||
+                (isAbove120 && program.incomeRanges.above120);
+            
+            // Create program card
+            const programCard = document.createElement('div');
+            programCard.className = 'program-card';
+            programCard.classList.add(isIncomeEligible ? 'eligible' : 'ineligible');
+            
+            programCard.innerHTML = `
+                <div class="program-card-header">
+                    ${program.name}
+                    <span class="badge ${isIncomeEligible ? 'badge-success' : 'badge-danger'}">
+                        ${isIncomeEligible ? 'Eligible' : 'Not Eligible'}
+                    </span>
+                </div>
+                <p>${program.description1 || 'No description available'}</p>
+                <p>${program.description2 || ''}</p>
+                <p>Your income: ${formatter.format(incomeValue)}</p>
+            `;
+            
+            mortgageContainer.appendChild(programCard);
+            programsAdded++;
+        });
+        
+        console.log('Mortgage programs added:', programsAdded);
+        
+        // If no programs were added, show a fallback message
+        if (programsAdded === 0) {
             const noPrograms = document.createElement('div');
             noPrograms.className = 'program-card';
             noPrograms.innerHTML = `
                 <div class="program-card-header">
                     No Mortgage Programs Available
                 </div>
-                <p>There are currently no mortgage programs configured in the system.</p>
+                <p>There are currently no mortgage programs available for your location and income level.</p>
             `;
             mortgageContainer.appendChild(noPrograms);
         }
     } else {
-        // Not in eligible county
-        const ineligibleCard = document.createElement('div');
-        ineligibleCard.className = 'program-card ineligible';
-        ineligibleCard.innerHTML = `
+        console.log('No mortgage programs found in settings or container missing');
+        // Add fallback message if no programs exist
+        const noPrograms = document.createElement('div');
+        noPrograms.className = 'program-card';
+        noPrograms.innerHTML = `
             <div class="program-card-header">
-                All Programs
-                <span class="badge badge-danger">Not Eligible</span>
+                No Mortgage Programs Available
             </div>
-            <p>Down payment assistance and mortgage products are only available to residents in Bristol County, MA and Providence County, RI.</p>
-            <p>${userData.townName} is in ${userData.county || 'a different'} County and does not qualify for these programs.</p>
+            <p>There are currently no mortgage programs configured in the system.</p>
         `;
-        dpaContainer.appendChild(ineligibleCard);
+        mortgageContainer.appendChild(noPrograms);
     }
     
     // Set up print button
