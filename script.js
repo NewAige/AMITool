@@ -94,9 +94,9 @@ function loadAmiToolSettings() {
             },
             {
                 id: "ebp",
-                name: "Federal Home Loan Bank of Boston: Equity Builder Program",
+                name: "FHLBB: Equity Builder Program: $25,000 Downpayment Assistance",
                 active: true,
-                eligibilityType: "county",
+                eligibilityType: "state",
                 states: {
                     ma: true,
                     ri: true
@@ -120,9 +120,9 @@ function loadAmiToolSettings() {
             },
             {
                 id: "how",
-                name: "Federal Home Loan Bank of Boston: Housing Our Workforce",
+                name: "FHLBB Housing Our Workforce: $25,000 Downpayment Assistance",
                 active: true,
-                eligibilityType: "county",
+                eligibilityType: "state",
                 states: {
                     ma: true,
                     ri: true
@@ -143,6 +143,32 @@ function loadAmiToolSettings() {
                 },
                 description1: "For households with income between 80.01% and 120% AMI",
                 description2: "Program provided through Federal Home Loan Bank of Boston"
+            },
+            {
+                id: "luh",
+                name: "FHLBB Lift Up HomeOwnership $50,000 Downpayment Assistance",
+                active: true,
+                eligibilityType: "state",
+                states: {
+                    ma: true,
+                    ri: true
+                },
+                counties: {
+                    bristol: true,
+                    providence: true
+                },
+                towns: {
+                    ma: [],
+                    ri: []
+                },
+                incomeRanges: {
+                    below80: true,
+                    from80to100: true,
+                    from100to120: true,
+                    above120: false
+                },
+                description1: "For **BIPOC** households with income between less than or equal to 120% AMI",
+                description2: "One borrower must be Black, Indigenous, and/or a Person of Color"
             }
         ],
         mortgagePrograms: [
