@@ -9,7 +9,8 @@ function loadAmiToolSettings() {
         console.error('Error loading settings from localStorage:', error);
     }
     
-    // Return default settings if nothing is saved or there's an error
+    // Return complete default settings if nothing is saved or there's an error
+    // These match the programs defined in settings.js
     return {
         year: "2024",
         dpaPrograms: [
@@ -17,7 +18,7 @@ function loadAmiToolSettings() {
                 id: "bcsb1",
                 name: "BCSB DPA: $20,000 Downpayment Assistance",
                 active: true,
-                eligibilityType: "county",
+                eligibilityType: "county", // can be "state", "county", or "town"
                 states: {
                     ma: true,
                     ri: true
@@ -44,9 +45,17 @@ function loadAmiToolSettings() {
                 name: "BCSB DPA: $15,000 Downpayment Assistance",
                 active: true,
                 eligibilityType: "county",
+                states: {
+                    ma: true,
+                    ri: true
+                },
                 counties: {
                     bristol: true,
                     providence: true
+                },
+                towns: {
+                    ma: [],
+                    ri: []
                 },
                 incomeRanges: {
                     below80: false,
@@ -62,9 +71,17 @@ function loadAmiToolSettings() {
                 name: "BCSB DPA: $10,000 Downpayment Assistance",
                 active: true,
                 eligibilityType: "county",
+                states: {
+                    ma: true,
+                    ri: true
+                },
                 counties: {
                     bristol: true,
                     providence: true
+                },
+                towns: {
+                    ma: [],
+                    ri: []
                 },
                 incomeRanges: {
                     below80: false,
@@ -74,6 +91,58 @@ function loadAmiToolSettings() {
                 },
                 description1: "For households with income between 100.01% and 120% AMI",
                 description2: "Provides $10,000 in downpayment assistance"
+            },
+            {
+                id: "ebp",
+                name: "Federal Home Loan Bank of Boston: Equity Builder Program",
+                active: true,
+                eligibilityType: "county",
+                states: {
+                    ma: true,
+                    ri: true
+                },
+                counties: {
+                    bristol: true,
+                    providence: true
+                },
+                towns: {
+                    ma: [],
+                    ri: []
+                },
+                incomeRanges: {
+                    below80: true,
+                    from80to100: false,
+                    from100to120: false,
+                    above120: false
+                },
+                description1: "For households with income at or below 80% AMI",
+                description2: "Program provided through Federal Home Loan Bank of Boston"
+            },
+            {
+                id: "how",
+                name: "Federal Home Loan Bank of Boston: Housing Our Workforce",
+                active: true,
+                eligibilityType: "county",
+                states: {
+                    ma: true,
+                    ri: true
+                },
+                counties: {
+                    bristol: true,
+                    providence: true
+                },
+                towns: {
+                    ma: [],
+                    ri: []
+                },
+                incomeRanges: {
+                    below80: false,
+                    from80to100: true,
+                    from100to120: true,
+                    above120: false
+                },
+                description1: "For households with income between 80.01% and 120% AMI",
+                description2: "Program provided through Federal Home Loan Bank of Boston"
             }
         ],
         mortgagePrograms: [
@@ -82,9 +151,17 @@ function loadAmiToolSettings() {
                 name: "First Time Homebuyer",
                 active: true,
                 eligibilityType: "county",
+                states: {
+                    ma: true,
+                    ri: true
+                },
                 counties: {
                     bristol: true,
                     providence: true
+                },
+                towns: {
+                    ma: [],
+                    ri: []
                 },
                 incomeRanges: {
                     below80: true,
@@ -100,9 +177,17 @@ function loadAmiToolSettings() {
                 name: "Providence County Pathway",
                 active: true,
                 eligibilityType: "county",
+                states: {
+                    ma: true, 
+                    ri: true
+                },
                 counties: {
                     bristol: false,
                     providence: true
+                },
+                towns: {
+                    ma: [],
+                    ri: []
                 },
                 incomeRanges: {
                     below80: true,
@@ -112,6 +197,32 @@ function loadAmiToolSettings() {
                 },
                 description1: "Must be at or below 120% AMI",
                 description2: "Only available in Providence County, RI"
+            },
+            {
+                id: "exclusive80",
+                name: "Exclusive BCSB HomeBuyer",
+                active: true,
+                eligibilityType: "county",
+                states: {
+                    ma: true,
+                    ri: true
+                },
+                counties: {
+                    bristol: true,
+                    providence: true
+                },
+                towns: {
+                    ma: [],
+                    ri: []
+                },
+                incomeRanges: {
+                    below80: true,
+                    from80to100: false,
+                    from100to120: false,
+                    above120: false
+                },
+                description1: "Must be at or below 80% AMI",
+                description2: "Available in Bristol County, MA or Providence County, RI"
             }
         ]
     };
