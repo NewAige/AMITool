@@ -12,7 +12,7 @@ function loadAmiToolSettings() {
     // Return complete default settings if nothing is saved or there's an error
     // These match the programs defined in settings.js
     return {
-        year: "2024",
+        year: "2025",
         dpaPrograms: [
             {
                 id: "bcsb1",
