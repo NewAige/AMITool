@@ -171,6 +171,42 @@ function loadAmiToolSettings() {
                 },
                 description1: "Must be at or below 80% AMI",
                 description2: "Available in Bristol County, MA or Providence County, RI"
+            },
+            {
+                id: "buycities",
+                name: "Buy Cities",
+                active: true,
+                eligibilityType: "town", // Important: set to "town"
+                states: { ma: true, ri: false },
+                counties: { bristol: true }, // All listed cities are in Bristol County
+                towns: {
+                    ma: [
+                        "FIPS_FALL_RIVER", // Placeholder - Needs actual FIPS code
+                        "FIPS_NEW_BEDFORD", // Placeholder - Needs actual FIPS code
+                        "FIPS_TAUNTON",     // Placeholder - Needs actual FIPS code
+                        "FIPS_ATTLEBORO"    // Placeholder - Needs actual FIPS code
+                    ],
+                    ri: []
+                },
+                incomeLimitType: "fixedCompliance", // Custom property for specific logic
+                maxComplianceIncome: 146205,
+                description1: "Uses Borrower Compliance Income. Max income: $146,205.",
+                description2: "Available in Fall River, New Bedford, Taunton, and Attleboro, MA."
+                // Note: No 'incomeRanges' property, as this product uses a fixed income limit.
+            },
+            {
+                id: "affordablehousing",
+                name: "Affordable Housing Program",
+                active: true,
+                eligibilityType: "county",
+                states: { ma: true, ri: true },
+                counties: { bristol: true, providence: true },
+                towns: { ma: [], ri: [] }, // Not town-specific
+                incomeLimitType: "fixedQualifying", // Custom property for specific logic
+                maxQualifyingIncome: 92080,
+                description1: "Uses Borrower Qualifying Income (HomeReady). Max income: $92,080.",
+                description2: "Available in Bristol County, MA and Providence County, RI."
+                // Note: No 'incomeRanges' property.
             }
         ]
     };
@@ -350,6 +386,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Event Listener for Borrower Compliance Income
+    const complianceIncomeInput = document.getElementById('compliance-income-input');
+    if (complianceIncomeInput) {
+        complianceIncomeInput.addEventListener('input', function() {
+            formatCurrency(this);
+            const value = parseFloat(this.value.replace(/,/g, '')) || 0;
+            userData.borrowerComplianceIncome = value;
+            debug('Userdata Borrower Compliance Income updated:', userData.borrowerComplianceIncome);
+        });
+    }
+
+    // Event Listener for Borrower Qualifying Income (HomeReady)
+    const qualifyingIncomeInput = document.getElementById('qualifying-income-input');
+    if (qualifyingIncomeInput) {
+        qualifyingIncomeInput.addEventListener('input', function() {
+            formatCurrency(this);
+            const value = parseFloat(this.value.replace(/,/g, '')) || 0;
+            userData.borrowerQualifyingIncome = value;
+            debug('Userdata Borrower Qualifying Income updated:', userData.borrowerQualifyingIncome);
+        });
+    }
+
     // Town change event to detect county
     if (townSelect) {
         townSelect.addEventListener('change', function() {
@@ -503,7 +561,9 @@ let userData = {
     incomeLimit100: 0,
     incomeLimit120: 0,
     isEligibleCounty: false,
-    currentIncome: 0
+    currentIncome: 0,
+    borrowerComplianceIncome: 0,
+    borrowerQualifyingIncome: 0
 };
 
 // Town to county mapping for eligibility checking
@@ -975,63 +1035,137 @@ function checkEligibility() {
         dpaContainer.appendChild(noPrograms);
     }
     
-    // Process Mortgage Programs with similar logic as DPA programs
+    // Process Mortgage Programs 
     if (settings.mortgagePrograms && settings.mortgagePrograms.length > 0 && mortgageContainer) {
         console.log('Processing mortgage programs:', settings.mortgagePrograms.length);
         let programsAdded = 0;
         
         settings.mortgagePrograms.forEach(program => {
-            // Skip inactive programs
-            if (!program.active) return;
-            
-            // Determine location eligibility based on program type
-            let isLocationEligible = false;
-            
-            // Check eligibility based on eligibility type
-            if (program.eligibilityType === "state") {
-                // State-level eligibility
-                isLocationEligible = (isMA && program.states && program.states.ma) || 
-                                    (isRI && program.states && program.states.ri);
-            } else if (program.eligibilityType === "county" || !program.eligibilityType) {
-                // County-level eligibility (default)
-                isLocationEligible = (isBristolCounty && program.counties && program.counties.bristol) || 
-                                     (isProvidenceCounty && program.counties && program.counties.providence);
+            if (!program.active) return; // Skip inactive programs
+
+            const userTownFips = userData.town;
+            let isLocationEligible = false; 
+            let isIncomeEligible = false; 
+            let programCardInnerHTML = '';
+            // isBristolCounty, isProvidenceCounty, isMA, isRI, isBelow80, etc. and incomeValue are from the outer scope of checkEligibility
+
+            if (program.incomeLimitType === "fixedCompliance") {
+                // Logic for "Buy Cities"
+                if (program.eligibilityType === "town" && userData.state === 'MA' && program.states && program.states.ma) {
+                    if (program.towns && program.towns.ma && Array.isArray(program.towns.ma) && program.towns.ma.includes(userTownFips)) {
+                        isLocationEligible = true;
+                    }
+                }
+
+                if (isLocationEligible) {
+                    isIncomeEligible = userData.borrowerComplianceIncome > 0 && userData.borrowerComplianceIncome <= program.maxComplianceIncome;
+                    programCardInnerHTML = `
+                        <div class="program-card-header">
+                            ${program.name}
+                            <span class="badge ${isIncomeEligible ? 'badge-success' : 'badge-danger'}">
+                                ${isIncomeEligible ? 'Eligible' : 'Not Eligible'}
+                            </span>
+                        </div>
+                        <p>${program.description1 || 'No description available'}</p>
+                        <p>${program.description2 || ''}</p>
+                        <p>Your Borrower Compliance Income: ${formatter.format(userData.borrowerComplianceIncome)}</p>
+                        <p>Max Allowed Compliance Income: ${formatter.format(program.maxComplianceIncome)}</p>
+                    `;
+                }
+            } else if (program.incomeLimitType === "fixedQualifying") {
+                // Logic for "Affordable Housing Program"
+                if (program.eligibilityType === "county") {
+                    // Check county eligibility based on userData.county and program.counties
+                    // Ensure state matches as well, as per program definition
+                    if ((userData.county === 'Bristol' && program.counties && program.counties.bristol && userData.state === 'MA' && program.states && program.states.ma) ||
+                        (userData.county === 'Providence' && program.counties && program.counties.providence && userData.state === 'RI' && program.states && program.states.ri)) {
+                        isLocationEligible = true;
+                    }
+                }
+                // If a program could be state-level fixedQualifying (not current requirement, but for completeness):
+                // else if (program.eligibilityType === "state") {
+                //     isLocationEligible = (userData.state === 'MA' && program.states.ma) || (userData.state === 'RI' && program.states.ri);
+                // }
+                
+                if (isLocationEligible) {
+                    isIncomeEligible = userData.borrowerQualifyingIncome > 0 && userData.borrowerQualifyingIncome <= program.maxQualifyingIncome;
+                    programCardInnerHTML = `
+                        <div class="program-card-header">
+                            ${program.name}
+                            <span class="badge ${isIncomeEligible ? 'badge-success' : 'badge-danger'}">
+                                ${isIncomeEligible ? 'Eligible' : 'Not Eligible'}
+                            </span>
+                        </div>
+                        <p>${program.description1 || 'No description available'}</p>
+                        <p>${program.description2 || ''}</p>
+                        <p>Your Borrower Qualifying Income: ${formatter.format(userData.borrowerQualifyingIncome)}</p>
+                        <p>Max Allowed Qualifying Income: ${formatter.format(program.maxQualifyingIncome)}</p>
+                    `;
+                }
+            } else {
+                // ORIGINAL EXISTING LOGIC FOR AMI-BASED PROGRAMS (adapted)
+                if (program.eligibilityType === "state") {
+                    isLocationEligible = (isMA && program.states && program.states.ma) || 
+                                        (isRI && program.states && program.states.ri);
+                } else if (program.eligibilityType === "county" || !program.eligibilityType) {
+                    isLocationEligible = (isBristolCounty && program.counties && program.counties.bristol) || 
+                                         (isProvidenceCounty && program.counties && program.counties.providence);
+                }
+                
+                if (isLocationEligible) { 
+                    if (!program.incomeRanges) { 
+                        program.incomeRanges = { below80: true, from80to100: true, from100to120: true, above120: false };
+                    }
+                    isIncomeEligible = 
+                        (isBelow80 && program.incomeRanges.below80) ||
+                        (is80to100 && program.incomeRanges.from80to100) ||
+                        (is100to120 && program.incomeRanges.from100to120) ||
+                        (isAbove120 && program.incomeRanges.above120);
+                    
+                    programCardInnerHTML = `
+                        <div class="program-card-header">
+                            ${program.name}
+                            <span class="badge ${isIncomeEligible ? 'badge-success' : 'badge-danger'}">
+                                ${isIncomeEligible ? 'Eligible' : 'Not Eligible'}
+                            </span>
+                        </div>
+                        <p>${program.description1 || 'No description available'}</p>
+                        <p>${program.description2 || ''}</p>
+                        <p>Your Household Income: ${formatter.format(incomeValue)}</p> 
+                    `;
+                }
             }
-            
-            // Skip if not eligible by location
-            if (!isLocationEligible) return;
-            
-            // Check income eligibility
-            if (!program.incomeRanges) {
-                program.incomeRanges = { below80: true, from80to100: true, from100to120: true, above120: false };
-                console.log('Default income ranges created for program:', program.name);
+
+            // After the if/else if/else block, conditionally create and append the card:
+            if (isLocationEligible && programCardInnerHTML) { 
+                const programCard = document.createElement('div');
+                programCard.className = 'program-card';
+                programCard.classList.add(isIncomeEligible ? 'eligible' : 'ineligible');
+                programCard.innerHTML = programCardInnerHTML;
+                mortgageContainer.appendChild(programCard);
+                programsAdded++; 
+            } else if (isLocationEligible && !programCardInnerHTML && program.incomeLimitType) {
+                // This case could happen if location is eligible but income is zero for fixed income types,
+                // and we still want to show the card as "Not Eligible"
+                const programCard = document.createElement('div');
+                programCard.className = 'program-card ineligible'; // Mark as ineligible
+                 let incomeToCheck = program.incomeLimitType === "fixedCompliance" ? userData.borrowerComplianceIncome : userData.borrowerQualifyingIncome;
+                 let maxIncome = program.incomeLimitType === "fixedCompliance" ? program.maxComplianceIncome : program.maxQualifyingIncome;
+                 let incomeTypeString = program.incomeLimitType === "fixedCompliance" ? "Borrower Compliance Income" : "Borrower Qualifying Income";
+                programCard.innerHTML = `
+                        <div class="program-card-header">
+                            ${program.name}
+                            <span class="badge badge-danger">Not Eligible</span>
+                        </div>
+                        <p>${program.description1 || 'No description available'}</p>
+                        <p>${program.description2 || ''}</p>
+                        <p>Your ${incomeTypeString}: ${formatter.format(incomeToCheck)}</p>
+                        <p>Max Allowed ${incomeTypeString}: ${formatter.format(maxIncome)}</p>
+                        <p>Reason: Income is $0 or location/other criteria not fully met.</p>
+                    `;
+                mortgageContainer.appendChild(programCard);
+                programsAdded++;
             }
-            
-            const isIncomeEligible = 
-                (isBelow80 && program.incomeRanges.below80) ||
-                (is80to100 && program.incomeRanges.from80to100) ||
-                (is100to120 && program.incomeRanges.from100to120) ||
-                (isAbove120 && program.incomeRanges.above120);
-            
-            // Create program card
-            const programCard = document.createElement('div');
-            programCard.className = 'program-card';
-            programCard.classList.add(isIncomeEligible ? 'eligible' : 'ineligible');
-            
-            programCard.innerHTML = `
-                <div class="program-card-header">
-                    ${program.name}
-                    <span class="badge ${isIncomeEligible ? 'badge-success' : 'badge-danger'}">
-                        ${isIncomeEligible ? 'Eligible' : 'Not Eligible'}
-                    </span>
-                </div>
-                <p>${program.description1 || 'No description available'}</p>
-                <p>${program.description2 || ''}</p>
-                <p>Your income: ${formatter.format(incomeValue)}</p>
-            `;
-            
-            mortgageContainer.appendChild(programCard);
-            programsAdded++;
         });
         
         console.log('Mortgage programs added:', programsAdded);
@@ -1250,7 +1384,9 @@ function resetToInitialState() {
         incomeLimit100: 0,
         incomeLimit120: 0,
         isEligibleCounty: false,
-        currentIncome: 0
+    currentIncome: 0,
+    borrowerComplianceIncome: 0,
+    borrowerQualifyingIncome: 0
     };
     
     // Reset town dropdown if it exists
@@ -1344,6 +1480,15 @@ function handleStateSelection(state) {
                         
                         // Log county mapping for debugging
                         debug(`Town: ${town.town_name}, Clean: ${cleanTownName}, County: ${county}`);
+
+                        // === START FIPS CODE LOGGING FOR SPECIFIC TOWNS ===
+                        if (state === 'MA') {
+                            const targetTowns = ["Fall River", "New Bedford", "Taunton", "Attleboro"];
+                            if (targetTowns.includes(cleanTownName)) {
+                                debug(`FIPS CODE for ${cleanTownName}, MA: ${town.fips_code}`);
+                            }
+                        }
+                        // === END FIPS CODE LOGGING ===
                         
                         townSelect.appendChild(option);
                     }
@@ -1398,5 +1543,27 @@ function handleStateSelection(state) {
         if (selectedCard && selectedCard.dataset.originalContent) {
             selectedCard.innerHTML = selectedCard.dataset.originalContent;
         }
+        });
+    }
+
+    // Event Listener for Borrower Compliance Income
+    const complianceIncomeInput = document.getElementById('compliance-income-input');
+    if (complianceIncomeInput) {
+        complianceIncomeInput.addEventListener('input', function() {
+            formatCurrency(this);
+            const value = parseFloat(this.value.replace(/,/g, '')) || 0;
+            userData.borrowerComplianceIncome = value;
+            debug('Userdata Borrower Compliance Income updated:', userData.borrowerComplianceIncome);
+        });
+    }
+
+    // Event Listener for Borrower Qualifying Income (HomeReady)
+    const qualifyingIncomeInput = document.getElementById('qualifying-income-input');
+    if (qualifyingIncomeInput) {
+        qualifyingIncomeInput.addEventListener('input', function() {
+            formatCurrency(this);
+            const value = parseFloat(this.value.replace(/,/g, '')) || 0;
+            userData.borrowerQualifyingIncome = value;
+            debug('Userdata Borrower Qualifying Income updated:', userData.borrowerQualifyingIncome);
     });
 }
