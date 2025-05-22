@@ -124,7 +124,7 @@ select, input[type="text"], input[type="number"] {
 select:focus, input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+    box-shadow: 0 0 0 3px rgba(0, 102, 72, 0.25); /* Adjusted from original rgba(59, 130, 246, 0.25) to match primary color */
 }
 
 /* Searchable select styling */
@@ -270,7 +270,7 @@ table tr:last-child td {
 
 .ami-category-label.info {
     border-left-color: var(--primary);
-    background-color: rgba(59, 130, 246, 0.1);
+    background-color: rgba(0, 102, 72, 0.1); /* Adjusted from original rgba(59, 130, 246, 0.1) to match primary color */
 }
 
 .ami-category-label.warning {
@@ -473,37 +473,6 @@ table tr:last-child td {
     z-index: 1;
 }
 
-.income-toggle {
-    min-width: 180px;
-}
-
-.toggle-switch {
-    display: flex;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    overflow: hidden;
-}
-
-.toggle-switch input[type="radio"] {
-    display: none;
-}
-
-.toggle-switch label {
-    flex: 1;
-    text-align: center;
-    padding: 0.75rem 0.5rem;
-    margin: 0;
-    background-color: var(--light);
-    cursor: pointer;
-    transition: var(--transition);
-    font-weight: 500;
-}
-
-.toggle-switch input[type="radio"]:checked + label {
-    background-color: var(--primary);
-    color: white;
-}
-
 .program-section {
     margin-bottom: 2rem;
 }
@@ -627,6 +596,187 @@ table tr:last-child td {
     margin: 0;
 }
 
+/* Income toggle container and copy button */
+.income-toggle-container {
+    display: flex;
+    align-items: center;
+    min-width: 180px;
+    gap: 2px;
+}
+
+.toggle-switch {
+    flex: 1;
+    display: flex;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.toggle-switch input[type="radio"] {
+    display: none;
+}
+
+.toggle-switch label {
+    flex: 1;
+    text-align: center;
+    padding: 0.75rem 0.5rem;
+    margin: 0;
+    background-color: var(--light);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.toggle-switch input[type="radio"]:checked + label {
+    background-color: var(--primary);
+    color: white;
+}
+
+.copy-btn {
+    background-color: var(--light);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--primary);
+}
+
+.copy-btn:hover {
+    background-color: var(--primary-light);
+    color: var(--primary-hover);
+}
+
+.copy-btn i {
+    font-size: 1rem;
+}
+
+/* Enhanced income input groups */
+.income-input-group {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+}
+
+.income-input-group input[type="text"] {
+    flex: 1;
+    padding-left: 2rem;
+}
+
+.income-input-group::before {
+    content: '$';
+    position: absolute;
+    left: 12px;
+    top: 50%; /* Adjusted for vertical centering */
+    transform: translateY(-50%); /* Adjusted for vertical centering */
+    font-size: 1rem;
+    color: var(--gray);
+    z-index: 1;
+}
+
+/* Program eligibility sections */
+.program-eligibility-section {
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.program-eligibility-section h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.eligibility-card {
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    background-color: var(--light);
+}
+
+.eligibility-status {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.status-icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: var(--gray);
+}
+
+.status-icon.eligible {
+    background-color: var(--success);
+    color: white;
+}
+
+.status-icon.ineligible {
+    background-color: var(--danger);
+    color: white;
+}
+
+.status-details {
+    flex: 1;
+}
+
+.status-title {
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.status-info {
+    font-size: 0.9rem;
+    color: var(--gray);
+}
+
+.max-limit {
+    margin-left: 8px;
+    font-style: italic;
+}
+
+/* Highlight section when copy is clicked */
+.highlight-flash {
+    animation: highlight-flash 1s ease;
+}
+
+@keyframes highlight-flash {
+    0% { background-color: transparent; }
+    20% { background-color: rgba(0, 102, 72, 0.1); }
+    100% { background-color: transparent; }
+}
+
+/* Hidden by default - only show for state-specific fields */
+#compliance-income-container {
+    display: none;
+}
+
+/* Show when state is MA */
+#compliance-income-container.state-ma {
+    display: block;
+}
+
+/* Hide MassHousing eligibility for RI */
+#masshousing-eligibility {
+    display: none;
+}
+
+#masshousing-eligibility.state-ma {
+    display: block;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .container {
@@ -652,12 +802,13 @@ table tr:last-child td {
     
     .income-input-group {
         flex-direction: column;
+        align-items: stretch; /* Ensure children stretch to full width */
     }
     
-    .income-toggle {
+    .income-toggle-container { /* Renamed from .income-toggle */
         width: 100%;
         min-width: auto;
-        margin-top: 0.75rem;
+        margin-top: 0.75rem; /* Adjusted margin-top for consistency */
     }
     
     .state-selection {
@@ -672,5 +823,15 @@ table tr:last-child td {
     
     .step-indicator .step-text {
         display: none;
+    }
+
+    .eligibility-status {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: center; /* Center align items in mobile */
+    }
+    
+    .status-icon {
+        margin: 0 auto 10px; /* Center icon above text */
     }
 }

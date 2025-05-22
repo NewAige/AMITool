@@ -10,8 +10,8 @@
 <body>
     <header>
         <div class="container">
-            <h1>HUD AMI Lookup & Program Eligibility</h1>
-            <div class="subtitle">Find your income limits and downpayment assistance eligibility</div>
+            <h1>Product ID Tool</h1>
+            <div class="subtitle">Identify BCSB affordable product eligibility</div>
         </div>
     </header>
 
@@ -21,11 +21,11 @@
             <div class="step-indicator">
                 <div class="step active" id="step1">
                     <div class="step-number">1</div>
-                    <div class="step-text">Location</div>
+                    <div class="step-text">State</div>
                 </div>
                 <div class="step" id="step2">
                     <div class="step-number">2</div>
-                    <div class="step-text">Household</div>
+                    <div class="step-text">City/Town & Household</div>
                 </div>
                 <div class="step" id="step3">
                     <div class="step-number">3</div>
@@ -95,70 +95,155 @@
             </div>
         </div>
 
-        <!-- Results Card (Step 3) -->
-        <div class="card hidden-form" id="result">
-            <div class="card-header">
-                <i class="fas fa-chart-bar"></i> Income Limits Results
+<!-- Adjustments to the Results Card (Step 3) -->
+<div class="card hidden-form" id="result">
+    <div class="card-header">
+        <i class="fas fa-chart-bar"></i> Income Limits Results
+    </div>
+    <div class="card-body">
+        <div id="location-info" class="location-info"></div>
+        
+        <!-- Global income type toggle -->
+        <div class="form-group">
+            <label>
+                Income Entry Type:
+                <div class="tooltip">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltip-text">Select whether you want to enter income amounts as annual or monthly</span>
+                </div>
+            </label>
+            <div class="global-income-toggle-container">
+                <div class="toggle-switch">
+                    <input type="radio" id="income-type-annual" name="global-income-type" value="annual" checked>
+                    <label for="income-type-annual">Annual</label>
+                    <input type="radio" id="income-type-monthly" name="global-income-type" value="monthly">
+                    <label for="income-type-monthly">Monthly</label>
+                </div>
             </div>
-            <div class="card-body">
-                <div id="location-info" class="location-info"></div>
-                
-                <div class="form-group">
-                    <label for="income-input">
-                        Enter Your Household Income:
-                        <div class="tooltip">
-                            <i class="fas fa-info-circle"></i>
-                            <span class="tooltip-text">Enter the total income for all household members</span>
-                        </div>
-                    </label>
-                    <div class="income-input-group">
-                        <input type="text" id="income-input" name="income-input" placeholder="Enter income amount" value="">
-                        <div class="income-toggle">
-                            <div class="toggle-switch">
-                                <input type="radio" id="income-annual" name="income-type" value="annual" checked>
-                                <label for="income-annual">Annual</label>
-                                <input type="radio" id="income-monthly" name="income-type" value="monthly">
-                                <label for="income-monthly">Monthly</label>
-                            </div>
-                        </div>
-                    </div>
+        </div>
+        
+        <!-- Main household income section -->
+        <div class="form-group">
+            <label for="income-input">
+                Enter Your Household Income:
+                <div class="tooltip">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltip-text">Enter the total compliance income for all household members. This limit is for: BCSB DPA Procuts, Exclusive BCSB HomeBuyer, and Providence County Pathway. </span>
                 </div>
+            </label>
+            <div class="income-input-group">
+                <input type="text" id="income-input" name="income-input" placeholder="Enter income amount" value="">
+            </div>
+        </div>
 
-                <div class="ami-category-container">
-                    <h3>Your Income Category:</h3>
-                    <div id="ami-category-display" class="ami-category-label neutral">
-                        Please enter your income
-                    </div>
+        <!-- Borrower Compliance Income (only for MA) -->
+        <div class="form-group" id="compliance-income-container">
+            <label for="compliance-income-input">
+                Enter Your Borrower Compliance Income:
+                <div class="tooltip">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltip-text">Enter the total borrower compliance Income. This limit is for the Buy Cities program in Attleboro, Taunton, Fall River, and New Bedford.</span>
                 </div>
-
-                <div class="income-limits-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Income Limit</th>
-                                <th>Annual Amount</th>
-                                <th>Monthly Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody id="income-limits">
-                            <!-- Will be populated dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="button-container">
-                    <button id="result-prev-btn" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> Back
-                    </button>
-                    <button id="check-eligibility" class="btn btn-primary">
-                        Check Eligibility <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
-                <button id="print-results-btn" class="btn btn-outline print-btn">
-                    <i class="fas fa-print"></i> Print / Save as PDF
+            </label>
+            <div class="income-input-group">
+                <input type="text" id="compliance-income-input" name="compliance-income-input" placeholder="Enter compliance income" value="">
+                <button type="button" id="copy-to-compliance" class="copy-btn" title="Copy from household income">
+                    <i class="fas fa-copy"></i>
                 </button>
             </div>
         </div>
+
+        <!-- Qualifying Income (HomeReady) -->
+        <div class="form-group">
+            <label for="qualifying-income-input">
+                Enter Your Borrower Qualifying Income:
+                <div class="tooltip">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltip-text">Enter the total borrower qualifying. Income This income is for the Affordable Housing Program and uses the Fannie Mae HomeReady Income Limit.</span>
+                </div>
+            </label>
+            <div class="income-input-group">
+                <input type="text" id="qualifying-income-input" name="qualifying-income-input" placeholder="Enter qualifying income" value="">
+                <button type="button" id="copy-to-qualifying" class="copy-btn" title="Copy from household income">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="ami-category-container">
+            <h3>Household Income Category:</h3>
+            <div id="ami-category-display" class="ami-category-label neutral">
+                Waiting for input
+            </div>
+        </div>
+
+        <div class="income-limits-table">
+            <h3>Household Income Limits</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Income Limit</th>
+                        <th>Annual Amount</th>
+                        <th>Monthly Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="income-limits">
+                    <!-- Will be populated dynamically -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- MassHousing Income Eligibility -->
+        <div id="masshousing-eligibility" class="program-eligibility-section">
+            <h3>Buy Cities Income Eligibility</h3>
+            <div class="eligibility-card">
+                <div class="eligibility-status" id="compliance-income-status">
+                    <div class="status-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <div class="status-details">
+                        <div class="status-title">Waiting for input</div>
+                        <div class="status-info">
+                            <span id="compliance-income-value">No income entered</span>
+                            <span class="max-limit">(Max Limit: $146,205)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- HomeReady Income Eligibility -->
+        <div id="homeready-eligibility" class="program-eligibility-section">
+            <h3>Affordable Housing Income Eligibility</h3>
+            <div class="eligibility-card">
+                <div class="eligibility-status" id="qualifying-income-status">
+                    <div class="status-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <div class="status-details">
+                        <div class="status-title">Waiting for input</div>
+                        <div class="status-info">
+                            <span id="qualifying-income-value">No income entered</span>
+                            <span class="max-limit">(Max Limit: $92,080)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button id="result-prev-btn" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <button id="check-eligibility" class="btn btn-primary">
+                Check Eligibility <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+        <button id="print-results-btn" class="btn btn-outline print-btn">
+            <i class="fas fa-print"></i> Print / Save as PDF
+        </button>
+    </div>
+</div>
 
         <!-- Eligibility Card (Step 4) -->
         <div class="card hidden-form" id="eligibility">
@@ -225,7 +310,7 @@
             
             /* Print title */
             .container::before {
-                content: "HUD AMI Lookup & Program Eligibility Results";
+                content: "Product ID Tool - Results";
                 display: block;
                 font-size: 18pt;
                 font-weight: bold;
