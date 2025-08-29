@@ -51,11 +51,66 @@ async function fetchProducts() {
     }
 }
 
+let allProducts = []; // Cache for all products
+
 async function loadProductList() {
-    const products = await fetchProducts();
+    allProducts = await fetchProducts();
     const productListContainer = document.getElementById('product-list-container');
+    const searchInput = document.getElementById('searchInput');
+    const sortSelect = document.getElementById('sortSelect');
 
     if (!productListContainer) return;
+
+    // Initial render
+    renderProductList(allProducts);
+
+    // Event listener for search
+    searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        const filteredProducts = allProducts.filter(product =>
+            product.program_name.toLowerCase().includes(searchTerm) ||
+            product.sub_category.toLowerCase().includes(searchTerm) ||
+            product.Purpose.toLowerCase().includes(searchTerm)
+        );
+        renderProductList(filteredProducts);
+    });
+
+    // Event listener for sorting
+    sortSelect.addEventListener('change', () => {
+        // Re-filter based on current search term before sorting
+        const searchTerm = searchInput.value.toLowerCase();
+        const filteredProducts = allProducts.filter(product =>
+            product.program_name.toLowerCase().includes(searchTerm) ||
+            product.sub_category.toLowerCase().includes(searchTerm) ||
+            product.Purpose.toLowerCase().includes(searchTerm)
+        );
+        sortAndRenderProducts(filteredProducts, sortSelect.value);
+    });
+}
+
+function sortAndRenderProducts(products, sortValue) {
+    const [sortBy, sortOrder] = sortValue.split('-');
+
+    const sortedProducts = [...products].sort((a, b) => {
+        let valA, valB;
+        if (sortBy === 'name') {
+            valA = a.program_name.toLowerCase();
+            valB = b.program_name.toLowerCase();
+        } else if (sortBy === 'category') {
+            valA = a.category.toLowerCase();
+            valB = b.category.toLowerCase();
+        }
+
+        if (valA < valB) return sortOrder === 'asc' ? -1 : 1;
+        if (valA > valB) return sortOrder === 'asc' ? 1 : -1;
+        return 0;
+    });
+
+    renderProductList(sortedProducts);
+}
+
+function renderProductList(products) {
+    const productListContainer = document.getElementById('product-list-container');
 
     if (products.length === 0) {
         productListContainer.innerHTML = '<p>No products found.</p>';
@@ -74,16 +129,14 @@ async function loadProductList() {
 
     let html = '';
     for (const category in productsByCategory) {
-        html += `<h2>${category}</h2>`;
+        html += `<h2 class="category-header">${category}</h2>`;
         html += '<div class="product-grid">';
         productsByCategory[category].forEach(product => {
             html += `
-                <a href="product-detail.html?id=${product.id}" class="product-card">
-                    <div class="product-card-body">
-                        <h5 class="product-card-title">${product.program_name}</h5>
-                        <p class="product-card-subtitle">${product.sub_category}</p>
-                        <p class="product-card-text">${product.Purpose}</p>
-                    </div>
+                <a href="product-detail.html?id=${product.id}" class="product-tile">
+                    <h3 class="product-tile-title">${product.program_name}</h3>
+                    <p class="product-tile-category">${product.sub_category}</p>
+                    <p class="product-tile-purpose">${product.Purpose}</p>
                 </a>
             `;
         });
@@ -106,39 +159,41 @@ async function loadProductDetail() {
 
     if (product) {
         document.title = `${product.program_name} - BCSB`;
-        let html = `
-            <div class="card">
-                <div class="card-header">
-                    <h2>${product.program_name}</h2>
-                    <p class="text-muted">${product.category} > ${product.sub_category}</p>
-                </div>
-                <div class="card-body">
-                    <div class="product-details-grid">
-        `;
+        // Update the header to be more dynamic
+        const pageHeader = document.querySelector('header h1');
+        if (pageHeader) {
+            pageHeader.textContent = product.program_name;
+        }
+        const pageSubtitle = document.querySelector('header .subtitle');
+        if (pageSubtitle) {
+            pageSubtitle.textContent = `${product.category} > ${product.sub_category}`;
+        }
 
-        // Dynamically create the detail grid
+        let html = '<div class="product-detail-card">';
+
         const headers = Object.keys(product);
         headers.forEach(key => {
-            if (key !== 'id' && product[key]) { // Don't display the ID, and don't display empty fields
+            // Exclude fields that are empty or not useful for display
+            if (key !== 'id' && key !== 'program_name' && key !== 'category' && key !== 'sub_category' && product[key]) {
                 html += `
                     <div class="detail-item">
-                        <strong class="detail-label">${key.replace(/_/g, ' ')}:</strong>
-                        <span class="detail-value">${product[key]}</span>
+                        <span class="detail-item-label">${key.replace(/_/g, ' ')}</span>
+                        <span class="detail-item-value">${product[key]}</span>
                     </div>
                 `;
             }
         });
 
+        html += '</div>';
+
         html += `
-                    </div>
-                     <div style="text-align: center; margin-top: 2rem;">
-                        <a href="product-list.html" class="btn btn-primary">
-                            <i class="fas fa-arrow-left"></i> Back to Product List
-                        </a>
-                    </div>
-                </div>
+            <div class="back-to-list">
+                <a href="product-list.html" class="btn btn-outline">
+                    <i class="fas fa-arrow-left"></i> Back to Product List
+                </a>
             </div>
         `;
+
         productDetailContainer.innerHTML = html;
     } else {
         productDetailContainer.innerHTML = '<p>Product not found.</p>';

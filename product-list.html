@@ -16,10 +16,27 @@
         </div>
     </header>
 
-    <div class="container" id="product-list-container">
-        <!-- Products will be loaded here by JavaScript -->
-        <div class="loading-spinner">
-            <i class="fas fa-spinner fa-spin"></i> Loading Products...
+    <div class="container">
+        <div class="controls-container">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search products...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            <div class="sort-container">
+                <select id="sortSelect">
+                    <option value="name-asc">Sort by Name (A-Z)</option>
+                    <option value="name-desc">Sort by Name (Z-A)</option>
+                    <option value="category-asc">Sort by Category (A-Z)</option>
+                    <option value="category-desc">Sort by Category (Z-A)</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="product-list-container">
+            <!-- Products will be loaded here by JavaScript -->
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i> Loading Products...
+            </div>
         </div>
     </div>
 
