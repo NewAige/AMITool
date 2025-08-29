@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // A simple CSV parser that can handle quoted fields.
 function parseCSV(csvText) {
-    const rows = csvText.trim().split('\\n');
+    const rows = csvText.trim().split('\n');
     const headers = rows[0].split(',').map(header => header.trim().replace(/^"""|"""$/g, ''));
 
     // Find and remove duplicate headers
@@ -24,7 +24,7 @@ function parseCSV(csvText) {
         }
     });
 
-    const lines = csvText.trim().split('\\n').slice(1);
+    const lines = csvText.trim().split('\n').slice(1);
     const data = lines.map(line => {
         const values = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
         const row = {};
