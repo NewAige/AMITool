@@ -1005,3 +1005,109 @@ table tr:last-child td {
         font-size: 0.95rem;
     }
 }
+
+/* Comparison Feature Styles */
+.compare-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background-color: var(--dark);
+    padding: 15px 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+#compare-btn {
+    min-width: 200px;
+}
+
+#compare-btn:disabled {
+    background-color: var(--secondary);
+    cursor: not-allowed;
+}
+
+.product-tile.selected {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(0, 102, 72, 0.25);
+}
+
+.product-tile-compare {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.compare-checkbox {
+    width: 18px;
+    height: 18px;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 2rem;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 1200px;
+    border-radius: var(--border-radius);
+    position: relative;
+    box-shadow: var(--shadow-lg);
+}
+
+.close-btn {
+    color: #aaa;
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+}
+
+#comparison-table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+#comparison-table-container th,
+#comparison-table-container td {
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    text-align: left;
+    vertical-align: top;
+}
+
+#comparison-table-container th {
+    background-color: var(--light);
+    font-weight: 600;
+}
+
+#comparison-table-container td {
+    background-color: white;
+}

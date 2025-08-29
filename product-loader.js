@@ -52,17 +52,22 @@ async function fetchProducts() {
 }
 
 let allProducts = []; // Cache for all products
+let selectedProducts = new Set(); // To store IDs of products selected for comparison
 
 async function loadProductList() {
     allProducts = await fetchProducts();
     const productListContainer = document.getElementById('product-list-container');
     const searchInput = document.getElementById('searchInput');
     const sortSelect = document.getElementById('sortSelect');
+    const compareBtn = document.getElementById('compare-btn');
+    const modal = document.getElementById('compare-modal');
+    const closeBtn = document.querySelector('.close-btn');
 
     if (!productListContainer) return;
 
     // Initial render
     renderProductList(allProducts);
+    updateCompareButton();
 
     // Event listener for search
     searchInput.addEventListener('input', () => {
@@ -77,7 +82,6 @@ async function loadProductList() {
 
     // Event listener for sorting
     sortSelect.addEventListener('change', () => {
-        // Re-filter based on current search term before sorting
         const searchTerm = searchInput.value.toLowerCase();
         const filteredProducts = allProducts.filter(product =>
             product.program_name.toLowerCase().includes(searchTerm) ||
@@ -85,6 +89,19 @@ async function loadProductList() {
             product.Purpose.toLowerCase().includes(searchTerm)
         );
         sortAndRenderProducts(filteredProducts, sortSelect.value);
+    });
+
+    // Event listener for compare button
+    compareBtn.addEventListener('click', () => {
+        openCompareModal();
+    });
+
+    // Event listeners for modal
+    closeBtn.addEventListener('click', closeCompareModal);
+    window.addEventListener('click', (event) => {
+        if (event.target == modal) {
+            closeCompareModal();
+        }
     });
 }
 
@@ -117,33 +134,120 @@ function renderProductList(products) {
         return;
     }
 
-    // Group products by category
-    const productsByCategory = products.reduce((acc, product) => {
-        const category = product.category || 'Uncategorized';
-        if (!acc[category]) {
-            acc[category] = [];
+    // Group products by sub_category
+    const productsBySubCategory = products.reduce((acc, product) => {
+        const subCategory = product.sub_category || 'Uncategorized';
+        if (!acc[subCategory]) {
+            acc[subCategory] = [];
         }
-        acc[category].push(product);
+        acc[subCategory].push(product);
         return acc;
     }, {});
 
     let html = '';
-    for (const category in productsByCategory) {
-        html += `<h2 class="category-header">${category}</h2>`;
+    for (const subCategory in productsBySubCategory) {
+        html += `<h2 class="category-header">${subCategory}</h2>`;
         html += '<div class="product-grid">';
-        productsByCategory[category].forEach(product => {
+        productsBySubCategory[subCategory].forEach(product => {
+            const isSelected = selectedProducts.has(product.id);
             html += `
-                <a href="product-detail.html?id=${product.id}" class="product-tile">
-                    <h3 class="product-tile-title">${product.program_name}</h3>
-                    <p class="product-tile-category">${product.sub_category}</p>
-                    <p class="product-tile-purpose">${product.Purpose}</p>
-                </a>
+                <div class="product-tile ${isSelected ? 'selected' : ''}" data-id="${product.id}">
+                    <div class="product-tile-content">
+                        <a href="product-detail.html?id=${product.id}">
+                            <h3 class="product-tile-title">${product.program_name}</h3>
+                        </a>
+                        <p class="product-tile-category">${product.sub_category}</p>
+                        <p class="product-tile-purpose">${product.Purpose}</p>
+                    </div>
+                    <div class="product-tile-compare">
+                        <input type="checkbox" class="compare-checkbox" data-id="${product.id}" ${isSelected ? 'checked' : ''}>
+                        <label>Compare</label>
+                    </div>
+                </div>
             `;
         });
         html += '</div>';
     }
 
     productListContainer.innerHTML = html;
+    addCheckboxListeners();
+}
+
+function addCheckboxListeners() {
+    const checkboxes = document.querySelectorAll('.compare-checkbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+            const productId = e.target.dataset.id;
+            if (e.target.checked) {
+                if (selectedProducts.size < 3) {
+                    selectedProducts.add(productId);
+                } else {
+                    e.target.checked = false;
+                    alert('You can only compare up to 3 products at a time.');
+                }
+            } else {
+                selectedProducts.delete(productId);
+            }
+            document.querySelector(`.product-tile[data-id="${productId}"]`).classList.toggle('selected', e.target.checked);
+            updateCompareButton();
+        });
+    });
+}
+
+function updateCompareButton() {
+    const compareBtn = document.getElementById('compare-btn');
+    const count = selectedProducts.size;
+    compareBtn.textContent = `Compare Selected (${count})`;
+    compareBtn.disabled = count === 0;
+}
+
+function openCompareModal() {
+    const modal = document.getElementById('compare-modal');
+    const comparisonTableContainer = document.getElementById('comparison-table-container');
+
+    const productsToCompare = allProducts.filter(p => selectedProducts.has(p.id));
+
+    if (productsToCompare.length === 0) {
+        comparisonTableContainer.innerHTML = '<p>No products selected for comparison.</p>';
+        modal.style.display = 'block';
+        return;
+    }
+
+    let tableHTML = '<table>';
+    // Headers
+    tableHTML += '<thead><tr><th>Feature</th>';
+    productsToCompare.forEach(p => {
+        tableHTML += `<th>${p.program_name}</th>`;
+    });
+    tableHTML += '</tr></thead>';
+
+    // Body
+    tableHTML += '<tbody>';
+    const allKeys = new Set();
+    productsToCompare.forEach(p => {
+        Object.keys(p).forEach(key => {
+            if (key !== 'id' && key !== 'program_name' && key !== 'category' && key !== 'sub_category') {
+                allKeys.add(key);
+            }
+        });
+    });
+
+    allKeys.forEach(key => {
+        tableHTML += `<tr><td>${key.replace(/_/g, ' ')}</td>`;
+        productsToCompare.forEach(p => {
+            tableHTML += `<td>${p[key] || ''}</td>`;
+        });
+        tableHTML += '</tr>';
+    });
+    tableHTML += '</tbody></table>';
+
+    comparisonTableContainer.innerHTML = tableHTML;
+    modal.style.display = 'block';
+}
+
+function closeCompareModal() {
+    const modal = document.getElementById('compare-modal');
+    modal.style.display = 'none';
 }
 
 async function loadProductDetail() {

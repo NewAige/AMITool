@@ -10,9 +10,14 @@
 </head>
 <body id="productListBody">
     <header>
-        <div class="container">
-            <h1>Product List</h1>
-            <div class="subtitle">A comprehensive list of our product offerings</div>
+        <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
+            <div>
+                <h1>Product List</h1>
+                <div class="subtitle">A comprehensive list of our product offerings</div>
+            </div>
+            <a href="index.html" class="btn btn-primary">
+                <i class="fas fa-home"></i> Home
+            </a>
         </div>
     </header>
 
@@ -37,6 +42,19 @@
             <div class="loading-spinner">
                 <i class="fas fa-spinner fa-spin"></i> Loading Products...
             </div>
+        </div>
+
+        <div id="compare-container" class="compare-container">
+            <button id="compare-btn" class="btn btn-primary" disabled>Compare Selected (0)</button>
+        </div>
+    </div>
+
+    <!-- Comparison Modal -->
+    <div id="compare-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Product Comparison</h2>
+            <div id="comparison-table-container"></div>
         </div>
     </div>
 
