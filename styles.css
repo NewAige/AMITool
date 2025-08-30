@@ -1120,38 +1120,29 @@ table tr:last-child td {
     background-color: white;
 }
 
-/* ARM Details Section */
-.arm-details {
-    margin-top: 1rem;
-    border-top: 1px solid var(--border-color);
-    padding-top: 1rem;
+/* ARM Details on Product Detail Page */
+.arm-detail-section {
+    margin-top: 2rem;
 }
 
-.arm-details summary {
-    cursor: pointer;
-    font-weight: 600;
-    color: var(--primary);
-    margin-bottom: 0.5rem;
-    outline: none;
-}
-
-.arm-details[open] summary {
-    margin-bottom: 1rem;
-}
-
-.arm-details table {
+.arm-detail-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.9rem;
 }
 
-.arm-details td {
-    padding: 0.5rem;
-    border: 1px solid var(--border-color);
-}
-
-.arm-details td:first-child {
-    font-weight: 500;
-    background-color: var(--light);
+.arm-detail-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-color);
     text-transform: capitalize;
+}
+
+.arm-detail-table tr:last-child td {
+    border-bottom: none;
+}
+
+.arm-detail-table td:first-child {
+    font-weight: 600;
+    color: var(--dark);
+    background-color: var(--light);
+    width: 40%;
 }

@@ -1,8 +1,31 @@
-document.addEventListener('DOMContentLoaded', () => {
-    if (document.body.id === 'productListBody') {
-        loadProductList();
-    } else if (document.body.id === 'productDetailBody') {
-        loadProductDetail();
+let allProducts = []; // This will hold the raw product list
+let fullProductData = []; // This will hold the merged data
+let selectedProducts = new Set(); // To store IDs of products selected for comparison
+
+document.addEventListener('DOMContentLoaded', async () => {
+    // Fetch and process data once
+    try {
+        const [products, armTable, armTranslationTable] = await Promise.all([
+            fetchProducts(),
+            fetchArmTable(),
+            fetchArmTranslationTable()
+        ]);
+        allProducts = products;
+        fullProductData = mergeProductData(products, armTable, armTranslationTable);
+
+        // Route to the correct function based on body ID
+        if (document.body.id === 'productListBody') {
+            loadProductList();
+        } else if (document.body.id === 'productDetailBody') {
+            loadProductDetail();
+        }
+    } catch (error) {
+        console.error("Failed to initialize application:", error);
+        // Optionally, display an error message to the user
+        const container = document.getElementById('product-list-container') || document.getElementById('product-detail-container');
+        if (container) {
+            container.innerHTML = '<p>Error loading product data. Please try again later.</p>';
+        }
     }
 });
 
@@ -96,19 +119,7 @@ function mergeProductData(products, armTable, armTranslationTable) {
     });
 }
 
-let allProducts = []; // Cache for all products
-let selectedProducts = new Set(); // To store IDs of products selected for comparison
-
-async function loadProductList() {
-    const [products, armTable, armTranslationTable] = await Promise.all([
-        fetchProducts(),
-        fetchArmTable(),
-        fetchArmTranslationTable()
-    ]);
-    allProducts = products; // Keep the original product list for other functionalities
-
-    const mergedProducts = mergeProductData(products, armTable, armTranslationTable);
-
+function loadProductList() {
     const productListContainer = document.getElementById('product-list-container');
     const searchInput = document.getElementById('searchInput');
     const sortSelect = document.getElementById('sortSelect');
@@ -119,13 +130,13 @@ async function loadProductList() {
     if (!productListContainer) return;
 
     // Initial render
-    renderProductList(mergedProducts);
+    renderProductList(fullProductData);
     updateCompareButton();
 
     // Event listener for search
     searchInput.addEventListener('input', () => {
         const searchTerm = searchInput.value.toLowerCase();
-        const filteredProducts = mergedProducts.filter(product =>
+        const filteredProducts = fullProductData.filter(product =>
             product.program_name.toLowerCase().includes(searchTerm) ||
             product.sub_category.toLowerCase().includes(searchTerm) ||
             product.Purpose.toLowerCase().includes(searchTerm)
@@ -136,7 +147,7 @@ async function loadProductList() {
     // Event listener for sorting
     sortSelect.addEventListener('change', () => {
         const searchTerm = searchInput.value.toLowerCase();
-        const filteredProducts = mergedProducts.filter(product =>
+        const filteredProducts = fullProductData.filter(product =>
             product.program_name.toLowerCase().includes(searchTerm) ||
             product.sub_category.toLowerCase().includes(searchTerm) ||
             product.Purpose.toLowerCase().includes(searchTerm)
@@ -218,19 +229,6 @@ function renderProductList(products) {
                             <p class="product-tile-category">${product.sub_category}</p>
                             <p class="product-tile-purpose">${product.Purpose}</p>
                         </div>
-                        ${product.armDetails ? `
-                        <details class="arm-details">
-                            <summary>ARM Details</summary>
-                            <table>
-                                ${Object.entries(product.armDetails).map(([key, value]) => `
-                                    <tr>
-                                        <td>${key.replace(/_/g, ' ')}</td>
-                                        <td>${value}</td>
-                                    </tr>
-                                `).join('')}
-                            </table>
-                        </details>
-                        ` : ''}
                         <div class="product-tile-compare">
                             <input type="checkbox" class="compare-checkbox" data-id="${product.id}" ${isSelected ? 'checked' : ''}>
                             <label>Compare</label>
@@ -323,16 +321,14 @@ function closeCompareModal() {
     modal.style.display = 'none';
 }
 
-async function loadProductDetail() {
-    const products = await fetchProducts();
+function loadProductDetail() {
     const productDetailContainer = document.getElementById('product-detail-container');
-
     if (!productDetailContainer) return;
 
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('id');
 
-    const product = products.find(p => p.id === productId);
+    const product = fullProductData.find(p => p.id === productId);
 
     if (product) {
         document.title = `${product.program_name} - BCSB`;
@@ -350,8 +346,8 @@ async function loadProductDetail() {
 
         const headers = Object.keys(product);
         headers.forEach(key => {
-            // Exclude fields that are empty or not useful for display
-            if (key !== 'id' && key !== 'program_name' && key !== 'category' && key !== 'sub_category' && product[key]) {
+            // Exclude fields that are empty, not useful, or are the armDetails object
+            if (key !== 'id' && key !== 'program_name' && key !== 'category' && key !== 'sub_category' && product[key] && key !== 'armDetails') {
                 html += `
                     <div class="detail-item">
                         <span class="detail-item-label">${key.replace(/_/g, ' ')}</span>
@@ -361,7 +357,28 @@ async function loadProductDetail() {
             }
         });
 
-        html += '</div>';
+        html += '</div>'; // End of product-detail-card
+
+        // Add ARM details if they exist
+        if (product.armDetails) {
+            html += `
+                <div class="arm-detail-section card">
+                    <div class="card-header">
+                        <i class="fas fa-table"></i> ARM Details
+                    </div>
+                    <div class="card-body">
+                        <table class="arm-detail-table">
+                            ${Object.entries(product.armDetails).map(([key, value]) => `
+                                <tr>
+                                    <td>${key.replace(/_/g, ' ')}</td>
+                                    <td>${value}</td>
+                                </tr>
+                            `).join('')}
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
 
         html += `
             <div class="back-to-list">
