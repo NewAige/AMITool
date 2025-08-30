@@ -267,52 +267,68 @@ function addCheckboxListeners() {
 
 function updateCompareButton() {
     const compareBtn = document.getElementById('compare-btn');
+    const compareContainer = document.getElementById('compare-container');
     const count = selectedProducts.size;
+
     compareBtn.textContent = `Compare Selected (${count})`;
     compareBtn.disabled = count === 0;
+
+    if (count === 0) {
+        compareContainer.classList.add('hidden');
+    } else {
+        compareContainer.classList.remove('hidden');
+    }
 }
 
 function openCompareModal() {
     const modal = document.getElementById('compare-modal');
-    const comparisonTableContainer = document.getElementById('comparison-table-container');
+    const comparisonContainer = document.getElementById('comparison-table-container');
 
-    const productsToCompare = allProducts.filter(p => selectedProducts.has(p.id));
+    const productsToCompare = fullProductData.filter(p => selectedProducts.has(p.id));
 
-    if (productsToCompare.length === 0) {
-        comparisonTableContainer.innerHTML = '<p>No products selected for comparison.</p>';
+    if (productsToCompare.length < 2) {
+        comparisonContainer.innerHTML = '<p>Please select at least two products to compare.</p>';
         modal.style.display = 'block';
         return;
     }
 
-    let tableHTML = '<table>';
-    // Headers
-    tableHTML += '<thead><tr><th>Feature</th>';
-    productsToCompare.forEach(p => {
-        tableHTML += `<th>${p.program_name}</th>`;
-    });
-    tableHTML += '</tr></thead>';
-
-    // Body
-    tableHTML += '<tbody>';
     const allKeys = new Set();
     productsToCompare.forEach(p => {
         Object.keys(p).forEach(key => {
-            if (key !== 'id' && key !== 'program_name' && key !== 'category' && key !== 'sub_category') {
+            if (key !== 'id' && key !== 'armDetails') {
                 allKeys.add(key);
             }
         });
     });
 
-    allKeys.forEach(key => {
-        tableHTML += `<tr><td>${key.replace(/_/g, ' ')}</td>`;
-        productsToCompare.forEach(p => {
-            tableHTML += `<td>${p[key] || ''}</td>`;
-        });
-        tableHTML += '</tr>';
+    let html = '<div class="comparison-grid">';
+    // Header row
+    html += '<div class="product-detail-card-header"><h4>Feature</h4></div>';
+    productsToCompare.forEach(p => {
+        html += `<div class="product-detail-card-header"><h4>${p.program_name}</h4></div>`;
     });
-    tableHTML += '</tbody></table>';
 
-    comparisonTableContainer.innerHTML = tableHTML;
+    // Generate rows for each feature
+    allKeys.forEach(key => {
+        const values = productsToCompare.map(p => p[key] || '');
+        const allSame = values.every(v => v === values[0]);
+        const highlightClass = allSame ? '' : 'highlight';
+
+        // Feature label
+        html += `<div class="detail-item-label ${highlightClass}">${key.replace(/_/g, ' ')}</div>`;
+
+        // Product values for this feature
+        productsToCompare.forEach(product => {
+            const value = product[key] || '';
+            html += `<div class="detail-item-value ${highlightClass}">${value}</div>`;
+        });
+    });
+
+    html += '</div>';
+
+    comparisonContainer.innerHTML = html;
+    // Set the CSS variable for the grid
+    comparisonContainer.querySelector('.comparison-grid').style.setProperty('--compare-count', productsToCompare.length);
     modal.style.display = 'block';
 }
 
