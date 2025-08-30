@@ -1,0 +1,5 @@
+127.0.0.1 - - [29/Aug/2025 21:31:21] "GET /product-list.html HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2025 21:31:21] "GET /styles.css HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2025 21:31:21] "GET /product-loader.js HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2025 21:31:21] "GET /settings.css HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2025 21:31:21] "GET /Product%20List%20Updated.csv HTTP/1.1" 200 -

@@ -3,364 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HUD AMI Lookup & Program Eligibility</title>
+    <title>BCSB Home</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
+    <style>
+        .path-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 2rem 0;
+        }
+
+        .path-card {
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background-color: var(--light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .path-card:hover {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .path-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .path-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .path-description {
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+    </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Product ID Tool</h1>
-            <div class="subtitle">Identify BCSB affordable product eligibility</div>
+            <h1>Welcome to BCSB</h1>
+            <div class="subtitle">Your guide to affordable housing and financial products</div>
         </div>
     </header>
 
     <div class="container">
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
-            <div class="step-indicator">
-                <div class="step active" id="step1">
-                    <div class="step-number">1</div>
-                    <div class="step-text">State</div>
-                </div>
-                <div class="step" id="step2">
-                    <div class="step-number">2</div>
-                    <div class="step-text">City/Town & Household</div>
-                </div>
-                <div class="step" id="step3">
-                    <div class="step-number">3</div>
-                    <div class="step-text">Income</div>
-                </div>
-                <div class="step" id="step4">
-                    <div class="step-number">4</div>
-                    <div class="step-text">Eligibility</div>
-                </div>
+        <div class="path-selection">
+            <div class="path-card" onclick="window.location.href='learn.html';">
+                <div class="path-icon"><i class="fas fa-book-open"></i></div>
+                <div class="path-title">Learn</div>
+                <div class="path-description">Explore topics like adjustable-rate mortgages and more.</div>
             </div>
-        </div>
-
-        <!-- State Selection (Step 1) -->
-        <div class="card" id="state-form">
-            <div class="card-header">
-                <i class="fas fa-map-marker-alt"></i> Select Your State
+            <div class="path-card" onclick="window.location.href='product-list.html';">
+                <div class="path-icon"><i class="fas fa-list"></i></div>
+                <div class="path-title">Product List</div>
+                <div class="path-description">View a comprehensive list of our product offerings.</div>
             </div>
-            <div class="card-body">
-                <div class="state-selection">
-                    <div class="state-card" id="select-ma">
-                        <div class="state-icon">MA</div>
-                        <div class="state-name">Massachusetts</div>
-                    </div>
-                    <div class="state-card" id="select-ri">
-                        <div class="state-icon">RI</div>
-                        <div class="state-name">Rhode Island</div>
-                    </div>
-                </div>
-                <input type="hidden" id="state" name="state" value="">
+            <div class="path-card" onclick="window.location.href='product-identifier.html';">
+                <div class="path-icon"><i class="fas fa-search-dollar"></i></div>
+                <div class="path-title">Product Identifier</div>
+                <div class="path-description">Use our tool to identify product eligibility based on your needs.</div>
             </div>
-        </div>
-
-        <!-- Town Selection Form (Step 2) -->
-        <div class="card hidden-form" id="town-form">
-            <div class="card-header">
-                <i class="fas fa-home"></i> Household Information
-            </div>
-            <div class="card-body">
-                <form id="household-form">
-                    <div class="form-group">
-                        <label for="town">City/Town:</label>
-                        <select id="town" name="town" required class="searchable-select">
-                            <option value="">-- Select after choosing state --</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="household">
-                            Household Size:
-                            <div class="tooltip">
-                                <i class="fas fa-info-circle"></i>
-                                <span class="tooltip-text">Include all members living in your household</span>
-                            </div>
-                        </label>
-                        <div class="number-input">
-                            <button type="button" class="decrease">-</button>
-                            <input type="number" id="household" name="household" min="1" max="8" value="1" required>
-                            <button type="button" class="increase">+</button>
-                        </div>
-                    </div>
-                    <div class="button-container">
-                        <button type="button" id="town-prev-btn" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> Back
-                        </button>
-                        <button type="submit" class="btn btn-primary">Continue <i class="fas fa-arrow-right"></i></button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-<!-- Adjustments to the Results Card (Step 3) -->
-<div class="card hidden-form" id="result">
-    <div class="card-header">
-        <i class="fas fa-chart-bar"></i> Income Limits Results
-    </div>
-    <div class="card-body">
-        <div id="location-info" class="location-info"></div>
-        
-        <!-- Global income type toggle -->
-        <div class="form-group">
-            <label>
-                Income Entry Type:
-                <div class="tooltip">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltip-text">Select whether you want to enter income amounts as annual or monthly</span>
-                </div>
-            </label>
-            <div class="global-income-toggle-container">
-                <div class="toggle-switch">
-                    <input type="radio" id="income-type-annual" name="global-income-type" value="annual" checked>
-                    <label for="income-type-annual">Annual</label>
-                    <input type="radio" id="income-type-monthly" name="global-income-type" value="monthly">
-                    <label for="income-type-monthly">Monthly</label>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Main household income section -->
-        <div class="form-group">
-            <label for="income-input">
-                Enter Your Household Income:
-                <div class="tooltip">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltip-text">Enter the total compliance income for all household members. This limit is for: BCSB DPA Procuts, Exclusive BCSB HomeBuyer, and Providence County Pathway. </span>
-                </div>
-            </label>
-            <div class="income-input-group">
-                <input type="text" id="income-input" name="income-input" placeholder="Enter income amount" value="">
-            </div>
-        </div>
-
-        <!-- Borrower Compliance Income (only for MA) -->
-        <div class="form-group" id="compliance-income-container">
-            <label for="compliance-income-input">
-                Enter Your Borrower Compliance Income:
-                <div class="tooltip">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltip-text">Enter the total borrower compliance Income. This limit is for the Buy Cities program in Attleboro, Taunton, Fall River, and New Bedford.</span>
-                </div>
-            </label>
-            <div class="income-input-group">
-                <input type="text" id="compliance-income-input" name="compliance-income-input" placeholder="Enter compliance income" value="">
-                <button type="button" id="copy-to-compliance" class="copy-btn" title="Copy from household income">
-                    <i class="fas fa-copy"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- Qualifying Income (HomeReady) -->
-        <div class="form-group">
-            <label for="qualifying-income-input">
-                Enter Your Borrower Qualifying Income:
-                <div class="tooltip">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltip-text">Enter the total borrower qualifying. Income This income is for the Affordable Housing Program and uses the Fannie Mae HomeReady Income Limit.</span>
-                </div>
-            </label>
-            <div class="income-input-group">
-                <input type="text" id="qualifying-income-input" name="qualifying-income-input" placeholder="Enter qualifying income" value="">
-                <button type="button" id="copy-to-qualifying" class="copy-btn" title="Copy from household income">
-                    <i class="fas fa-copy"></i>
-                </button>
-            </div>
-        </div>
-
-        <div class="ami-category-container">
-            <h3>Household Income Category:</h3>
-            <div id="ami-category-display" class="ami-category-label neutral">
-                Waiting for input
-            </div>
-        </div>
-
-        <div class="income-limits-table">
-            <h3>Household Income Limits</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Income Limit</th>
-                        <th>Annual Amount</th>
-                        <th>Monthly Amount</th>
-                    </tr>
-                </thead>
-                <tbody id="income-limits">
-                    <!-- Will be populated dynamically -->
-                </tbody>
-            </table>
-        </div>
-        
-        <!-- MassHousing Income Eligibility -->
-        <div id="masshousing-eligibility" class="program-eligibility-section">
-            <h3>Buy Cities Income Eligibility</h3>
-            <div class="eligibility-card">
-                <div class="eligibility-status" id="compliance-income-status">
-                    <div class="status-icon">
-                        <i class="fas fa-question-circle"></i>
-                    </div>
-                    <div class="status-details">
-                        <div class="status-title">Waiting for input</div>
-                        <div class="status-info">
-                            <span id="compliance-income-value">No income entered</span>
-                            <span class="max-limit">(Max Limit: $146,205)</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- HomeReady Income Eligibility -->
-        <div id="homeready-eligibility" class="program-eligibility-section">
-            <h3>Affordable Housing Income Eligibility</h3>
-            <div class="eligibility-card">
-                <div class="eligibility-status" id="qualifying-income-status">
-                    <div class="status-icon">
-                        <i class="fas fa-question-circle"></i>
-                    </div>
-                    <div class="status-details">
-                        <div class="status-title">Waiting for input</div>
-                        <div class="status-info">
-                            <span id="qualifying-income-value">No income entered</span>
-                            <span class="max-limit">(Max Limit: $92,080)</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="button-container">
-            <button id="result-prev-btn" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Back
-            </button>
-            <button id="check-eligibility" class="btn btn-primary">
-                Check Eligibility <i class="fas fa-arrow-right"></i>
-            </button>
-        </div>
-        <button id="print-results-btn" class="btn btn-outline print-btn">
-            <i class="fas fa-print"></i> Print / Save as PDF
-        </button>
-    </div>
-</div>
-
-        <!-- Eligibility Card (Step 4) -->
-        <div class="card hidden-form" id="eligibility">
-            <div class="card-header">
-                <i class="fas fa-check-circle"></i> Program Eligibility
-            </div>
-            <div class="card-body">
-                <h3>Downpayment Assistance and Mortgage Programs Eligibility:</h3>
-                
-                <div id="county-eligibility-note" class="county-note">
-                    Note: Programs are only available to residents in Bristol County, MA and Providence County, RI.
-                </div>
-                
-                <div id="programs-container">
-                    <!-- Will be populated dynamically -->
-                </div>
-                
-                <div class="button-container">
-                    <button id="eligibility-prev-btn" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> Back
-                    </button>
-                    <button id="restart-btn" class="btn btn-primary">
-                        <i class="fas fa-redo"></i> Start New Lookup
-                    </button>
-                </div>
-                <button id="print-eligibility-btn" class="btn btn-outline print-btn">
-                    <i class="fas fa-print"></i> Print / Save as PDF
-                </button>
+            <div class="path-card" onclick="window.location.href='process.html';">
+                <div class="path-icon"><i class="fas fa-cogs"></i></div>
+                <div class="path-title">Process</div>
+                <div class="path-description">Understand the BCSB process from start to finish.</div>
             </div>
         </div>
     </div>
-
-    <!-- Add print styles for better PDF output -->
-    <style>
-        @media print {
-            header, .progress-container, #check-eligibility, .navigation-btn, 
-            .print-btn, #restart-btn, #eligibility-prev-btn, #new-restart-btn, 
-            #town-prev-btn, #result-prev-btn, .button-container, #state-form, #town-form {
-                display: none !important;
-            }
-            
-            /* Only show results and eligibility screens when printing */
-            #result, #eligibility {
-                display: block !important;
-                box-shadow: none !important;
-                border: 1px solid #ddd !important;
-                margin: 10px 0 !important;
-            }
-            
-            body {
-                background-color: white !important;
-            }
-            
-            .container {
-                width: 100% !important;
-                max-width: 100% !important;
-                padding: 0 !important;
-            }
-            
-            @page {
-                margin: 0.5cm;
-                size: portrait;
-            }
-            
-            /* Print title */
-            .container::before {
-                content: "Product ID Tool - Results";
-                display: block;
-                font-size: 18pt;
-                font-weight: bold;
-                text-align: center;
-                margin-bottom: 15px;
-            }
-            
-            /* Make tables more print-friendly */
-            table {
-                width: 100% !important;
-                page-break-inside: avoid;
-                border-collapse: collapse;
-            }
-            
-            table th, table td {
-                padding: 5px !important;
-            }
-            
-            /* Better card styling for print */
-            .card-header {
-                background-color: #eee !important;
-                color: black !important;
-                border-bottom: 1px solid #ddd !important;
-            }
-            
-            /* Enhanced badges for print */
-            .badge {
-                border: 1px solid #ddd !important;
-                background-color: white !important;
-                color: black !important;
-            }
-            
-            .badge-success {
-                border-color: green !important;
-            }
-            
-            .badge-danger {
-                border-color: red !important; 
-            }
-            
-            /* Program cards for print */
-            .program-card {
-                page-break-inside: avoid;
-                margin-bottom: 10px !important;
-                padding: 5px !important;
-            }
-        }
-    </style>
-
-    <script src="script.js"></script>
-    <script src="settings.js"></script>
 </body>
 </html>
