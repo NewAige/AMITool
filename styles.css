@@ -1119,3 +1119,39 @@ table tr:last-child td {
 #comparison-table-container td {
     background-color: white;
 }
+
+/* ARM Details Section */
+.arm-details {
+    margin-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+}
+
+.arm-details summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+    outline: none;
+}
+
+.arm-details[open] summary {
+    margin-bottom: 1rem;
+}
+
+.arm-details table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.arm-details td {
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+}
+
+.arm-details td:first-child {
+    font-weight: 500;
+    background-color: var(--light);
+    text-transform: capitalize;
+}

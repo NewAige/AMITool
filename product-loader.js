@@ -51,11 +51,64 @@ async function fetchProducts() {
     }
 }
 
+async function fetchArmTable() {
+    try {
+        const response = await fetch('armtable.csv');
+        const csvText = await response.text();
+        return parseCSV(csvText);
+    } catch (error) {
+        console.error('Error fetching or parsing ARM table data:', error);
+        return [];
+    }
+}
+
+async function fetchArmTranslationTable() {
+    try {
+        const response = await fetch('armtabletranslation.csv');
+        const csvText = await response.text();
+        return parseCSV(csvText);
+    } catch (error) {
+        console.error('Error fetching or parsing ARM translation data:', error);
+        return [];
+    }
+}
+
+function mergeProductData(products, armTable, armTranslationTable) {
+    const armTranslationMap = armTranslationTable.reduce((map, item) => {
+        map[item.id] = item.arm_plancode;
+        return map;
+    }, {});
+
+    const armTableMap = armTable.reduce((map, item) => {
+        map[item.arm_plancode] = item;
+        return map;
+    }, {});
+
+    return products.map(product => {
+        const armPlanCode = armTranslationMap[product.id];
+        if (armPlanCode) {
+            const armDetails = armTableMap[armPlanCode];
+            if (armDetails) {
+                return { ...product, armDetails: armDetails };
+            }
+        }
+        return product;
+    });
+}
+
 let allProducts = []; // Cache for all products
 let selectedProducts = new Set(); // To store IDs of products selected for comparison
 
 async function loadProductList() {
-    allProducts = await fetchProducts();
+    const [products, armTable, armTranslationTable] = await Promise.all([
+        fetchProducts(),
+        fetchArmTable(),
+        fetchArmTranslationTable()
+    ]);
+    allProducts = products; // Keep the original product list for other functionalities
+
+    const mergedProducts = mergeProductData(products, armTable, armTranslationTable);
+
     const productListContainer = document.getElementById('product-list-container');
     const searchInput = document.getElementById('searchInput');
     const sortSelect = document.getElementById('sortSelect');
@@ -66,13 +119,13 @@ async function loadProductList() {
     if (!productListContainer) return;
 
     // Initial render
-    renderProductList(allProducts);
+    renderProductList(mergedProducts);
     updateCompareButton();
 
     // Event listener for search
     searchInput.addEventListener('input', () => {
         const searchTerm = searchInput.value.toLowerCase();
-        const filteredProducts = allProducts.filter(product =>
+        const filteredProducts = mergedProducts.filter(product =>
             product.program_name.toLowerCase().includes(searchTerm) ||
             product.sub_category.toLowerCase().includes(searchTerm) ||
             product.Purpose.toLowerCase().includes(searchTerm)
@@ -83,7 +136,7 @@ async function loadProductList() {
     // Event listener for sorting
     sortSelect.addEventListener('change', () => {
         const searchTerm = searchInput.value.toLowerCase();
-        const filteredProducts = allProducts.filter(product =>
+        const filteredProducts = mergedProducts.filter(product =>
             product.program_name.toLowerCase().includes(searchTerm) ||
             product.sub_category.toLowerCase().includes(searchTerm) ||
             product.Purpose.toLowerCase().includes(searchTerm)
@@ -165,6 +218,19 @@ function renderProductList(products) {
                             <p class="product-tile-category">${product.sub_category}</p>
                             <p class="product-tile-purpose">${product.Purpose}</p>
                         </div>
+                        ${product.armDetails ? `
+                        <details class="arm-details">
+                            <summary>ARM Details</summary>
+                            <table>
+                                ${Object.entries(product.armDetails).map(([key, value]) => `
+                                    <tr>
+                                        <td>${key.replace(/_/g, ' ')}</td>
+                                        <td>${value}</td>
+                                    </tr>
+                                `).join('')}
+                            </table>
+                        </details>
+                        ` : ''}
                         <div class="product-tile-compare">
                             <input type="checkbox" class="compare-checkbox" data-id="${product.id}" ${isSelected ? 'checked' : ''}>
                             <label>Compare</label>
