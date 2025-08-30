@@ -293,9 +293,10 @@ function openCompareModal() {
     }
 
     const allKeys = new Set();
+    const excludedKeys = ['id', 'armDetails', 'program_name', 'category', 'sub_category'];
     productsToCompare.forEach(p => {
         Object.keys(p).forEach(key => {
-            if (key !== 'id' && key !== 'armDetails') {
+            if (!excludedKeys.includes(key)) {
                 allKeys.add(key);
             }
         });
