@@ -788,6 +788,14 @@ table tr:last-child td {
     padding-bottom: 0.5rem;
 }
 
+.sub-category-header {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

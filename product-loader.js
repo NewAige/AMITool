@@ -134,39 +134,46 @@ function renderProductList(products) {
         return;
     }
 
-    // Group products by sub_category
-    const productsBySubCategory = products.reduce((acc, product) => {
+    // Group products by category and then by sub_category
+    const productsByGroup = products.reduce((acc, product) => {
+        const category = product.category || 'Uncategorized';
         const subCategory = product.sub_category || 'Uncategorized';
-        if (!acc[subCategory]) {
-            acc[subCategory] = [];
+        if (!acc[category]) {
+            acc[category] = {};
         }
-        acc[subCategory].push(product);
+        if (!acc[category][subCategory]) {
+            acc[category][subCategory] = [];
+        }
+        acc[category][subCategory].push(product);
         return acc;
     }, {});
 
     let html = '';
-    for (const subCategory in productsBySubCategory) {
-        html += `<h2 class="category-header">${subCategory}</h2>`;
-        html += '<div class="product-grid">';
-        productsBySubCategory[subCategory].forEach(product => {
-            const isSelected = selectedProducts.has(product.id);
-            html += `
-                <div class="product-tile ${isSelected ? 'selected' : ''}" data-id="${product.id}">
-                    <div class="product-tile-content">
-                        <a href="product-detail.html?id=${product.id}">
-                            <h3 class="product-tile-title">${product.program_name}</h3>
-                        </a>
-                        <p class="product-tile-category">${product.sub_category}</p>
-                        <p class="product-tile-purpose">${product.Purpose}</p>
+    for (const category in productsByGroup) {
+        html += `<h2 class="category-header">${category}</h2>`;
+        for (const subCategory in productsByGroup[category]) {
+            html += `<h3 class="sub-category-header">${subCategory}</h3>`;
+            html += '<div class="product-grid">';
+            productsByGroup[category][subCategory].forEach(product => {
+                const isSelected = selectedProducts.has(product.id);
+                html += `
+                    <div class="product-tile ${isSelected ? 'selected' : ''}" data-id="${product.id}">
+                        <div class="product-tile-content">
+                            <a href="product-detail.html?id=${product.id}">
+                                <h4 class="product-tile-title">${product.program_name}</h4>
+                            </a>
+                            <p class="product-tile-category">${product.sub_category}</p>
+                            <p class="product-tile-purpose">${product.Purpose}</p>
+                        </div>
+                        <div class="product-tile-compare">
+                            <input type="checkbox" class="compare-checkbox" data-id="${product.id}" ${isSelected ? 'checked' : ''}>
+                            <label>Compare</label>
+                        </div>
                     </div>
-                    <div class="product-tile-compare">
-                        <input type="checkbox" class="compare-checkbox" data-id="${product.id}" ${isSelected ? 'checked' : ''}>
-                        <label>Compare</label>
-                    </div>
-                </div>
-            `;
-        });
-        html += '</div>';
+                `;
+            });
+            html += '</div>';
+        }
     }
 
     productListContainer.innerHTML = html;
