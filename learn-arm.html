@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adjustable-Rate Mortgages - Learn - BCSB</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
+            <div>
+                <h1>Adjustable-Rate Mortgages</h1>
+                <div class="subtitle">Understand how ARM products adjust over time</div>
+            </div>
+            <a href="learn.html" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header"><i class="fas fa-lightbulb"></i> Explore ARM Types</div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="arm-select">Select an ARM product:</label>
+                    <select id="arm-select"></select>
+                </div>
+                <div id="arm-info" style="display:none;">
+                    <h3 id="arm-name"></h3>
+                    <table class="arm-detail-table">
+                        <tbody>
+                            <tr><td>Initial Period</td><td id="arm-initial-period"></td></tr>
+                            <tr><td>Adjustment Period</td><td id="arm-subsequent-period"></td></tr>
+                            <tr><td>Initial Cap</td><td id="arm-initial-cap"></td></tr>
+                            <tr><td>Subsequent Cap</td><td id="arm-subsequent-cap"></td></tr>
+                            <tr><td>Lifetime Cap</td><td id="arm-lifetime-cap"></td></tr>
+                            <tr><td>Margin</td><td id="arm-margin"></td></tr>
+                            <tr><td>Index</td><td id="arm-index"></td></tr>
+                        </tbody>
+                    </table>
+                    <p id="arm-explanation"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><i class="fas fa-table"></i> ARM Reference Table</div>
+            <div class="card-body">
+                <table id="arm-table">
+                    <thead>
+                        <tr>
+                            <th>Plan</th>
+                            <th>Initial Period (mo)</th>
+                            <th>Adj. Period (mo)</th>
+                            <th>Initial Cap</th>
+                            <th>Subsequent Cap</th>
+                            <th>Lifetime Cap</th>
+                            <th>Margin</th>
+                            <th>Index</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="learn-arm.js"></script>
+</body>
+</html>
