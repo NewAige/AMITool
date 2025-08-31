@@ -1,14 +1,33 @@
 // Script for Adjustable-Rate Mortgage learning page
 
+let currentArm = null;
+let sofrIndex = null;
+
 document.addEventListener('DOMContentLoaded', () => {
     fetch('armtable.csv')
         .then(response => response.text())
         .then(text => {
             const arms = parseArmCSV(text);
             populateSelect(arms);
-            populateTable(arms);
         })
         .catch(err => console.error('Error loading ARM data:', err));
+
+    fetch('https://api.stlouisfed.org/fred/series/observations?series_id=SOFR30DAYAVG&api_key=03051679d69cfd03b06a38476b54acae&file_type=json&sort_order=desc&limit=1')
+        .then(resp => resp.json())
+        .then(data => {
+            const val = parseFloat(data.observations[0].value);
+            sofrIndex = parseFloat(val.toFixed(5));
+            const el = document.getElementById('sofr-index');
+            if (el) el.textContent = sofrIndex.toFixed(5);
+        })
+        .catch(err => {
+            const el = document.getElementById('sofr-index');
+            if (el) el.textContent = 'N/A';
+            console.error('Error fetching SOFR data:', err);
+        });
+
+    const btn = document.getElementById('simulate-btn');
+    if (btn) btn.addEventListener('click', simulateRate);
 });
 
 function parseArmCSV(text) {
@@ -20,12 +39,14 @@ function parseArmCSV(text) {
 
     dataLines.forEach(line => {
         if (!line.trim()) return;
-        // remove all quotes created by Excel triple quoting
         const cleaned = line.replace(/"""/g, '').replace(/"/g, '').trim();
         const parts = cleaned.split(',');
         if (parts.length < 8) return;
+        let code = parts[0].replace('.', '/');
+        if (code.toLowerCase().includes('l')) return; // omit 3.6L
+        if (seen.has(code)) return;
         const arm = {
-            arm_plancode: parts[0],
+            arm_plancode: code,
             initial_period: parts[1],
             subsequent_period: parts[2],
             lifetime_cap: parts[3],
@@ -34,10 +55,8 @@ function parseArmCSV(text) {
             margin: parts[6],
             index: parts[7]
         };
-        if (!seen.has(arm.arm_plancode)) {
-            arms.push(arm);
-            seen.add(arm.arm_plancode);
-        }
+        arms.push(arm);
+        seen.add(code);
     });
     return arms;
 }
@@ -55,24 +74,6 @@ function populateSelect(arms) {
     select.addEventListener('change', () => showDetails(select.value, arms));
 }
 
-function populateTable(arms) {
-    const tbody = document.querySelector('#arm-table tbody');
-    if (!tbody) return;
-    arms.forEach(arm => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${arm.arm_plancode}</td>
-            <td>${arm.initial_period}</td>
-            <td>${arm.subsequent_period}</td>
-            <td>${arm.initial_cap}</td>
-            <td>${arm.subsequent_cap}</td>
-            <td>${arm.lifetime_cap}</td>
-            <td>${arm.margin}</td>
-            <td>${arm.index}</td>`;
-        tbody.appendChild(tr);
-    });
-}
-
 function showDetails(code, arms) {
     const container = document.getElementById('arm-info');
     if (!container) return;
@@ -82,6 +83,8 @@ function showDetails(code, arms) {
     }
     const arm = arms.find(a => a.arm_plancode === code);
     if (!arm) return;
+
+    currentArm = arm;
 
     document.getElementById('arm-name').textContent = `${code} ARM`;
     document.getElementById('arm-initial-period').textContent = `${arm.initial_period} months`;
@@ -101,4 +104,30 @@ function showDetails(code, arms) {
     document.getElementById('arm-explanation').textContent = explanation;
 
     container.style.display = 'block';
+}
+
+function simulateRate() {
+    if (!currentArm) {
+        alert('Please select an ARM product.');
+        return;
+    }
+    if (sofrIndex === null) {
+        alert('SOFR index not available.');
+        return;
+    }
+    const rateInput = document.getElementById('current-rate');
+    const currentRate = parseFloat(rateInput.value);
+    if (isNaN(currentRate)) {
+        alert('Please enter your current interest rate.');
+        return;
+    }
+    const margin = parseFloat(currentArm.margin);
+    const newRate = roundToEighth(sofrIndex + margin);
+    const resultDiv = document.getElementById('simulation-result');
+    resultDiv.innerHTML = `At your next change date, the rate will be based on the index (${sofrIndex.toFixed(5)}%) plus the margin (${margin}%), rounded to the nearest 1/8%.<br><strong>New rate:</strong> ${newRate.toFixed(3)}% (current rate: ${currentRate.toFixed(3)}%)`;
+    resultDiv.style.display = 'block';
+}
+
+function roundToEighth(rate) {
+    return Math.round(rate * 8) / 8;
 }

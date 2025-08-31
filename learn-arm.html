@@ -45,25 +45,30 @@
                 </div>
             </div>
         </div>
+        <div class="card">
+            <div class="card-header"><i class="fas fa-info-circle"></i> ARM Components Explained</div>
+            <div class="card-body">
+                <h4>Index</h4>
+                <p>The index is a benchmark interest rate that reflects market conditions. Adjustable-rate mortgages use the 30 Day Average SOFR index to set future rates.</p>
+                <h4>Margin</h4>
+                <p>The margin is a fixed percentage added to the index to determine your interest rate at each adjustment.</p>
+                <h4>Caps</h4>
+                <p>Caps limit how much your interest rate can rise. They apply to the first adjustment, subsequent adjustments, and over the life of the loan.</p>
+                <h4>Change Dates</h4>
+                <p>Your rate adjusts on scheduled change dates. After the initial fixed period, adjustments occur every subsequent period defined by the ARM product.</p>
+            </div>
+        </div>
 
         <div class="card">
-            <div class="card-header"><i class="fas fa-table"></i> ARM Reference Table</div>
+            <div class="card-header"><i class="fas fa-calculator"></i> Rate Adjustment Simulator</div>
             <div class="card-body">
-                <table id="arm-table">
-                    <thead>
-                        <tr>
-                            <th>Plan</th>
-                            <th>Initial Period (mo)</th>
-                            <th>Adj. Period (mo)</th>
-                            <th>Initial Cap</th>
-                            <th>Subsequent Cap</th>
-                            <th>Lifetime Cap</th>
-                            <th>Margin</th>
-                            <th>Index</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+                <p>Current SOFR Index: <span id="sofr-index">loading...</span>%</p>
+                <div class="form-group">
+                    <label for="current-rate">Enter your current interest rate (%):</label>
+                    <input type="number" id="current-rate" step="0.125">
+                </div>
+                <button id="simulate-btn" class="btn btn-primary">Simulate Next Rate</button>
+                <div id="simulation-result" style="display:none; margin-top:10px;"></div>
             </div>
         </div>
     </div>
