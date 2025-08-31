@@ -3,6 +3,8 @@
 let currentArm = null;
 let sofrIndex = null;
 
+const SOFR_URL = 'https://api.stlouisfed.org/fred/series/observations?series_id=SOFR30DAYAVG&api_key=03051679d69cfd03b06a38476b54acae&file_type=json&sort_order=desc&limit=1';
+
 document.addEventListener('DOMContentLoaded', () => {
     fetch('armtable.csv')
         .then(response => response.text())
@@ -12,23 +14,25 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(err => console.error('Error loading ARM data:', err));
 
-    fetch('https://api.stlouisfed.org/fred/series/observations?series_id=SOFR30DAYAVG&api_key=03051679d69cfd03b06a38476b54acae&file_type=json&sort_order=desc&limit=1')
-        .then(resp => resp.json())
-        .then(data => {
-            const val = parseFloat(data.observations[0].value);
-            sofrIndex = parseFloat(val.toFixed(5));
-            const el = document.getElementById('sofr-index');
-            if (el) el.textContent = sofrIndex.toFixed(5);
-        })
-        .catch(err => {
-            const el = document.getElementById('sofr-index');
-            if (el) el.textContent = 'N/A';
-            console.error('Error fetching SOFR data:', err);
-        });
+    fetchSofrIndex();
 
     const btn = document.getElementById('simulate-btn');
     if (btn) btn.addEventListener('click', simulateRate);
 });
+
+async function fetchSofrIndex() {
+    const el = document.getElementById('sofr-index');
+    try {
+        const resp = await fetch(SOFR_URL);
+        const data = await resp.json();
+        const val = parseFloat(data.observations[0].value);
+        sofrIndex = Math.round(val * 100000) / 100000; // 5 decimal places
+        if (el) el.textContent = sofrIndex.toFixed(5);
+    } catch (err) {
+        if (el) el.textContent = 'N/A';
+        console.error('Error fetching SOFR data:', err);
+    }
+}
 
 function parseArmCSV(text) {
     // Remove BOM if present and split into lines
