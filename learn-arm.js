@@ -1,9 +1,6 @@
 // Script for Adjustable-Rate Mortgage learning page
 
 let currentArm = null;
-let sofrIndex = null;
-
-const SOFR_URL = 'https://api.stlouisfed.org/fred/series/observations?series_id=SOFR30DAYAVG&api_key=03051679d69cfd03b06a38476b54acae&file_type=json&sort_order=desc&limit=1';
 
 document.addEventListener('DOMContentLoaded', () => {
     fetch('armtable.csv')
@@ -14,25 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(err => console.error('Error loading ARM data:', err));
 
-    fetchSofrIndex();
-
     const btn = document.getElementById('simulate-btn');
     if (btn) btn.addEventListener('click', simulateRate);
 });
-
-async function fetchSofrIndex() {
-    const el = document.getElementById('sofr-index');
-    try {
-        const resp = await fetch(SOFR_URL);
-        const data = await resp.json();
-        const val = parseFloat(data.observations[0].value);
-        sofrIndex = Math.round(val * 100000) / 100000; // 5 decimal places
-        if (el) el.textContent = sofrIndex.toFixed(5);
-    } catch (err) {
-        if (el) el.textContent = 'N/A';
-        console.error('Error fetching SOFR data:', err);
-    }
-}
 
 function parseArmCSV(text) {
     // Remove BOM if present and split into lines
@@ -115,20 +96,59 @@ function simulateRate() {
         alert('Please select an ARM product.');
         return;
     }
-    if (sofrIndex === null) {
-        alert('SOFR index not available.');
+
+    const sofrInput = document.getElementById('sofr-index');
+    const sofrIndex = parseFloat(sofrInput.value);
+    if (isNaN(sofrIndex)) {
+        alert('Please enter a valid SOFR index.');
         return;
     }
+
     const rateInput = document.getElementById('current-rate');
     const currentRate = parseFloat(rateInput.value);
     if (isNaN(currentRate)) {
         alert('Please enter your current interest rate.');
         return;
     }
+
     const margin = parseFloat(currentArm.margin);
-    const newRate = roundToEighth(sofrIndex + margin);
+    const initialCap = parseFloat(currentArm.initial_cap);
+    const subCap = parseFloat(currentArm.subsequent_cap);
+    const lifeCap = parseFloat(currentArm.lifetime_cap);
+
+    const fullyIndexedRate = roundToEighth(sofrIndex + margin);
+
+    // First adjustment
+    const firstAdjMax = roundToEighth(currentRate + initialCap);
+    const firstAdjMin = roundToEighth(currentRate - initialCap);
+    let firstAdjRate = fullyIndexedRate;
+    if (firstAdjRate > firstAdjMax) firstAdjRate = firstAdjMax;
+    if (firstAdjRate < firstAdjMin) firstAdjRate = firstAdjMin;
+
+    // Subsequent adjustment
+    const subAdjMax = roundToEighth(firstAdjRate + subCap);
+    const subAdjMin = roundToEighth(firstAdjRate - subCap);
+    let subAdjRate = fullyIndexedRate;
+    if(subAdjRate > subAdjMax) subAdjRate = subAdjMax;
+    if(subAdjRate < subAdjMin) subAdjRate = subAdjMin;
+
+    // Lifetime cap
+    const lifetimeMax = roundToEighth(currentRate + lifeCap);
+    if (firstAdjRate > lifetimeMax) firstAdjRate = lifetimeMax;
+    if (subAdjRate > lifetimeMax) subAdjRate = lifetimeMax;
+
     const resultDiv = document.getElementById('simulation-result');
-    resultDiv.innerHTML = `At your next change date, the rate will be based on the index (${sofrIndex.toFixed(5)}%) plus the margin (${margin}%), rounded to the nearest 1/8%.<br><strong>New rate:</strong> ${newRate.toFixed(3)}% (current rate: ${currentRate.toFixed(3)}%)`;
+    resultDiv.innerHTML = `
+        <p><strong>Fully Indexed Rate:</strong> ${fullyIndexedRate.toFixed(3)}% (SOFR ${sofrIndex.toFixed(4)}% + Margin ${margin}%)</p>
+        <p>This is the rate you would have if there were no caps.</p>
+        <hr>
+        <h4>Adjustment Scenarios (if adjustment happened today)</h4>
+        <p><strong>First Adjustment:</strong> Your rate could adjust to <strong>${firstAdjRate.toFixed(3)}%</strong>.</p>
+        <p>This is based on your initial cap of ${initialCap}%.</p>
+        <p><strong>Next Adjustment:</strong> Your rate could then adjust to <strong>${subAdjRate.toFixed(3)}%</strong>.</p>
+        <p>This is based on your subsequent cap of ${subCap}% from the new rate of ${firstAdjRate.toFixed(3)}%.</p>
+        <p><em>Your lifetime cap of ${lifeCap}% prevents the rate from exceeding ${lifetimeMax.toFixed(3)}%.</em></p>
+    `;
     resultDiv.style.display = 'block';
 }
 
