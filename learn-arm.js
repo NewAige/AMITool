@@ -139,15 +139,27 @@ function simulateRate() {
 
     const resultDiv = document.getElementById('simulation-result');
     resultDiv.innerHTML = `
-        <p><strong>Fully Indexed Rate:</strong> ${fullyIndexedRate.toFixed(3)}% (SOFR ${sofrIndex.toFixed(4)}% + Margin ${margin}%)</p>
-        <p>This is the rate you would have if there were no caps.</p>
-        <hr>
-        <h4>Adjustment Scenarios (if adjustment happened today)</h4>
-        <p><strong>First Adjustment:</strong> Your rate could adjust to <strong>${firstAdjRate.toFixed(3)}%</strong>.</p>
-        <p>This is based on your initial cap of ${initialCap}%.</p>
-        <p><strong>Next Adjustment:</strong> Your rate could then adjust to <strong>${subAdjRate.toFixed(3)}%</strong>.</p>
-        <p>This is based on your subsequent cap of ${subCap}% from the new rate of ${firstAdjRate.toFixed(3)}%.</p>
-        <p><em>Your lifetime cap of ${lifeCap}% prevents the rate from exceeding ${lifetimeMax.toFixed(3)}%.</em></p>
+        <div class="result-card">
+            <h4>Fully Indexed Rate</h4>
+            <p class="rate">${fullyIndexedRate.toFixed(3)}%</p>
+            <p class="rate-context">SOFR ${sofrIndex.toFixed(4)}% + Margin ${margin}%</p>
+            <p>This is the rate based on the index and margin, before caps.</p>
+        </div>
+        <div class="result-card">
+            <h4>Potential First Adjustment</h4>
+            <p class="rate">${firstAdjRate.toFixed(3)}%</p>
+            <p>Your rate is limited by the <strong>${initialCap}% initial cap</strong>.</p>
+        </div>
+        <div class="result-card">
+            <h4>Potential Subsequent Adjustment</h4>
+            <p class="rate">${subAdjRate.toFixed(3)}%</p>
+            <p>Further changes are limited by the <strong>${subCap}% subsequent cap</strong>.</p>
+        </div>
+        <div class="result-card">
+            <h4>Lifetime Maximum Rate</h4>
+            <p class="rate">${lifetimeMax.toFixed(3)}%</p>
+            <p>Your rate will never exceed this, due to the <strong>${lifeCap}% lifetime cap</strong>.</p>
+        </div>
     `;
     resultDiv.style.display = 'block';
 }

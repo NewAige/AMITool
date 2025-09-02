@@ -1196,3 +1196,46 @@ table tr:last-child td {
     background-color: var(--light);
     width: 40%;
 }
+
+/* Simulation Result Formatting */
+#simulation-result {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.result-card {
+    background-color: var(--light);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+}
+
+.result-card h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.result-card p {
+    margin-bottom: 0.5rem;
+    color: var(--secondary);
+}
+
+.result-card .rate {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--dark);
+    text-align: center;
+    margin: 0.5rem 0;
+}
+
+.result-card .rate-context {
+    font-size: 0.9rem;
+    text-align: center;
+    color: var(--gray);
+    margin-top: -0.25rem;
+}
