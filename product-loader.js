@@ -227,7 +227,7 @@ function renderProductList(products) {
                                 <h4 class="product-tile-title">${product.program_name}</h4>
                             </a>
                             <p class="product-tile-category">${product.sub_category}</p>
-                            <p class="product-tile-purpose">${product.Purpose}</p>
+                            <p class="product-tile-purpose">${product.id}</p>
                         </div>
                         <div class="product-tile-compare">
                             <input type="checkbox" class="compare-checkbox" data-id="${product.id}" ${isSelected ? 'checked' : ''}>
@@ -359,22 +359,32 @@ function loadProductDetail() {
             pageSubtitle.textContent = `${product.category} > ${product.sub_category}`;
         }
 
-        let html = '<div class="product-detail-card">';
+        let html = `
+            <div class="arm-detail-section card">
+                <div class="card-header">
+                    <i class="fas fa-info-circle"></i> Main Details
+                </div>
+                <div class="card-body">
+                    <table class="arm-detail-table">
+        `;
 
         const headers = Object.keys(product);
         headers.forEach(key => {
-            // Exclude fields that are empty, not useful, or are the armDetails object
             if (key !== 'id' && key !== 'program_name' && key !== 'category' && key !== 'sub_category' && product[key] && key !== 'armDetails') {
                 html += `
-                    <div class="detail-item">
-                        <span class="detail-item-label">${key.replace(/_/g, ' ')}</span>
-                        <span class="detail-item-value">${product[key]}</span>
-                    </div>
+                    <tr>
+                        <td>${key.replace(/_/g, ' ')}</td>
+                        <td>${product[key]}</td>
+                    </tr>
                 `;
             }
         });
 
-        html += '</div>'; // End of product-detail-card
+        html += `
+                    </table>
+                </div>
+            </div>
+        `;
 
         // Add ARM details if they exist
         if (product.armDetails) {
