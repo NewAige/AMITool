@@ -362,12 +362,18 @@ function loadProductDetail() {
         let html = `
             <div class="arm-detail-section card">
                 <div class="card-header">
-                    <i class="fas fa-info-circle"></i> Main Details
+                    <i class="fas fa-info-circle"></i> Parameters
                 </div>
                 <div class="card-body">
                     <table class="arm-detail-table">
         `;
 
+        html += `
+                    <tr>
+                        <td>Product ID</td>
+                        <td>${product.id}</td>
+                    </tr>
+                `;
         const headers = Object.keys(product);
         headers.forEach(key => {
             if (key !== 'id' && key !== 'program_name' && key !== 'category' && key !== 'sub_category' && product[key] && key !== 'armDetails') {
