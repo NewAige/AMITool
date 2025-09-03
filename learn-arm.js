@@ -1,14 +1,18 @@
 // Script for Adjustable-Rate Mortgage learning page
 
+let currentArm = null;
+
 document.addEventListener('DOMContentLoaded', () => {
     fetch('armtable.csv')
         .then(response => response.text())
         .then(text => {
             const arms = parseArmCSV(text);
             populateSelect(arms);
-            populateTable(arms);
         })
         .catch(err => console.error('Error loading ARM data:', err));
+
+    const btn = document.getElementById('simulate-btn');
+    if (btn) btn.addEventListener('click', simulateRate);
 });
 
 function parseArmCSV(text) {
@@ -20,12 +24,14 @@ function parseArmCSV(text) {
 
     dataLines.forEach(line => {
         if (!line.trim()) return;
-        // remove all quotes created by Excel triple quoting
         const cleaned = line.replace(/"""/g, '').replace(/"/g, '').trim();
         const parts = cleaned.split(',');
         if (parts.length < 8) return;
+        let code = parts[0].replace('.', '/');
+        if (code.toLowerCase().includes('l')) return; // omit 3.6L
+        if (seen.has(code)) return;
         const arm = {
-            arm_plancode: parts[0],
+            arm_plancode: code,
             initial_period: parts[1],
             subsequent_period: parts[2],
             lifetime_cap: parts[3],
@@ -34,10 +40,8 @@ function parseArmCSV(text) {
             margin: parts[6],
             index: parts[7]
         };
-        if (!seen.has(arm.arm_plancode)) {
-            arms.push(arm);
-            seen.add(arm.arm_plancode);
-        }
+        arms.push(arm);
+        seen.add(code);
     });
     return arms;
 }
@@ -55,24 +59,6 @@ function populateSelect(arms) {
     select.addEventListener('change', () => showDetails(select.value, arms));
 }
 
-function populateTable(arms) {
-    const tbody = document.querySelector('#arm-table tbody');
-    if (!tbody) return;
-    arms.forEach(arm => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${arm.arm_plancode}</td>
-            <td>${arm.initial_period}</td>
-            <td>${arm.subsequent_period}</td>
-            <td>${arm.initial_cap}</td>
-            <td>${arm.subsequent_cap}</td>
-            <td>${arm.lifetime_cap}</td>
-            <td>${arm.margin}</td>
-            <td>${arm.index}</td>`;
-        tbody.appendChild(tr);
-    });
-}
-
 function showDetails(code, arms) {
     const container = document.getElementById('arm-info');
     if (!container) return;
@@ -82,6 +68,8 @@ function showDetails(code, arms) {
     }
     const arm = arms.find(a => a.arm_plancode === code);
     if (!arm) return;
+
+    currentArm = arm;
 
     document.getElementById('arm-name').textContent = `${code} ARM`;
     document.getElementById('arm-initial-period').textContent = `${arm.initial_period} months`;
@@ -101,4 +89,81 @@ function showDetails(code, arms) {
     document.getElementById('arm-explanation').textContent = explanation;
 
     container.style.display = 'block';
+}
+
+function simulateRate() {
+    if (!currentArm) {
+        alert('Please select an ARM product.');
+        return;
+    }
+
+    const sofrInput = document.getElementById('sofr-index');
+    const sofrIndex = parseFloat(sofrInput.value);
+    if (isNaN(sofrIndex)) {
+        alert('Please enter a valid SOFR index.');
+        return;
+    }
+
+    const rateInput = document.getElementById('current-rate');
+    const currentRate = parseFloat(rateInput.value);
+    if (isNaN(currentRate)) {
+        alert('Please enter your current interest rate.');
+        return;
+    }
+
+    const margin = parseFloat(currentArm.margin);
+    const initialCap = parseFloat(currentArm.initial_cap);
+    const subCap = parseFloat(currentArm.subsequent_cap);
+    const lifeCap = parseFloat(currentArm.lifetime_cap);
+
+    const fullyIndexedRate = roundToEighth(sofrIndex + margin);
+
+    // First adjustment
+    const firstAdjMax = roundToEighth(currentRate + initialCap);
+    const firstAdjMin = roundToEighth(currentRate - initialCap);
+    let firstAdjRate = fullyIndexedRate;
+    if (firstAdjRate > firstAdjMax) firstAdjRate = firstAdjMax;
+    if (firstAdjRate < firstAdjMin) firstAdjRate = firstAdjMin;
+
+    // Subsequent adjustment
+    const subAdjMax = roundToEighth(firstAdjRate + subCap);
+    const subAdjMin = roundToEighth(firstAdjRate - subCap);
+    let subAdjRate = fullyIndexedRate;
+    if(subAdjRate > subAdjMax) subAdjRate = subAdjMax;
+    if(subAdjRate < subAdjMin) subAdjRate = subAdjMin;
+
+    // Lifetime cap
+    const lifetimeMax = roundToEighth(currentRate + lifeCap);
+    if (firstAdjRate > lifetimeMax) firstAdjRate = lifetimeMax;
+    if (subAdjRate > lifetimeMax) subAdjRate = lifetimeMax;
+
+    const resultDiv = document.getElementById('simulation-result');
+    resultDiv.innerHTML = `
+        <div class="result-card">
+            <h4>Fully Indexed Rate</h4>
+            <p class="rate">${fullyIndexedRate.toFixed(3)}%</p>
+            <p class="rate-context">SOFR ${sofrIndex.toFixed(4)}% + Margin ${margin}%</p>
+            <p>This is the rate based on the index and margin, before caps.</p>
+        </div>
+        <div class="result-card">
+            <h4>Potential First Adjustment</h4>
+            <p class="rate">${firstAdjRate.toFixed(3)}%</p>
+            <p>Your rate is limited by the <strong>${initialCap}% initial cap</strong>.</p>
+        </div>
+        <div class="result-card">
+            <h4>Potential Subsequent Adjustment</h4>
+            <p class="rate">${subAdjRate.toFixed(3)}%</p>
+            <p>Further changes are limited by the <strong>${subCap}% subsequent cap</strong>.</p>
+        </div>
+        <div class="result-card">
+            <h4>Lifetime Maximum Rate</h4>
+            <p class="rate">${lifetimeMax.toFixed(3)}%</p>
+            <p>Your rate will never exceed this, due to the <strong>${lifeCap}% lifetime cap</strong>.</p>
+        </div>
+    `;
+    resultDiv.style.display = 'block';
+}
+
+function roundToEighth(rate) {
+    return Math.round(rate * 8) / 8;
 }
