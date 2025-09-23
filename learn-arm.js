@@ -49,6 +49,20 @@ function parseArmCSV(text) {
 function populateSelect(arms) {
     const select = document.getElementById('arm-select');
     if (!select) return;
+
+    // Define the desired order
+    const desiredOrder = ['3/6', '5/6', '7/6', '10/6'];
+
+    // Sort the arms array according to the desired order
+    arms.sort((a, b) => {
+        const indexA = desiredOrder.indexOf(a.arm_plancode);
+        const indexB = desiredOrder.indexOf(b.arm_plancode);
+        // If an item is not in the desired order, push it to the end
+        if (indexA === -1) return 1;
+        if (indexB === -1) return -1;
+        return indexA - indexB;
+    });
+
     select.innerHTML = '<option value="">-- Choose an ARM --</option>';
     arms.forEach(arm => {
         const opt = document.createElement('option');

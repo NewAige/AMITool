@@ -836,9 +836,11 @@ table tr:last-child td {
 }
 
 .product-tile-purpose {
-    font-size: 1rem;
+    font-size: 0.9rem;
     line-height: 1.5;
     flex-grow: 1; /* Ensures the card body expands */
+    font-style: italic;
+    color: var(--secondary);
 }
 
 /* Product Detail Page */
