@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Construction Financing - Learn - BCSB</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <style>
+        .summary-grid {
+            display: grid;
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        }
+
+        .summary-card {
+            background-color: var(--light);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.25rem;
+            box-shadow: var(--shadow);
+        }
+
+        .summary-card h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .summary-value {
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .summary-card small {
+            color: var(--secondary);
+        }
+
+        .status-section {
+            margin: 1.5rem 0 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 999px;
+            font-weight: 600;
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .status-badge.warning {
+            background-color: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+
+        .status-badge.danger {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+
+        .status-text {
+            color: var(--secondary);
+        }
+
+        .range-value {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
+            <div>
+                <h1>Construction Financing</h1>
+                <div class="subtitle">Structure a construction-to-permanent loan with BCSB</div>
+            </div>
+            <a href="learn.html" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header"><i class="fas fa-lightbulb"></i> Program Snapshot</div>
+            <div class="card-body">
+                <p>Our single-close construction-to-permanent loan keeps your project on track from groundbreaking through move-in. Key program features include:</p>
+                <ul>
+                    <li>Finance up to <strong>90% loan-to-value (LTV)</strong> using the lower of total acquisition cost (lot + construction) or the appraised value.</li>
+                    <li><strong>One-time closing</strong> with 12 months of interest-only payments on funds disbursed during construction.</li>
+                    <li>Automatic conversion to a fully amortizing loan for up to a <strong>30-year term</strong> once the home is complete.</li>
+                    <li>Initial closing disbursement is calculated as <strong>Loan Amount − Build Price</strong>; the construction budget is held for future draws.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><i class="fas fa-calculator"></i> Structure Your Loan Scenario</div>
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="build-price">Build Price (Construction Budget)</label>
+                        <input type="number" id="build-price" min="0" step="1000" value="400000" />
+                    </div>
+                    <div class="form-group">
+                        <label for="lot-price">Lot Price</label>
+                        <input type="number" id="lot-price" min="0" step="1000" value="120000" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="appraised-value">Appraised Value</label>
+                        <input type="number" id="appraised-value" min="0" step="1000" value="575000" />
+                    </div>
+                    <div class="form-group">
+                        <label for="loan-amount">Loan Amount</label>
+                        <input type="number" id="loan-amount" min="0" step="1000" value="500000" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="interest-rate">Interest Rate (%)</label>
+                        <input type="number" id="interest-rate" min="0" step="0.125" value="6.5" />
+                    </div>
+                    <div class="form-group">
+                        <label for="draw-progress">Construction Draw Progress: <span id="draw-progress-display" class="range-value">0%</span></label>
+                        <input type="range" id="draw-progress" min="0" max="100" value="0" />
+                    </div>
+                </div>
+
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h4>Total Project Cost</h4>
+                        <p id="project-cost" class="summary-value">$0</p>
+                        <small>Build Price + Lot Price</small>
+                    </div>
+                    <div class="summary-card">
+                        <h4>LTV Basis</h4>
+                        <p id="ltv-basis" class="summary-value">$0</p>
+                        <small>Lesser of Project Cost or Appraised Value</small>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Maximum Loan @ 90% LTV</h4>
+                        <p id="max-loan" class="summary-value">$0</p>
+                        <small>90% of the LTV basis</small>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Requested LTV</h4>
+                        <p id="requested-ltv" class="summary-value">0%</p>
+                        <small>Loan Amount ÷ LTV basis</small>
+                    </div>
+                </div>
+
+                <div class="status-section">
+                    <div id="ltv-status" class="status-badge"><i class="fas fa-check-circle"></i> Within program guidelines</div>
+                    <p id="ltv-guidance" class="status-text"></p>
+                </div>
+
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h4>Equity Required</h4>
+                        <p id="equity-required" class="summary-value">$0</p>
+                        <small>Total project cost − loan amount</small>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Initial Disbursement</h4>
+                        <p id="initial-disbursement" class="summary-value">$0</p>
+                        <small>Loan amount − build price</small>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Construction Holdback</h4>
+                        <p id="construction-holdback" class="summary-value">$0</p>
+                        <small>Funds reserved for construction draws</small>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Remaining Holdback</h4>
+                        <p id="remaining-holdback" class="summary-value">$0</p>
+                        <small>Undisbursed loan funds</small>
+                    </div>
+                </div>
+
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h4>Current Funds Disbursed</h4>
+                        <p id="current-disbursed" class="summary-value">$0</p>
+                        <small>Based on the selected draw progress</small>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Interest-Only Payment</h4>
+                        <p id="interest-only-payment" class="summary-value">Enter rate</p>
+                        <small>Monthly payment during construction</small>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Permanent Payment</h4>
+                        <p id="permanent-payment" class="summary-value">Enter rate</p>
+                        <small>Estimated 30-year amortizing payment</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><i class="fas fa-route"></i> How the One-Time Close Works</div>
+            <div class="card-body">
+                <ol>
+                    <li><strong>Closing:</strong> We approve the full construction-to-permanent loan. Any funds beyond the construction budget are disbursed at closing.</li>
+                    <li><strong>Construction phase (up to 12 months):</strong> We release construction draws as work is completed. You pay interest-only on the funds that have been disbursed.</li>
+                    <li><strong>Completion:</strong> Once the home is finished, the loan seamlessly converts to a permanent mortgage with up to a 30-year amortization.</li>
+                </ol>
+                <p class="status-text" style="margin-top: 1rem;">Use the scenario builder above to see how equity, draws, and payments change as you adjust project costs and progress.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="learn-construction.js"></script>
+</body>
+</html>
