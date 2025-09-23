@@ -75,6 +75,43 @@
             color: var(--primary);
         }
 
+        .payment-progression {
+            margin-top: 1.5rem;
+        }
+
+        .payment-progression h4 {
+            font-size: 1.05rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .payment-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .payment-table th,
+        .payment-table td {
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        .payment-table tr.active {
+            background-color: rgba(37, 99, 235, 0.08);
+        }
+
+        .muted {
+            color: var(--secondary);
+        }
+
+        .payment-table td.muted {
+            text-align: center;
+        }
+
+        .card .status-text + .summary-grid {
+            margin-top: 1rem;
+        }
+
         @media (max-width: 600px) {
             .form-row {
                 flex-direction: column;
@@ -132,27 +169,12 @@
                         <input type="number" id="loan-amount" min="0" step="1000" value="500000" />
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="interest-rate">Interest Rate (%)</label>
-                        <input type="number" id="interest-rate" min="0" step="0.125" value="6.5" />
-                    </div>
-                    <div class="form-group">
-                        <label for="draw-progress">Construction Draw Progress: <span id="draw-progress-display" class="range-value">0%</span></label>
-                        <input type="range" id="draw-progress" min="0" max="100" value="0" />
-                    </div>
-                </div>
 
                 <div class="summary-grid">
                     <div class="summary-card">
-                        <h4>Total Project Cost</h4>
-                        <p id="project-cost" class="summary-value">$0</p>
-                        <small>Build Price + Lot Price</small>
-                    </div>
-                    <div class="summary-card">
                         <h4>LTV Basis</h4>
                         <p id="ltv-basis" class="summary-value">$0</p>
-                        <small>Lesser of Project Cost or Appraised Value</small>
+                        <small>Lesser of total project cost or appraised value</small>
                     </div>
                     <div class="summary-card">
                         <h4>Maximum Loan @ 90% LTV</h4>
@@ -170,46 +192,96 @@
                     <div id="ltv-status" class="status-badge"><i class="fas fa-check-circle"></i> Within program guidelines</div>
                     <p id="ltv-guidance" class="status-text"></p>
                 </div>
+            </div>
+        </div>
 
+        <div class="card">
+            <div class="card-header"><i class="fas fa-file-invoice-dollar"></i> Project Cost &amp; Closing Funds</div>
+            <div class="card-body">
+                <p class="status-text">See how much of your loan is advanced at closing and the equity needed to start the project.</p>
                 <div class="summary-grid">
+                    <div class="summary-card">
+                        <h4>Total Project Cost</h4>
+                        <p id="project-cost" class="summary-value">$0</p>
+                        <small>Build price + lot price</small>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Initial Disbursement at Closing</h4>
+                        <p id="initial-disbursement" class="summary-value">$0</p>
+                        <small>Loan amount − build price</small>
+                    </div>
                     <div class="summary-card">
                         <h4>Equity Required</h4>
                         <p id="equity-required" class="summary-value">$0</p>
                         <small>Total project cost − loan amount</small>
                     </div>
-                    <div class="summary-card">
-                        <h4>Initial Disbursement</h4>
-                        <p id="initial-disbursement" class="summary-value">$0</p>
-                        <small>Loan amount − build price</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><i class="fas fa-hard-hat"></i> Construction Draws &amp; Payments</div>
+            <div class="card-body">
+                <p class="status-text">Track construction holdbacks, monitor what has been disbursed, and see how payments evolve as work progresses.</p>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="interest-rate">Interest Rate (%)</label>
+                        <input type="number" id="interest-rate" min="0" step="0.125" value="6.5" />
                     </div>
+                    <div class="form-group">
+                        <label for="draw-progress">Construction Draw Progress: <span id="draw-progress-display" class="range-value">0%</span></label>
+                        <input type="range" id="draw-progress" min="0" max="100" value="0" />
+                        <small class="status-text">Slide to illustrate how much of the construction budget has been disbursed.</small>
+                    </div>
+                </div>
+
+                <div class="summary-grid">
                     <div class="summary-card">
                         <h4>Construction Holdback</h4>
                         <p id="construction-holdback" class="summary-value">$0</p>
                         <small>Funds reserved for construction draws</small>
                     </div>
                     <div class="summary-card">
+                        <h4>Current Funds Disbursed</h4>
+                        <p id="current-disbursed" class="summary-value">$0</p>
+                        <small>Initial advance + draws released</small>
+                    </div>
+                    <div class="summary-card">
                         <h4>Remaining Holdback</h4>
                         <p id="remaining-holdback" class="summary-value">$0</p>
-                        <small>Undisbursed loan funds</small>
+                        <small>Undisbursed construction funds</small>
                     </div>
                 </div>
 
                 <div class="summary-grid">
                     <div class="summary-card">
-                        <h4>Current Funds Disbursed</h4>
-                        <p id="current-disbursed" class="summary-value">$0</p>
-                        <small>Based on the selected draw progress</small>
-                    </div>
-                    <div class="summary-card">
-                        <h4>Interest-Only Payment</h4>
+                        <h4>Interest-Only Payment Now</h4>
                         <p id="interest-only-payment" class="summary-value">Enter rate</p>
-                        <small>Monthly payment during construction</small>
+                        <small>Monthly payment on funds disbursed today</small>
                     </div>
                     <div class="summary-card">
                         <h4>Permanent Payment</h4>
                         <p id="permanent-payment" class="summary-value">Enter rate</p>
-                        <small>Estimated 30-year amortizing payment</small>
+                        <small>Estimated 30-year amortizing payment after conversion</small>
                     </div>
+                </div>
+
+                <div class="payment-progression">
+                    <h4>Payment progression through construction</h4>
+                    <table class="payment-table">
+                        <thead>
+                            <tr>
+                                <th>Draw progress</th>
+                                <th>Total funds disbursed</th>
+                                <th>Monthly interest-only payment</th>
+                            </tr>
+                        </thead>
+                        <tbody id="payment-progress-body">
+                            <tr>
+                                <td colspan="3" class="muted">Enter rate to see how interest-only payments change as draws are released.</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

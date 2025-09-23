@@ -38,9 +38,10 @@ function updateScenario() {
     const constructionHoldback = Math.max(loanAmount - initialDisbursement, 0);
 
     const progress = drawProgressInput ? parseFloat(drawProgressInput.value) / 100 : 0;
-    const disbursedHoldback = constructionHoldback * Math.min(Math.max(progress, 0), 1);
+    const normalizedProgress = Math.min(Math.max(progress, 0), 1);
+    const disbursedHoldback = constructionHoldback * normalizedProgress;
     const totalDisbursed = Math.min(initialDisbursement + disbursedHoldback, loanAmount);
-    const remainingHoldback = Math.max(loanAmount - totalDisbursed, 0);
+    const remainingHoldback = Math.max(constructionHoldback - disbursedHoldback, 0);
 
     const interestRate = interestRatePercent / 100;
     const monthlyInterestOnly = interestRate > 0 ? (totalDisbursed * interestRate) / 12 : null;
@@ -82,6 +83,52 @@ function updateScenario() {
     document.getElementById('remaining-holdback').textContent = formatCurrency(remainingHoldback);
     document.getElementById('current-disbursed').textContent = formatCurrency(totalDisbursed);
 
+    const paymentProgressBody = document.getElementById('payment-progress-body');
+    if (paymentProgressBody) {
+        paymentProgressBody.innerHTML = '';
+
+        const addProgressRow = (fraction, label, isActive = false) => {
+            const constrainedFraction = Math.min(Math.max(fraction, 0), 1);
+            const row = document.createElement('tr');
+            if (isActive) {
+                row.classList.add('active');
+            }
+
+            const percentCell = document.createElement('td');
+            percentCell.textContent = label ?? `${Math.round(constrainedFraction * 100)}%`;
+
+            const disbursedAmount = Math.min(
+                initialDisbursement + constructionHoldback * constrainedFraction,
+                loanAmount
+            );
+            const disbursedCell = document.createElement('td');
+            disbursedCell.textContent = formatCurrency(disbursedAmount);
+
+            const paymentCell = document.createElement('td');
+            if (interestRate > 0) {
+                const monthlyInterest = (disbursedAmount * interestRate) / 12;
+                paymentCell.textContent = formatCurrency(monthlyInterest);
+            } else {
+                paymentCell.innerHTML = '<span class="muted">Enter rate</span>';
+            }
+
+            row.appendChild(percentCell);
+            row.appendChild(disbursedCell);
+            row.appendChild(paymentCell);
+            paymentProgressBody.appendChild(row);
+        };
+
+        addProgressRow(normalizedProgress, `Now (${Math.round(normalizedProgress * 100)}%)`, true);
+
+        const checkpoints = [0, 0.25, 0.5, 0.75, 1];
+        checkpoints.forEach((checkpoint) => {
+            if (Math.abs(checkpoint - normalizedProgress) < 0.001) {
+                return;
+            }
+            addProgressRow(checkpoint);
+        });
+    }
+
     const interestOnlyElement = document.getElementById('interest-only-payment');
     if (monthlyInterestOnly !== null) {
         interestOnlyElement.textContent = formatCurrency(monthlyInterestOnly);
@@ -98,7 +145,7 @@ function updateScenario() {
 
     if (drawProgressInput) {
         const display = document.getElementById('draw-progress-display');
-        display.textContent = `${Math.round(parseFloat(drawProgressInput.value))}%`;
+        display.textContent = `${Math.round(normalizedProgress * 100)}%`;
     }
 }
 
