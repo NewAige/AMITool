@@ -124,7 +124,7 @@
         <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
             <div>
                 <h1>Construction Financing</h1>
-                <div class="subtitle">Structure a construction-to-permanent loan with BCSB</div>
+                <div class="subtitle">Structure construction-to-permanent financing for your clients</div>
             </div>
             <a href="learn.html" class="btn btn-primary">
                 <i class="fas fa-arrow-left"></i> Back
@@ -136,37 +136,45 @@
         <div class="card">
             <div class="card-header"><i class="fas fa-lightbulb"></i> Program Snapshot</div>
             <div class="card-body">
-                <p>Our single-close construction-to-permanent loan keeps your project on track from groundbreaking through move-in. Key program features include:</p>
+                <p>Equip yourself to advise clients on BCSB's construction-to-permanent solution. Core program elements include:</p>
                 <ul>
                     <li>Finance up to <strong>90% loan-to-value (LTV)</strong> using the lower of total acquisition cost (lot + construction) or the appraised value.</li>
-                    <li><strong>One-time closing</strong> with 12 months of interest-only payments on funds disbursed during construction.</li>
-                    <li>Automatic conversion to a fully amortizing loan for up to a <strong>30-year term</strong> once the home is complete.</li>
-                    <li>Initial closing disbursement is calculated as <strong>Loan Amount − Build Price</strong>; the construction budget is held for future draws.</li>
+                    <li><strong>Single close</strong> structure with 12 months of interest-only payments on funds disbursed for construction.</li>
+                    <li>Automatic conversion to a fully amortizing loan for up to a <strong>30-year term</strong> after the project reaches completion.</li>
+                    <li>Initial closing disbursement is calculated as <strong>Loan Amount − Build Price</strong>; the construction budget is managed through future draws.</li>
                 </ul>
+                <details>
+                    <summary><strong>One-time close workflow</strong></summary>
+                    <ol>
+                        <li><strong>Closing:</strong> The entire construction-to-permanent loan is documented at once. Funds beyond the construction budget release at the table.</li>
+                        <li><strong>Construction phase (up to 12 months):</strong> Draws are distributed as inspections confirm progress. The borrower remits interest-only on dollars advanced.</li>
+                        <li><strong>Conversion:</strong> When the home is complete, the note automatically transitions to long-term amortization with no second closing required.</li>
+                    </ol>
+                </details>
             </div>
         </div>
 
         <div class="card">
-            <div class="card-header"><i class="fas fa-calculator"></i> Structure Your Loan Scenario</div>
+            <div class="card-header"><i class="fas fa-calculator"></i> Structure a Client Scenario</div>
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="build-price">Build Price (Construction Budget)</label>
-                        <input type="number" id="build-price" min="0" step="1000" value="400000" />
+                        <input type="number" id="build-price" min="0" step="0.01" />
                     </div>
                     <div class="form-group">
                         <label for="lot-price">Lot Price</label>
-                        <input type="number" id="lot-price" min="0" step="1000" value="120000" />
+                        <input type="number" id="lot-price" min="0" step="0.01" />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="appraised-value">Appraised Value</label>
-                        <input type="number" id="appraised-value" min="0" step="1000" value="575000" />
+                        <input type="number" id="appraised-value" min="0" step="0.01" />
                     </div>
                     <div class="form-group">
                         <label for="loan-amount">Loan Amount</label>
-                        <input type="number" id="loan-amount" min="0" step="1000" value="500000" />
+                        <input type="number" id="loan-amount" min="0" step="0.01" />
                     </div>
                 </div>
 
@@ -198,12 +206,17 @@
         <div class="card">
             <div class="card-header"><i class="fas fa-file-invoice-dollar"></i> Project Cost &amp; Closing Funds</div>
             <div class="card-body">
-                <p class="status-text">See how much of your loan is advanced at closing and the equity needed to start the project.</p>
+                <p class="status-text">Outline cash at closing and builder funds so you can guide clients on equity needs and timing.</p>
                 <div class="summary-grid">
                     <div class="summary-card">
                         <h4>Total Project Cost</h4>
                         <p id="project-cost" class="summary-value">$0</p>
                         <small>Build price + lot price</small>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Construction Holdback</h4>
+                        <p id="construction-holdback" class="summary-value">$0</p>
+                        <small>Portion of the loan reserved for builder draws</small>
                     </div>
                     <div class="summary-card">
                         <h4>Initial Disbursement at Closing</h4>
@@ -222,11 +235,11 @@
         <div class="card">
             <div class="card-header"><i class="fas fa-hard-hat"></i> Construction Draws &amp; Payments</div>
             <div class="card-body">
-                <p class="status-text">Track construction holdbacks, monitor what has been disbursed, and see how payments evolve as work progresses.</p>
+                <p class="status-text">Model an illustrative draw schedule to show clients how disbursements influence interim payments.</p>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="interest-rate">Interest Rate (%)</label>
-                        <input type="number" id="interest-rate" min="0" step="0.125" value="6.5" />
+                        <input type="number" id="interest-rate" min="0" step="0.125" />
                     </div>
                     <div class="form-group">
                         <label for="draw-progress">Construction Draw Progress: <span id="draw-progress-display" class="range-value">0%</span></label>
@@ -237,17 +250,12 @@
 
                 <div class="summary-grid">
                     <div class="summary-card">
-                        <h4>Construction Holdback</h4>
-                        <p id="construction-holdback" class="summary-value">$0</p>
-                        <small>Funds reserved for construction draws</small>
-                    </div>
-                    <div class="summary-card">
-                        <h4>Current Funds Disbursed</h4>
+                        <h4>Illustrative Funds Disbursed</h4>
                         <p id="current-disbursed" class="summary-value">$0</p>
                         <small>Initial advance + draws released</small>
                     </div>
                     <div class="summary-card">
-                        <h4>Remaining Holdback</h4>
+                        <h4>Projected Holdback Remaining</h4>
                         <p id="remaining-holdback" class="summary-value">$0</p>
                         <small>Undisbursed construction funds</small>
                     </div>
@@ -255,46 +263,34 @@
 
                 <div class="summary-grid">
                     <div class="summary-card">
-                        <h4>Interest-Only Payment Now</h4>
+                        <h4>Sample Interest-Only Payment</h4>
                         <p id="interest-only-payment" class="summary-value">Enter rate</p>
-                        <small>Monthly payment on funds disbursed today</small>
+                        <small>Monthly payment on funds disbursed at this draw level</small>
                     </div>
                     <div class="summary-card">
-                        <h4>Permanent Payment</h4>
+                        <h4>Estimated Permanent Payment</h4>
                         <p id="permanent-payment" class="summary-value">Enter rate</p>
-                        <small>Estimated 30-year amortizing payment after conversion</small>
+                        <small>Projected 30-year amortizing payment after conversion</small>
                     </div>
                 </div>
 
                 <div class="payment-progression">
-                    <h4>Payment progression through construction</h4>
+                    <h4>Illustrative payment progression during construction</h4>
                     <table class="payment-table">
                         <thead>
                             <tr>
-                                <th>Draw progress</th>
+                                <th>Draw milestone</th>
                                 <th>Total funds disbursed</th>
-                                <th>Monthly interest-only payment</th>
+                                <th>Illustrative interest-only payment</th>
                             </tr>
                         </thead>
                         <tbody id="payment-progress-body">
                             <tr>
-                                <td colspan="3" class="muted">Enter rate to see how interest-only payments change as draws are released.</td>
+                                <td colspan="3" class="muted">Enter an interest rate and adjust the slider to demonstrate how monthly interest-only payments scale with additional draws.</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header"><i class="fas fa-route"></i> How the One-Time Close Works</div>
-            <div class="card-body">
-                <ol>
-                    <li><strong>Closing:</strong> We approve the full construction-to-permanent loan. Any funds beyond the construction budget are disbursed at closing.</li>
-                    <li><strong>Construction phase (up to 12 months):</strong> We release construction draws as work is completed. You pay interest-only on the funds that have been disbursed.</li>
-                    <li><strong>Completion:</strong> Once the home is finished, the loan seamlessly converts to a permanent mortgage with up to a 30-year amortization.</li>
-                </ol>
-                <p class="status-text" style="margin-top: 1rem;">Use the scenario builder above to see how equity, draws, and payments change as you adjust project costs and progress.</p>
             </div>
         </div>
     </div>

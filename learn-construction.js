@@ -64,16 +64,16 @@ function updateScenario() {
 
     if (ltvBasis <= 0 || loanAmount <= 0) {
         ltvStatus.classList.add('warning');
-        ltvStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Add project details';
-        guidanceText = 'Enter the project costs, appraised value, and desired loan amount to calculate LTV.';
+        ltvStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Add scenario assumptions';
+        guidanceText = 'Input project costs, valuation, and the requested loan amount to benchmark the structure against program limits.';
     } else if (loanAmount <= maxLoan + 1e-6) {
         ltvStatus.innerHTML = '<i class="fas fa-check-circle"></i> Within program guidelines';
-        guidanceText = `Your requested LTV is ${formatPercent(requestedLtv)}, which is within the 90% maximum.`;
+        guidanceText = `At ${formatPercent(requestedLtv)}, this request remains inside the 90% maximum—no pricing or structure adjustments required.`;
     } else {
         ltvStatus.classList.add('danger');
         ltvStatus.innerHTML = '<i class="fas fa-times-circle"></i> Above 90% LTV';
         const reduction = loanAmount - maxLoan;
-        guidanceText = `Reduce the loan amount by ${formatCurrency(reduction)} or bring additional equity to meet the 90% LTV limit.`;
+        guidanceText = `Trim the loan request by ${formatCurrency(reduction)} or advise the borrower to contribute additional equity to comply with the 90% cap.`;
     }
     ltvGuidance.textContent = guidanceText;
 
@@ -95,7 +95,7 @@ function updateScenario() {
             }
 
             const percentCell = document.createElement('td');
-            percentCell.textContent = label ?? `${Math.round(constrainedFraction * 100)}%`;
+            percentCell.textContent = label ?? `${Math.round(constrainedFraction * 100)}% draw complete`;
 
             const disbursedAmount = Math.min(
                 initialDisbursement + constructionHoldback * constrainedFraction,
@@ -118,14 +118,15 @@ function updateScenario() {
             paymentProgressBody.appendChild(row);
         };
 
-        addProgressRow(normalizedProgress, `Now (${Math.round(normalizedProgress * 100)}%)`, true);
+        addProgressRow(normalizedProgress, `Active scenario — ${Math.round(normalizedProgress * 100)}% draw complete`, true);
 
         const checkpoints = [0, 0.25, 0.5, 0.75, 1];
         checkpoints.forEach((checkpoint) => {
             if (Math.abs(checkpoint - normalizedProgress) < 0.001) {
                 return;
             }
-            addProgressRow(checkpoint);
+            const checkpointLabel = `${Math.round(checkpoint * 100)}% draw complete`;
+            addProgressRow(checkpoint, checkpointLabel);
         });
     }
 
@@ -163,6 +164,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const element = document.getElementById(id);
         if (element) {
             element.addEventListener('input', updateScenario);
+        }
+    });
+
+    const currencyInputs = [
+        'build-price',
+        'lot-price',
+        'appraised-value',
+        'loan-amount'
+    ];
+
+    currencyInputs.forEach((id) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.addEventListener('change', () => {
+                const value = parseFloat(element.value);
+                if (Number.isFinite(value)) {
+                    element.value = value.toFixed(2);
+                } else {
+                    element.value = '';
+                }
+            });
         }
     });
 
