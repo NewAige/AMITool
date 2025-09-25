@@ -34,7 +34,7 @@ function updateScenario() {
     const drawProgressInput = document.getElementById('draw-progress');
 
     const acquisitionBasis = buildPrice + lotContribution;
-    const projectCost = acquisitionBasis + existingLien;
+    const projectCost = acquisitionBasis;
     const appraisalValue = appraisalInput > 0 ? appraisalInput : acquisitionBasis;
     const ltvBasis = Math.min(acquisitionBasis, appraisalValue);
     const maxLoan = ltvBasis * 0.9;
@@ -83,11 +83,21 @@ function updateScenario() {
     }
     ltvGuidance.textContent = guidanceText;
 
-    document.getElementById('equity-required').textContent = formatCurrency(Math.max(acquisitionBasis - loanAmount, 0));
+    const acquisitionGap = Math.max(acquisitionBasis - loanAmount, 0);
+    const lienShortfall =
+        transactionType === 'refinance' ? Math.max(existingLien - initialDisbursement, 0) : 0;
+    const estimatedFundsNeeded = acquisitionGap + lienShortfall;
+
+    document.getElementById('equity-required').textContent = formatCurrency(estimatedFundsNeeded);
     const equityDetail = document.getElementById('equity-detail');
     if (equityDetail) {
-        const lotDescriptor = transactionType === 'refinance' ? 'lot value' : 'lot price';
-        equityDetail.textContent = `Build price + ${lotDescriptor} − loan amount`;
+        if (transactionType === 'refinance') {
+            equityDetail.textContent = existingLien > 0
+                ? 'Build price + lot value − loan amount, plus any lien payoff not covered by closing proceeds'
+                : 'Build price + lot value − loan amount';
+        } else {
+            equityDetail.textContent = 'Build price + lot price − loan amount';
+        }
     }
     document.getElementById('initial-disbursement').textContent = formatCurrency(initialDisbursement);
     document.getElementById('construction-holdback').textContent = formatCurrency(constructionHoldback);
@@ -97,9 +107,7 @@ function updateScenario() {
     const projectCostDetail = document.getElementById('project-cost-detail');
     if (projectCostDetail) {
         const lotDescriptor = transactionType === 'refinance' ? 'lot value' : 'lot price';
-        projectCostDetail.textContent = existingLien > 0
-            ? `Build price + ${lotDescriptor} + existing lien payoff`
-            : `Build price + ${lotDescriptor}`;
+        projectCostDetail.textContent = `Build price + ${lotDescriptor}`;
     }
 
     const existingLienDisplay = document.getElementById('existing-lien-display');
