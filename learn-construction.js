@@ -1,9 +1,21 @@
+function sanitizeNumericValue(value) {
+    if (typeof value !== 'string') {
+        return NaN;
+    }
+    const cleaned = value.replace(/[^0-9.]/g, '');
+    if (cleaned.length === 0) {
+        return NaN;
+    }
+    const parsed = parseFloat(cleaned);
+    return Number.isFinite(parsed) ? parsed : NaN;
+}
+
 function getNumericInput(id) {
     const element = document.getElementById(id);
     if (!element) {
         return 0;
     }
-    const value = parseFloat(element.value);
+    const value = sanitizeNumericValue(element.value);
     return Number.isFinite(value) ? Math.max(value, 0) : 0;
 }
 
@@ -27,6 +39,7 @@ function updateScenario() {
     const lotPrice = getNumericInput('lot-price');
     const lotValue = getNumericInput('lot-value');
     const existingLien = transactionType === 'refinance' ? getNumericInput('existing-lien') : 0;
+    const closingCosts = getNumericInput('closing-costs');
     const lotContribution = transactionType === 'refinance' ? lotValue : lotPrice;
     const appraisalInput = getNumericInput('appraised-value');
     const loanAmount = getNumericInput('loan-amount');
@@ -48,6 +61,14 @@ function updateScenario() {
     const disbursedHoldback = constructionHoldback * normalizedProgress;
     const totalDisbursed = Math.min(initialDisbursement + disbursedHoldback, loanAmount);
     const remainingHoldback = Math.max(constructionHoldback - disbursedHoldback, 0);
+
+    const totalClosingRequirement = transactionType === 'refinance'
+        ? existingLien + closingCosts
+        : closingCosts;
+    const closingShortfall = Math.max(totalClosingRequirement - initialDisbursement, 0);
+    const cashOutExcess = transactionType === 'refinance'
+        ? Math.max(initialDisbursement - (existingLien + closingCosts), 0)
+        : 0;
 
     const interestRate = interestRatePercent / 100;
     const monthlyInterestOnly = interestRate > 0 ? (totalDisbursed * interestRate) / 12 : null;
@@ -86,9 +107,8 @@ function updateScenario() {
     const acquisitionGap = Math.max(acquisitionBasis - loanAmount, 0);
     let estimatedFundsNeeded = acquisitionGap;
     if (transactionType === 'refinance') {
-        const lienShortfall = Math.max(existingLien - initialDisbursement, 0);
         const buildGap = Math.max(buildPrice - loanAmount, 0);
-        estimatedFundsNeeded = lienShortfall + buildGap;
+        estimatedFundsNeeded = closingShortfall + buildGap;
     }
 
     document.getElementById('equity-required').textContent = formatCurrency(estimatedFundsNeeded);
@@ -96,15 +116,15 @@ function updateScenario() {
     if (equityDetail) {
         if (transactionType === 'refinance') {
             const messages = [];
-            if (existingLien > 0) {
-                messages.push('Lien payoff not covered by closing proceeds');
+            if (closingShortfall > 0) {
+                messages.push('Closing proceeds short of lien payoff and costs');
             }
             if (buildPrice > loanAmount) {
                 messages.push('Build price amount above the approved loan');
             }
             equityDetail.textContent = messages.length > 0
                 ? messages.join(' + ')
-                : 'No additional funds required at closing';
+                : 'Closing proceeds cover lien payoff and closing costs';
         } else {
             equityDetail.textContent = 'Build price + lot price − loan amount';
         }
@@ -113,6 +133,15 @@ function updateScenario() {
     document.getElementById('construction-holdback').textContent = formatCurrency(constructionHoldback);
     document.getElementById('remaining-holdback').textContent = formatCurrency(remainingHoldback);
     document.getElementById('current-disbursed').textContent = formatCurrency(totalDisbursed);
+
+    const initialDisbursementDetail = document.getElementById('initial-disbursement-detail');
+    if (initialDisbursementDetail) {
+        if (transactionType === 'refinance') {
+            initialDisbursementDetail.textContent = 'Loan amount − build price (available to satisfy lien payoff and closing costs)';
+        } else {
+            initialDisbursementDetail.textContent = 'Loan amount − build price';
+        }
+    }
 
     const projectCostDetail = document.getElementById('project-cost-detail');
     if (projectCostDetail) {
@@ -125,9 +154,29 @@ function updateScenario() {
         existingLienDisplay.textContent = formatCurrency(existingLien);
     }
 
+    const closingCostsDisplay = document.getElementById('closing-costs-display');
+    if (closingCostsDisplay) {
+        closingCostsDisplay.textContent = formatCurrency(closingCosts);
+    }
+
     const existingLienCard = document.getElementById('existing-lien-card');
     if (existingLienCard) {
         existingLienCard.classList.toggle('hidden', transactionType !== 'refinance');
+    }
+
+    const cashoutGuidance = document.getElementById('refi-cashout-guidance');
+    if (cashoutGuidance) {
+        if (transactionType === 'refinance' && (cashOutExcess > 0 || closingShortfall > 0)) {
+            cashoutGuidance.classList.remove('hidden');
+            if (cashOutExcess > 0) {
+                cashoutGuidance.textContent = `Reduce the loan request by ${formatCurrency(cashOutExcess)} so no cash is released above the lien payoff and closing costs.`;
+            } else if (closingShortfall > 0) {
+                cashoutGuidance.textContent = 'Closing proceeds fall short of the lien payoff and closing costs—coach the borrower to bring funds or adjust the request.';
+            }
+        } else {
+            cashoutGuidance.classList.add('hidden');
+            cashoutGuidance.textContent = '';
+        }
     }
 
     const paymentProgressBody = document.getElementById('payment-progress-body');
@@ -216,6 +265,33 @@ function toggleTransactionFields() {
     });
 }
 
+function setupCurrencyInput(element) {
+    if (!element) {
+        return;
+    }
+
+    const { id } = element;
+
+    element.addEventListener('focus', () => {
+        const numeric = getNumericInput(id);
+        element.value = numeric > 0 ? numeric.toFixed(2) : '';
+        requestAnimationFrame(() => {
+            element.select();
+        });
+    });
+
+    element.addEventListener('blur', () => {
+        const numeric = getNumericInput(id);
+        element.value = numeric > 0 ? formatCurrency(numeric) : '';
+        updateScenario();
+    });
+
+    const initialValue = getNumericInput(id);
+    if (initialValue > 0) {
+        element.value = formatCurrency(initialValue);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const inputs = [
         'transaction-type',
@@ -225,6 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'appraised-value',
         'loan-amount',
         'existing-lien',
+        'closing-costs',
         'interest-rate',
         'draw-progress'
     ];
@@ -248,27 +325,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const currencyInputs = [
-        'build-price',
-        'lot-price',
-        'lot-value',
-        'appraised-value',
-        'loan-amount',
-        'existing-lien'
-    ];
-
-    currencyInputs.forEach((id) => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.addEventListener('change', () => {
-                const value = parseFloat(element.value);
-                if (Number.isFinite(value)) {
-                    element.value = value.toFixed(2);
-                } else {
-                    element.value = '';
-                }
-            });
-        }
+    const currencyElements = document.querySelectorAll('[data-format="currency"]');
+    currencyElements.forEach((element) => {
+        setupCurrencyInput(element);
     });
 
     toggleTransactionFields();

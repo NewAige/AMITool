@@ -173,29 +173,35 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="build-price">Build Price (Construction Budget)</label>
-                        <input type="number" id="build-price" min="0" step="0.01" />
+                        <input type="text" id="build-price" inputmode="decimal" data-format="currency" />
                     </div>
                     <div class="form-group purchase-field">
                         <label for="lot-price">Lot Price</label>
-                        <input type="number" id="lot-price" min="0" step="0.01" />
+                        <input type="text" id="lot-price" inputmode="decimal" data-format="currency" />
                     </div>
                     <div class="form-group refinance-field hidden">
                         <label for="lot-value">Lot Value</label>
-                        <input type="number" id="lot-value" min="0" step="0.01" />
+                        <input type="text" id="lot-value" inputmode="decimal" data-format="currency" />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="appraised-value">Appraised Value</label>
-                        <input type="number" id="appraised-value" min="0" step="0.01" />
+                        <input type="text" id="appraised-value" inputmode="decimal" data-format="currency" />
                     </div>
                     <div class="form-group">
                         <label for="loan-amount">Loan Amount</label>
-                        <input type="number" id="loan-amount" min="0" step="0.01" />
+                        <input type="text" id="loan-amount" inputmode="decimal" data-format="currency" />
                     </div>
                     <div class="form-group refinance-field hidden">
                         <label for="existing-lien">Existing Lien Payoff</label>
-                        <input type="number" id="existing-lien" min="0" step="0.01" />
+                        <input type="text" id="existing-lien" inputmode="decimal" data-format="currency" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="closing-costs">Estimated Closing Costs</label>
+                        <input type="text" id="closing-costs" inputmode="decimal" data-format="currency" />
                     </div>
                 </div>
 
@@ -239,6 +245,11 @@
                         <p id="existing-lien-display" class="summary-value">$0</p>
                         <small>Paid off with initial disbursement; shortfalls increase funds needed</small>
                     </div>
+                    <div class="summary-card" id="closing-costs-card">
+                        <h4>Closing Costs</h4>
+                        <p id="closing-costs-display" class="summary-value">$0</p>
+                        <small>Fees and escrows expected at conversion to construction financing</small>
+                    </div>
                     <div class="summary-card">
                         <h4>Construction Holdback</h4>
                         <p id="construction-holdback" class="summary-value">$0</p>
@@ -247,7 +258,7 @@
                     <div class="summary-card">
                         <h4>Initial Disbursement at Closing</h4>
                         <p id="initial-disbursement" class="summary-value">$0</p>
-                        <small>Loan amount − build price</small>
+                        <small id="initial-disbursement-detail">Loan amount − build price</small>
                     </div>
                     <div class="summary-card">
                         <h4>Estimated Funds Needed*</h4>
@@ -255,7 +266,8 @@
                         <small id="equity-detail">Build price + lot price − loan amount</small>
                     </div>
                 </div>
-                <small class="status-text">*Does not include estimated closing costs.</small>
+                <p id="refi-cashout-guidance" class="status-text hidden"></p>
+                <small class="status-text">*Closing costs entered above are assessed separately from the equity estimate for purchase scenarios.</small>
             </div>
         </div>
 
