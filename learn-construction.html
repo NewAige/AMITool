@@ -112,6 +112,10 @@
             margin-top: 1rem;
         }
 
+        .hidden {
+            display: none !important;
+        }
+
         @media (max-width: 600px) {
             .form-row {
                 flex-direction: column;
@@ -159,12 +163,25 @@
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group">
+                        <label for="transaction-type">Transaction Type</label>
+                        <select id="transaction-type">
+                            <option value="purchase" selected>Purchase</option>
+                            <option value="refinance">Refinance</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
                         <label for="build-price">Build Price (Construction Budget)</label>
                         <input type="number" id="build-price" min="0" step="0.01" />
                     </div>
-                    <div class="form-group">
+                    <div class="form-group purchase-field">
                         <label for="lot-price">Lot Price</label>
                         <input type="number" id="lot-price" min="0" step="0.01" />
+                    </div>
+                    <div class="form-group refinance-field hidden">
+                        <label for="lot-value">Lot Value</label>
+                        <input type="number" id="lot-value" min="0" step="0.01" />
                     </div>
                 </div>
                 <div class="form-row">
@@ -175,6 +192,10 @@
                     <div class="form-group">
                         <label for="loan-amount">Loan Amount</label>
                         <input type="number" id="loan-amount" min="0" step="0.01" />
+                    </div>
+                    <div class="form-group refinance-field hidden">
+                        <label for="existing-lien">Existing Lien Payoff</label>
+                        <input type="number" id="existing-lien" min="0" step="0.01" />
                     </div>
                 </div>
 
@@ -211,7 +232,12 @@
                     <div class="summary-card">
                         <h4>Total Project Cost</h4>
                         <p id="project-cost" class="summary-value">$0</p>
-                        <small>Build price + lot price</small>
+                        <small id="project-cost-detail">Build price + lot price</small>
+                    </div>
+                    <div class="summary-card refinance-field hidden" id="existing-lien-card">
+                        <h4>Existing Lien Payoff</h4>
+                        <p id="existing-lien-display" class="summary-value">$0</p>
+                        <small>Included in project cost for refinance scenarios</small>
                     </div>
                     <div class="summary-card">
                         <h4>Construction Holdback</h4>
@@ -226,7 +252,7 @@
                     <div class="summary-card">
                         <h4>Equity Required</h4>
                         <p id="equity-required" class="summary-value">$0</p>
-                        <small>Total project cost − loan amount</small>
+                        <small id="equity-detail">Acquisition basis − loan amount</small>
                     </div>
                 </div>
             </div>

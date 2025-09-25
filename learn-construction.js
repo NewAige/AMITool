@@ -21,16 +21,22 @@ function formatPercent(value) {
 }
 
 function updateScenario() {
+    const transactionTypeElement = document.getElementById('transaction-type');
+    const transactionType = transactionTypeElement ? transactionTypeElement.value : 'purchase';
     const buildPrice = getNumericInput('build-price');
     const lotPrice = getNumericInput('lot-price');
+    const lotValue = getNumericInput('lot-value');
+    const existingLien = transactionType === 'refinance' ? getNumericInput('existing-lien') : 0;
+    const lotContribution = transactionType === 'refinance' ? lotValue : lotPrice;
     const appraisalInput = getNumericInput('appraised-value');
     const loanAmount = getNumericInput('loan-amount');
     const interestRatePercent = getNumericInput('interest-rate');
     const drawProgressInput = document.getElementById('draw-progress');
 
-    const projectCost = buildPrice + lotPrice;
-    const appraisalValue = appraisalInput > 0 ? appraisalInput : projectCost;
-    const ltvBasis = Math.min(projectCost, appraisalValue);
+    const acquisitionBasis = buildPrice + lotContribution;
+    const projectCost = acquisitionBasis + existingLien;
+    const appraisalValue = appraisalInput > 0 ? appraisalInput : acquisitionBasis;
+    const ltvBasis = Math.min(acquisitionBasis, appraisalValue);
     const maxLoan = ltvBasis * 0.9;
     const requestedLtv = ltvBasis > 0 ? loanAmount / ltvBasis : 0;
 
@@ -77,11 +83,34 @@ function updateScenario() {
     }
     ltvGuidance.textContent = guidanceText;
 
-    document.getElementById('equity-required').textContent = formatCurrency(Math.max(projectCost - loanAmount, 0));
+    document.getElementById('equity-required').textContent = formatCurrency(Math.max(acquisitionBasis - loanAmount, 0));
+    const equityDetail = document.getElementById('equity-detail');
+    if (equityDetail) {
+        const lotDescriptor = transactionType === 'refinance' ? 'lot value' : 'lot price';
+        equityDetail.textContent = `Build price + ${lotDescriptor} − loan amount`;
+    }
     document.getElementById('initial-disbursement').textContent = formatCurrency(initialDisbursement);
     document.getElementById('construction-holdback').textContent = formatCurrency(constructionHoldback);
     document.getElementById('remaining-holdback').textContent = formatCurrency(remainingHoldback);
     document.getElementById('current-disbursed').textContent = formatCurrency(totalDisbursed);
+
+    const projectCostDetail = document.getElementById('project-cost-detail');
+    if (projectCostDetail) {
+        const lotDescriptor = transactionType === 'refinance' ? 'lot value' : 'lot price';
+        projectCostDetail.textContent = existingLien > 0
+            ? `Build price + ${lotDescriptor} + existing lien payoff`
+            : `Build price + ${lotDescriptor}`;
+    }
+
+    const existingLienDisplay = document.getElementById('existing-lien-display');
+    if (existingLienDisplay) {
+        existingLienDisplay.textContent = formatCurrency(existingLien);
+    }
+
+    const existingLienCard = document.getElementById('existing-lien-card');
+    if (existingLienCard) {
+        existingLienCard.classList.toggle('hidden', transactionType !== 'refinance');
+    }
 
     const paymentProgressBody = document.getElementById('payment-progress-body');
     if (paymentProgressBody) {
@@ -150,12 +179,34 @@ function updateScenario() {
     }
 }
 
+function toggleTransactionFields() {
+    const transactionTypeElement = document.getElementById('transaction-type');
+    if (!transactionTypeElement) {
+        return;
+    }
+
+    const transactionType = transactionTypeElement.value;
+    const purchaseFields = document.querySelectorAll('.purchase-field');
+    const refinanceFields = document.querySelectorAll('.refinance-field');
+
+    purchaseFields.forEach((element) => {
+        element.classList.toggle('hidden', transactionType !== 'purchase');
+    });
+
+    refinanceFields.forEach((element) => {
+        element.classList.toggle('hidden', transactionType !== 'refinance');
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const inputs = [
+        'transaction-type',
         'build-price',
         'lot-price',
+        'lot-value',
         'appraised-value',
         'loan-amount',
+        'existing-lien',
         'interest-rate',
         'draw-progress'
     ];
@@ -163,15 +214,29 @@ document.addEventListener('DOMContentLoaded', () => {
     inputs.forEach((id) => {
         const element = document.getElementById(id);
         if (element) {
-            element.addEventListener('input', updateScenario);
+            element.addEventListener('input', () => {
+                if (id === 'transaction-type') {
+                    toggleTransactionFields();
+                }
+                updateScenario();
+            });
+
+            if (id === 'transaction-type') {
+                element.addEventListener('change', () => {
+                    toggleTransactionFields();
+                    updateScenario();
+                });
+            }
         }
     });
 
     const currencyInputs = [
         'build-price',
         'lot-price',
+        'lot-value',
         'appraised-value',
-        'loan-amount'
+        'loan-amount',
+        'existing-lien'
     ];
 
     currencyInputs.forEach((id) => {
@@ -188,5 +253,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    toggleTransactionFields();
     updateScenario();
 });
