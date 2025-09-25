@@ -84,17 +84,27 @@ function updateScenario() {
     ltvGuidance.textContent = guidanceText;
 
     const acquisitionGap = Math.max(acquisitionBasis - loanAmount, 0);
-    const lienShortfall =
-        transactionType === 'refinance' ? Math.max(existingLien - initialDisbursement, 0) : 0;
-    const estimatedFundsNeeded = acquisitionGap + lienShortfall;
+    let estimatedFundsNeeded = acquisitionGap;
+    if (transactionType === 'refinance') {
+        const lienShortfall = Math.max(existingLien - initialDisbursement, 0);
+        const buildGap = Math.max(buildPrice - loanAmount, 0);
+        estimatedFundsNeeded = lienShortfall + buildGap;
+    }
 
     document.getElementById('equity-required').textContent = formatCurrency(estimatedFundsNeeded);
     const equityDetail = document.getElementById('equity-detail');
     if (equityDetail) {
         if (transactionType === 'refinance') {
-            equityDetail.textContent = existingLien > 0
-                ? 'Build price + lot value − loan amount, plus any lien payoff not covered by closing proceeds'
-                : 'Build price + lot value − loan amount';
+            const messages = [];
+            if (existingLien > 0) {
+                messages.push('Lien payoff not covered by closing proceeds');
+            }
+            if (buildPrice > loanAmount) {
+                messages.push('Build price amount above the approved loan');
+            }
+            equityDetail.textContent = messages.length > 0
+                ? messages.join(' + ')
+                : 'No additional funds required at closing';
         } else {
             equityDetail.textContent = 'Build price + lot price − loan amount';
         }
