@@ -94,10 +94,12 @@ function updateScenario() {
         ltvStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Add scenario assumptions';
         guidanceText = 'Input project costs, valuation, and the requested loan amount to benchmark the structure against program limits.';
     } else if (loanAmount <= maxLoan + 1e-6) {
-        ltvStatus.innerHTML = '<i class="fas fa-check-circle"></i> Within program guidelines';
         if (transactionType === 'refinance' && cashOutExcess > 0) {
+            ltvStatus.classList.add('danger');
+            ltvStatus.innerHTML = '<i class="fas fa-times-circle"></i> Reduce loan amount to avoid cash-out';
             guidanceText = `Structure meets the 90% cap, but reduce the loan amount by ${formatCurrency(cashOutExcess)} so no cash releases above the lien payoff and closing costs.`;
         } else {
+            ltvStatus.innerHTML = '<i class="fas fa-check-circle"></i> Within program guidelines';
             guidanceText = `At ${formatPercent(requestedLtv)}, this request remains inside the 90% maximum—no pricing or structure adjustments required.`;
         }
     } else {
