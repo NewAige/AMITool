@@ -95,7 +95,11 @@ function updateScenario() {
         guidanceText = 'Input project costs, valuation, and the requested loan amount to benchmark the structure against program limits.';
     } else if (loanAmount <= maxLoan + 1e-6) {
         ltvStatus.innerHTML = '<i class="fas fa-check-circle"></i> Within program guidelines';
-        guidanceText = `At ${formatPercent(requestedLtv)}, this request remains inside the 90% maximum—no pricing or structure adjustments required.`;
+        if (transactionType === 'refinance' && cashOutExcess > 0) {
+            guidanceText = `Structure meets the 90% cap, but reduce the loan amount by ${formatCurrency(cashOutExcess)} so no cash releases above the lien payoff and closing costs.`;
+        } else {
+            guidanceText = `At ${formatPercent(requestedLtv)}, this request remains inside the 90% maximum—no pricing or structure adjustments required.`;
+        }
     } else {
         ltvStatus.classList.add('danger');
         ltvStatus.innerHTML = '<i class="fas fa-times-circle"></i> Above 90% LTV';
@@ -105,10 +109,12 @@ function updateScenario() {
     ltvGuidance.textContent = guidanceText;
 
     const acquisitionGap = Math.max(acquisitionBasis - loanAmount, 0);
-    let estimatedFundsNeeded = acquisitionGap;
+    let estimatedFundsNeeded;
     if (transactionType === 'refinance') {
         const buildGap = Math.max(buildPrice - loanAmount, 0);
         estimatedFundsNeeded = closingShortfall + buildGap;
+    } else {
+        estimatedFundsNeeded = acquisitionGap + closingShortfall;
     }
 
     document.getElementById('equity-required').textContent = formatCurrency(estimatedFundsNeeded);
@@ -126,7 +132,11 @@ function updateScenario() {
                 ? messages.join(' + ')
                 : 'Closing proceeds cover lien payoff and closing costs';
         } else {
-            equityDetail.textContent = 'Build price + lot price − loan amount';
+            if (closingShortfall > 0) {
+                equityDetail.textContent = 'Acquisition costs above the loan + closing costs not covered by the initial disbursement';
+            } else {
+                equityDetail.textContent = 'Build price + lot price − loan amount';
+            }
         }
     }
     document.getElementById('initial-disbursement').textContent = formatCurrency(initialDisbursement);
@@ -166,13 +176,9 @@ function updateScenario() {
 
     const cashoutGuidance = document.getElementById('refi-cashout-guidance');
     if (cashoutGuidance) {
-        if (transactionType === 'refinance' && (cashOutExcess > 0 || closingShortfall > 0)) {
+        if (transactionType === 'refinance' && closingShortfall > 0) {
             cashoutGuidance.classList.remove('hidden');
-            if (cashOutExcess > 0) {
-                cashoutGuidance.textContent = `Reduce the loan request by ${formatCurrency(cashOutExcess)} so no cash is released above the lien payoff and closing costs.`;
-            } else if (closingShortfall > 0) {
-                cashoutGuidance.textContent = 'Closing proceeds fall short of the lien payoff and closing costs—coach the borrower to bring funds or adjust the request.';
-            }
+            cashoutGuidance.textContent = 'Closing proceeds fall short of the lien payoff and closing costs—coach the borrower to bring funds or adjust the request.';
         } else {
             cashoutGuidance.classList.add('hidden');
             cashoutGuidance.textContent = '';
