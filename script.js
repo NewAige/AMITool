@@ -183,7 +183,7 @@ function loadAmiToolSettings() {
                     ri: []
                 },
                 incomeLimitType: "fixedCompliance",
-                maxComplianceIncome: 146205,
+                maxComplianceIncome: 155385,
                 description1: "Uses Borrower Compliance Income. Available as a 30-year fixed",
                 description2: "Available in Fall River, New Bedford, Taunton, and Attleboro, MA."
             },
