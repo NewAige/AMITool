@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Construction Financing - Learn - BCSB</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <style>
+        .summary-grid {
+            display: grid;
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        }
+
+        .summary-card {
+            background-color: var(--light);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.25rem;
+            box-shadow: var(--shadow);
+        }
+
+        .summary-card h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .summary-value {
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .summary-card small {
+            color: var(--secondary);
+        }
+
+        .status-section {
+            margin: 1.5rem 0 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 999px;
+            font-weight: 600;
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .status-badge.warning {
+            background-color: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+
+        .status-badge.danger {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+
+        .status-text {
+            color: var(--secondary);
+        }
+
+        .range-value {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .payment-progression {
+            margin-top: 1.5rem;
+        }
+
+        .payment-progression h4 {
+            font-size: 1.05rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .payment-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .payment-table th,
+        .payment-table td {
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        .payment-table tr.active {
+            background-color: rgba(37, 99, 235, 0.08);
+        }
+
+        .muted {
+            color: var(--secondary);
+        }
+
+        .payment-table td.muted {
+            text-align: center;
+        }
+
+        .card .status-text + .summary-grid {
+            margin-top: 1rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
+            <div>
+                <h1>Construction Financing</h1>
+                <div class="subtitle">Structure construction-to-permanent financing for your clients</div>
+            </div>
+            <a href="learn.html" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header"><i class="fas fa-lightbulb"></i> Program Snapshot</div>
+            <div class="card-body">
+                <p>Equip yourself to advise clients on BCSB's construction-to-permanent solution. Core program elements include:</p>
+                <ul>
+                    <li>Finance up to <strong>90% loan-to-value (LTV)</strong> using the lower of total acquisition cost (lot + construction) or the appraised value.</li>
+                    <li><strong>Single close</strong> structure with 12 months of interest-only payments on funds disbursed for construction.</li>
+                    <li>Automatic conversion to a fully amortizing loan for up to a <strong>30-year term</strong> after the project reaches completion.</li>
+                    <li>Initial closing disbursement is calculated as <strong>Loan Amount − Build Price</strong>; the construction budget is managed through future draws.</li>
+                </ul>
+                <details>
+                    <summary><strong>One-time close workflow</strong></summary>
+                    <ol>
+                        <li><strong>Closing:</strong> The entire construction-to-permanent loan is documented at once. Funds beyond the construction budget release at the table.</li>
+                        <li><strong>Construction phase (up to 12 months):</strong> Draws are distributed as inspections confirm progress. The borrower remits interest-only on dollars advanced.</li>
+                        <li><strong>Conversion:</strong> When the home is complete, the note automatically transitions to long-term amortization with no second closing required.</li>
+                    </ol>
+                </details>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><i class="fas fa-calculator"></i> Structure a Client Scenario</div>
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="transaction-type">Transaction Type</label>
+                        <select id="transaction-type">
+                            <option value="purchase" selected>Purchase</option>
+                            <option value="refinance">Refinance</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="build-price">Build Price (Construction Budget)</label>
+                        <input type="text" id="build-price" inputmode="decimal" data-format="currency" />
+                    </div>
+                    <div class="form-group purchase-field">
+                        <label for="lot-price">Lot Price</label>
+                        <input type="text" id="lot-price" inputmode="decimal" data-format="currency" />
+                    </div>
+                    <div class="form-group refinance-field hidden">
+                        <label for="lot-value">Lot Value</label>
+                        <input type="text" id="lot-value" inputmode="decimal" data-format="currency" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="appraised-value">Appraised Value</label>
+                        <input type="text" id="appraised-value" inputmode="decimal" data-format="currency" />
+                    </div>
+                    <div class="form-group">
+                        <label for="loan-amount">Loan Amount</label>
+                        <input type="text" id="loan-amount" inputmode="decimal" data-format="currency" />
+                    </div>
+                    <div class="form-group refinance-field hidden">
+                        <label for="existing-lien">Existing Lien Payoff</label>
+                        <input type="text" id="existing-lien" inputmode="decimal" data-format="currency" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="closing-costs">Estimated Closing Costs</label>
+                        <input type="text" id="closing-costs" inputmode="decimal" data-format="currency" />
+                    </div>
+                </div>
+
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h4>LTV Basis</h4>
+                        <p id="ltv-basis" class="summary-value">$0</p>
+                        <small>Lesser of total project cost or appraised value</small>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Maximum Loan @ 90% LTV</h4>
+                        <p id="max-loan" class="summary-value">$0</p>
+                        <small>90% of the LTV basis</small>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Requested LTV</h4>
+                        <p id="requested-ltv" class="summary-value">0%</p>
+                        <small>Loan Amount ÷ LTV basis</small>
+                    </div>
+                </div>
+
+                <div class="status-section">
+                    <div id="ltv-status" class="status-badge"><i class="fas fa-check-circle"></i> Within program guidelines</div>
+                    <p id="ltv-guidance" class="status-text"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><i class="fas fa-file-invoice-dollar"></i> Project Cost &amp; Closing Funds</div>
+            <div class="card-body">
+                <p class="status-text">Outline cash at closing and builder funds so you can guide clients on equity needs and timing.</p>
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h4>Total Project Cost</h4>
+                        <p id="project-cost" class="summary-value">$0</p>
+                        <small id="project-cost-detail">Build price + lot price</small>
+                    </div>
+                    <div class="summary-card refinance-field hidden" id="existing-lien-card">
+                        <h4>Existing Lien Payoff</h4>
+                        <p id="existing-lien-display" class="summary-value">$0</p>
+                        <small>Paid off with initial disbursement; shortfalls increase funds needed</small>
+                    </div>
+                    <div class="summary-card" id="closing-costs-card">
+                        <h4>Closing Costs</h4>
+                        <p id="closing-costs-display" class="summary-value">$0</p>
+                        <small>Fees and escrows expected at conversion to construction financing</small>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Construction Holdback</h4>
+                        <p id="construction-holdback" class="summary-value">$0</p>
+                        <small>Portion of the loan reserved for builder draws</small>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Initial Disbursement at Closing</h4>
+                        <p id="initial-disbursement" class="summary-value">$0</p>
+                        <small id="initial-disbursement-detail">Loan amount − build price</small>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Estimated Funds Needed</h4>
+                        <p id="equity-required" class="summary-value">$0</p>
+                        <small id="equity-detail">Build price + lot price − loan amount</small>
+                    </div>
+                </div>
+                <p id="refi-cashout-guidance" class="status-text hidden"></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><i class="fas fa-hard-hat"></i> Construction Draws &amp; Payments</div>
+            <div class="card-body">
+                <p class="status-text">Model an illustrative draw schedule to show clients how disbursements influence interim payments.</p>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="interest-rate">Interest Rate (%)</label>
+                        <input type="number" id="interest-rate" min="0" step="0.125" />
+                    </div>
+                    <div class="form-group">
+                        <label for="draw-progress">Construction Draw Progress: <span id="draw-progress-display" class="range-value">0%</span></label>
+                        <input type="range" id="draw-progress" min="0" max="100" value="0" />
+                        <small class="status-text">Slide to illustrate how much of the construction budget has been disbursed.</small>
+                    </div>
+                </div>
+
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h4>Illustrative Funds Disbursed</h4>
+                        <p id="current-disbursed" class="summary-value">$0</p>
+                        <small>Initial advance + draws released</small>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Projected Holdback Remaining</h4>
+                        <p id="remaining-holdback" class="summary-value">$0</p>
+                        <small>Undisbursed construction funds</small>
+                    </div>
+                </div>
+
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h4>Sample Interest-Only Payment</h4>
+                        <p id="interest-only-payment" class="summary-value">Enter rate</p>
+                        <small>Monthly payment on funds disbursed at this draw level</small>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Estimated Permanent Payment</h4>
+                        <p id="permanent-payment" class="summary-value">Enter rate</p>
+                        <small>Projected 30-year amortizing payment after conversion</small>
+                    </div>
+                </div>
+
+                <div class="payment-progression">
+                    <h4>Illustrative payment progression during construction</h4>
+                    <table class="payment-table">
+                        <thead>
+                            <tr>
+                                <th>Draw milestone</th>
+                                <th>Total funds disbursed</th>
+                                <th>Illustrative interest-only payment</th>
+                            </tr>
+                        </thead>
+                        <tbody id="payment-progress-body">
+                            <tr>
+                                <td colspan="3" class="muted">Enter an interest rate and adjust the slider to demonstrate how monthly interest-only payments scale with additional draws.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="learn-construction.js"></script>
+</body>
+</html>

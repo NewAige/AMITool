@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reg B: The Compliance Officer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --primary: #6366f1;
+            --accent: #8b5cf6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --text-main: #1e293b;
+            --text-light: #64748b;
+        }
+
+        * { box-sizing: border-box; user-select: none; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: var(--text-main);
+        }
+
+        /* --- The Game Stage --- */
+        .stage {
+            width: 100%;
+            max-width: 800px;
+            height: 90vh;
+            position: relative;
+            perspective: 1000px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- The File (Card) --- */
+        .file-card {
+            background: var(--card-bg);
+            width: 90%;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 
+                0 20px 50px rgba(0,0,0,0.3),
+                0 0 0 1px rgba(255,255,255,0.1);
+            position: relative;
+            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s;
+            z-index: 10;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+        
+        .file-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+        }
+
+        .scenario-text {
+            font-size: 1.3rem;
+            line-height: 1.5;
+            color: #0f172a;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        /* --- The Options --- */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background: #f1f5f9;
+            border: 2px solid transparent;
+            padding: 15px 20px;
+            border-radius: 12px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--text-main);
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn:hover {
+            background: #e2e8f0;
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+
+        .option-btn.active {
+            background: #e0e7ff;
+            border-color: var(--primary);
+        }
+
+        /* --- The Stamps (Visual Mechanic) --- */
+        .stamp-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(3) rotate(-15deg);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 50;
+            border: 8px solid;
+            padding: 20px 40px;
+            text-transform: uppercase;
+            font-weight: 900;
+            font-size: 3rem;
+            letter-spacing: 5px;
+            border-radius: 10px;
+            mix-blend-mode: multiply;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .stamp-approved {
+            color: var(--success);
+            border-color: var(--success);
+            transform: translate(-50%, -50%) scale(0.5) rotate(-10deg); 
+        }
+        
+        .stamp-violation {
+            color: var(--danger);
+            border-color: var(--danger);
+            transform: translate(-50%, -50%) scale(0.5) rotate(10deg);
+        }
+
+        .stamped-visible {
+            opacity: 0.8;
+            transform: translate(-50%, -50%) scale(1) rotate(-15deg);
+        }
+        
+        /* Screen Shake Animation */
+        .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        /* --- The "Audit" Modal (Feedback) --- */
+        .audit-modal {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            background: white;
+            z-index: 100;
+            transition: height 0.4s ease-in-out;
+            border-top-left-radius: 25px;
+            border-top-right-radius: 25px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.2);
+            overflow-y: auto;
+            padding: 0 30px;
+        }
+
+        .audit-modal.open { height: 65%; }
+
+        .audit-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 20px 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .audit-title { margin: 0; font-size: 1.5rem; color: var(--text-main); }
+        .audit-subtitle { color: var(--text-light); font-size: 0.9rem; }
+
+        .audit-content { padding: 20px 0 40px 0; }
+
+        .reason-block {
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f8fafc;
+            border-left: 4px solid #ccc;
+        }
+
+        .reason-block.correct-choice { border-color: var(--success); background: #ecfdf5; }
+        .reason-block.wrong-choice { border-color: var(--danger); background: #fef2f2; opacity: 0.8; }
+        
+        .reason-label { font-weight: 700; display: block; margin-bottom: 5px; font-size: 0.85rem; }
+        .reason-text { font-size: 0.95rem; color: #334155; }
+
+        .btn-next {
+            background: var(--text-main);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* --- Intro / Outro --- */
+        .full-overlay {
+            position: absolute;
+            top:0; left:0; width:100%; height:100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .hidden { display: none; }
+        
+        .big-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+            transition: transform 0.2s;
+        }
+        .big-btn:hover { transform: scale(1.05); }
+
+        /* Watermark */
+        .watermark {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 8rem;
+            font-weight: 900;
+            color: rgba(0,0,0,0.03);
+            pointer-events: none;
+            z-index: 0;
+            white-space: nowrap;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="watermark">CONFIDENTIAL</div>
+
+<div class="stage">
+    <!-- Intro Screen -->
+    <div id="intro-screen" class="full-overlay">
+        <h1 style="font-size: 3rem; margin-bottom: 10px;">REG B: THE GAUNTLET</h1>
+        <p style="max-width: 500px; font-size: 1.2rem; line-height: 1.6; color: #94a3b8;">
+            Welcome! <br>
+            You are the gatekeeper of Fair Lending. <br>
+            Review the 10 files. Stamp your decision. <br>
+            <span style="color: var(--success)">Approval</span> or <span style="color: var(--danger)">Violation</span>?
+        </p>
+        <button class="big-btn" onclick="game.start()">Enter The Desk</button>
+    </div>
+
+    <!-- Game Card -->
+    <div id="game-card" class="file-card" style="display:none;">
+        <div class="file-header">
+            <span>File ID: <span id="file-id">8392-B</span></span>
+            <span>Reg B Compliance Check</span>
+        </div>
+        
+        <div class="scenario-text" id="scenario-text">
+            Loading file...
+        </div>
+
+        <div class="options-grid" id="options-container">
+            <!-- Options injected via JS -->
+        </div>
+
+        <!-- The Visual Stamps -->
+        <div id="stamp-approved" class="stamp-overlay stamp-approved">APPROVED</div>
+        <div id="stamp-violation" class="stamp-overlay stamp-violation">VIOLATION</div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="audit-modal" class="audit-modal">
+        <div class="audit-header">
+            <div>
+                <h2 class="audit-title">Compliance Audit</h2>
+                <span class="audit-subtitle">Reviewing Decision Logic...</span>
+            </div>
+            <button class="btn-next" onclick="game.nextLevel()">Next File &rarr;</button>
+        </div>
+        <div class="audit-content" id="audit-content">
+            <!-- Explanations injected here -->
+        </div>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="result-screen" class="full-overlay hidden">
+        <h1 id="final-title" style="font-size: 3rem;">Audit Complete</h1>
+        <div id="final-score" style="font-size: 5rem; font-weight: 800; color: var(--primary);"></div>
+        <p id="final-msg" style="margin-top: 20px; font-size: 1.2rem;"></p>
+        <button class="big-btn" onclick="location.reload()">Process New Batch</button>
+    </div>
+</div>
+
+<script>
+const questions = [
+    {
+        id: 1,
+        scenario: "Applicant provides a divorce decree showing receipt of alimony. You notice the payments stop in 18 months. You need to determine continuity of income.",
+        options: [
+            {
+                text: "Ask the applicant if she plans to remarry, as that would stop the alimony.",
+                correct: false,
+                reason: "<strong>VIOLATION:</strong> You cannot ask about marital status changes or plans (remarriage) to determine income continuity."
+            },
+            {
+                text: "Accept the income as is; you cannot question alimony duration.",
+                correct: false,
+                reason: "<strong>INCORRECT:</strong> While you must treat the income fairly, Reg B allows you to verify the <em>continuance</em> of the income. 18 months may not meet the 3-year continuance standard."
+            },
+            {
+                text: "Exclude the income because it does not continue for at least 3 years.",
+                correct: true,
+                reason: "<strong>CORRECT:</strong> Under Reg B (and standard underwriting guidelines), you may exclude income that does not have sufficient continuance (typically 3 years) without violating fair lending."
+            },
+            {
+                text: "Ask for the ex-husband's credit report to ensure he can pay.",
+                correct: false,
+                reason: "<strong>VIOLATION:</strong> You cannot pull a credit report on a non-applicant ex-spouse unless they are a co-signer or the transaction is in a community property state."
+            }
+        ]
+    },
+    {
+        id: 2,
+        scenario: "A young couple (22 and 23) apply for a loan. They have short job histories but meet the credit score requirements.",
+        options: [
+            {
+                text: "Deny the loan citing 'insufficient credit file' due to age.",
+                correct: false,
+                reason: "<strong>VIOLATION:</strong> You cannot use age as a negative factor if they are of legal age to contract."
+            },
+            {
+                text: "Process the application, evaluating the credit history they <em>do</em> have available.",
+                correct: true,
+                reason: "<strong>CORRECT:</strong> You must evaluate credit history without bias regarding age. If the history meets guidelines, process it. If not, deny based on 'Credit History,' not age."
+            },
+            {
+                text: "Require a co-signer automatically because statistics show young people default more often.",
+                correct: false,
+                reason: "<strong>VIOLATION:</strong> Applying blanket rules based on age groups (disparate treatment) is a direct Reg B violation."
+            }
+        ]
+    },
+    {
+        id: 3,
+        scenario: "An applicant is on maternity leave. She will return to work in 4 weeks. Her employer confirms her return date and salary.",
+        options: [
+            {
+                text: "Deny the loan; she is not currently working.",
+                correct: false,
+                reason: "<strong>VIOLATION:</strong> Denying solely due to maternity leave is discrimination based on sex/familial status. You must treat it as temporary leave."
+            },
+            {
+                text: "Approve the loan, using her verified return-to-work income.",
+                correct: true,
+                reason: "<strong>CORRECT:</strong> Reg B prohibits treating maternity leave differently than other temporary medical leaves. If income is verified to return, it is usable."
+            },
+            {
+                text: "Ask if she will move to part-time work after the baby is born.",
+                correct: false,
+                reason: "<strong>VIOLATION:</strong> You cannot make assumptions or ask questions about future child-rearing practices or changes in work status due to family."
+            }
+        ]
+    },
+    {
+        id: 4,
+        scenario: "You are taking an application over the phone. The borrower refuses to provide their Race, Ethnicity, or Sex.",
+        options: [
+            {
+                text: "Leave the Government Monitoring Information (GMI) section blank.",
+                correct: false,
+                reason: "<strong>INCORRECT:</strong> For phone applications, if the borrower declines, you must note that they declined."
+            },
+            {
+                text: "Guess based on their surname and accent.",
+                correct: false, // Fixed logic
+                reason: "<strong>VIOLATION:</strong> You never guess race/ethnicity on a phone call. You only guess based on visual observation during face-to-face meetings."
+            }, 
+            {
+                text: "Note that the applicant declined to provide the information.",
+                correct: true,
+                reason: "<strong>CORRECT:</strong> On a phone/internet app, if they decline, you check the 'Declined' box. You do NOT guess based on voice/surname unless the meeting is Face-to-Face."
+            }
+        ]
+    },
+    {
+        id: 5,
+        scenario: "An unmarried applicant applies for a loan secured by property in a Community Property State. You ask for information about their spouse.",
+        options: [
+            {
+                text: "VIOLATION: You can never ask about a spouse if they aren't applying.",
+                correct: false,
+                reason: "<strong>INCORRECT:</strong> In Community Property States, the spouse's debts/status may affect the loan, so inquiry is permitted."
+            },
+            {
+                text: "COMPLIANT: In Community Property States, you may request info on a non-applicant spouse.",
+                correct: true,
+                reason: "<strong>CORRECT:</strong> Reg B allows inquiries about a spouse if the applicant resides in a community property state or relies on the spouse's income."
+            }
+        ]
+    },
+    {
+        id: 6,
+        scenario: "You deny a credit application on June 1st. By what date must you send the Adverse Action Notice to the applicant?",
+        options: [
+            {
+                text: "June 4th (3 Business Days).",
+                correct: false,
+                reason: "<strong>INCORRECT:</strong> Do not confuse Reg B with TRID/RESPA (Loan Estimates). You have more time than 3 days for a denial."
+            },
+            {
+                text: "June 30th (30 Days).",
+                correct: true,
+                reason: "<strong>CORRECT:</strong> Regulation B requires you to notify the applicant of the decision within 30 days of receiving a completed application."
+            },
+            {
+                text: "There is no specific deadline, as long as it is 'reasonable'.",
+                correct: false,
+                reason: "<strong>VIOLATION:</strong> Reg B has a strict 30-day clock for notification of action taken."
+            }
+        ]
+    },
+    {
+        id: 7,
+        scenario: "A married applicant qualifies for an unsecured business loan individually based on their own credit and income. You require their spouse to sign as a guarantor 'just to be safe'.",
+        options: [
+            {
+                text: "Approvable: It is standard safety to have both spouses on the hook.",
+                correct: false,
+                reason: "<strong>VIOLATION:</strong> If the applicant qualifies individually, requiring a spousal signature is a violation of the 'Signature Rule' (unless it's to perfect a lien in valid collateral)."
+            },
+            {
+                text: "Violation: You cannot require the spouse's signature if the applicant qualifies alone.",
+                correct: true,
+                reason: "<strong>CORRECT:</strong> You may not require the signature of a spouse (or any other person) if the applicant qualifies under your standards of creditworthiness."
+            }
+        ]
+    },
+    {
+        id: 8,
+        scenario: "An applicant is a non-permanent resident alien. Their visa expires in 6 months and renewal is not guaranteed. You deny the loan due to residency status.",
+        options: [
+            {
+                text: "Violation: You cannot discriminate based on National Origin or Citizenship.",
+                correct: false,
+                reason: "<strong>INCORRECT:</strong> While you cannot discriminate on national origin, Reg B <em>does</em> allow you to consider immigration status regarding the ability to repay and rights to remedies."
+            },
+            {
+                text: "Compliant: You may consider immigration status regarding the creditor's rights and repayment ability.",
+                correct: true,
+                reason: "<strong>CORRECT:</strong> A creditor may inquire about and consider permanent residency and immigration status to determine creditworthiness and repayment risks."
+            }
+        ]
+    },
+    {
+        id: 9,
+        scenario: "You deny a first-lien mortgage application due to a low credit score. The applicant asks for a copy of the appraisal you performed. You refuse because the loan was denied.",
+        options: [
+            {
+                text: "Refuse the request: Appraisals are only provided on closed loans.",
+                correct: false,
+                reason: "<strong>VIOLATION:</strong> The ECOA Valuations Rule requires you to provide copies of all appraisals and written valuations for first-lien mortgages, regardless of whether credit is extended or denied."
+            },
+            {
+                text: "Provide the appraisal copy immediately.",
+                correct: true,
+                reason: "<strong>CORRECT:</strong> You must provide the copy promptly upon completion or at least 3 business days before closing (or promptly upon denial if applicable)."
+            }
+        ]
+    },
+    {
+        id: 10,
+        scenario: "An applicant applies for an individual unsecured loan. The application asks them to check a box: 'Single', 'Married', or 'Divorced'.",
+        options: [
+            {
+                text: "Process the application; these are standard categories.",
+                correct: false,
+                reason: "<strong>VIOLATION:</strong> Reg B dictates specific terms. You cannot ask 'Single' or 'Divorced' directly. The allowed categories are 'Married', 'Unmarried', and 'Separated'."
+            },
+            {
+                text: "Flag the application form as non-compliant.",
+                correct: true,
+                reason: "<strong>CORRECT:</strong> Under Reg B, 'Unmarried' is the catch-all term for single, divorced, or widowed. Using 'Divorced' as a category is prohibited."
+            }
+        ]
+    }
+];
+
+const game = {
+    currentIdx: 0,
+    score: 0,
+    
+    start: function() {
+        document.getElementById('intro-screen').classList.add('hidden');
+        document.getElementById('game-card').style.display = 'block';
+        this.loadQuestion();
+    },
+
+    loadQuestion: function() {
+        const q = questions[this.currentIdx];
+        
+        // Reset UI
+        document.getElementById('stamp-approved').className = 'stamp-overlay stamp-approved';
+        document.getElementById('stamp-violation').className = 'stamp-overlay stamp-violation';
+        document.getElementById('audit-modal').classList.remove('open');
+        document.getElementById('game-card').classList.remove('shake');
+        
+        // Random File ID
+        document.getElementById('file-id').innerText = Math.floor(1000 + Math.random() * 9000) + "-RB";
+        
+        // Set Text
+        document.getElementById('scenario-text').innerText = q.scenario;
+        
+        // Render Options
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
+        
+        q.options.forEach((opt, idx) => {
+            const btn = document.createElement('div');
+            btn.className = 'option-btn';
+            btn.innerHTML = opt.text;
+            btn.onclick = () => this.makeDecision(idx);
+            container.appendChild(btn);
+        });
+    },
+
+    makeDecision: function(selectedIdx) {
+        const q = questions[this.currentIdx];
+        const isCorrect = q.options[selectedIdx].correct;
+        
+        // 1. Visual Stamp
+        if(isCorrect) {
+            this.score++;
+            const stamp = document.getElementById('stamp-approved');
+            stamp.classList.add('stamped-visible');
+        } else {
+            const stamp = document.getElementById('stamp-violation');
+            stamp.classList.add('stamped-visible');
+            document.getElementById('game-card').classList.add('shake'); // Shake effect
+        }
+
+        // 2. Populate Audit Modal
+        const auditContent = document.getElementById('audit-content');
+        auditContent.innerHTML = '';
+
+        // Add Selected Answer Logic First
+        const selectedDiv = document.createElement('div');
+        selectedDiv.className = isCorrect ? 'reason-block correct-choice' : 'reason-block wrong-choice';
+        selectedDiv.innerHTML = `<span class="reason-label">YOUR CHOICE:</span> ${q.options[selectedIdx].reason}`;
+        auditContent.appendChild(selectedDiv);
+
+        // Add Others
+        q.options.forEach((opt, idx) => {
+            if(idx !== selectedIdx) {
+                const div = document.createElement('div');
+                div.className = 'reason-block';
+                div.innerHTML = `<span class="reason-label" style="color:#64748b">OTHER OPTION:</span> ${opt.reason}`;
+                auditContent.appendChild(div);
+            }
+        });
+
+        // 3. Show Modal after short delay
+        setTimeout(() => {
+            document.getElementById('audit-modal').classList.add('open');
+        }, 800);
+    },
+
+    nextLevel: function() {
+        this.currentIdx++;
+        if(this.currentIdx < questions.length) {
+            this.loadQuestion();
+        } else {
+            this.endGame();
+        }
+    },
+
+    endGame: function() {
+        document.getElementById('game-card').style.display = 'none';
+        document.getElementById('audit-modal').classList.remove('open');
+        document.getElementById('result-screen').classList.remove('hidden');
+        
+        document.getElementById('final-score').innerText = `${this.score} / ${questions.length}`;
+        
+        const msg = document.getElementById('final-msg');
+        if(this.score === questions.length) {
+            msg.innerHTML = "Outstanding. You are a <strong style='color:var(--success)'>Master of Compliance</strong>.";
+        } else if (this.score > 6) {
+            msg.innerHTML = "Good work, but a few violations slipped through. Review the audit logs.";
+        } else {
+            msg.innerHTML = "<strong style='color:var(--danger)'>Critical Failures Detected.</strong><br>Retraining recommended immediately.";
+        }
+    }
+};
+</script>
+</body>
+</html>

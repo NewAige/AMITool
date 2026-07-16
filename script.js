@@ -6,7 +6,7 @@ function loadAmiToolSettings() {
     // Return complete hardcoded settings
     // These settings come directly from script.js and ignore localStorage
     return {
-        year: "2025",
+        year: "2026",
         dpaPrograms: [
             {
                 id: "bcsb1",
@@ -183,7 +183,7 @@ function loadAmiToolSettings() {
                     ri: []
                 },
                 incomeLimitType: "fixedCompliance",
-                maxComplianceIncome: 146205,
+                maxComplianceIncome: 155385,
                 description1: "Uses Borrower Compliance Income. Available as a 30-year fixed",
                 description2: "Available in Fall River, New Bedford, Taunton, and Attleboro, MA."
             },
@@ -410,7 +410,7 @@ document.addEventListener('DOMContentLoaded', function() {
             debug('Household form submitted');
 
             const townCode = document.getElementById('town').value;
-            const year = settings.year || "2025";
+            const year = settings.year || "2026";
             const householdSize = document.getElementById('household').value;
 
             // Make sure we have a selected town and the town name is stored
@@ -532,7 +532,7 @@ let userData = {
     townName: '',
     originalTownName: '', // Added for clarity
     county: '',
-    year: 2025,
+    year: 2026,
     householdSize: 1,
     incomeLimit50: 0,
     incomeLimit80: 0,
@@ -1290,7 +1290,7 @@ function resetToInitialState() {
     // Reset user data object
     userData = {
         state: '', town: '', townName: '', originalTownName: '', county: '',
-        year: 2025, householdSize: 1,
+        year: 2026, householdSize: 1,
         incomeLimit50: 0, incomeLimit80: 0, incomeLimit100: 0, incomeLimit120: 0,
         isEligibleCounty: false, currentIncome: 0,
         borrowerComplianceIncome: 0, borrowerQualifyingIncome: 0
