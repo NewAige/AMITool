@@ -183,7 +183,7 @@ function loadAmiToolSettings() {
                     ri: []
                 },
                 incomeLimitType: "fixedCompliance",
-                maxComplianceIncome: 155385,
+                maxComplianceIncome: 153090,
                 description1: "Uses Borrower Compliance Income. Available as a 30-year fixed",
                 description2: "Available in Fall River, New Bedford, Taunton, and Attleboro, MA."
             },
@@ -196,7 +196,7 @@ function loadAmiToolSettings() {
                 counties: { bristol: true, providence: true },
                 towns: { ma: [], ri: [] },
                 incomeLimitType: "fixedQualifying",
-                maxQualifyingIncome: 92080,
+                maxQualifyingIncome: 90720,
                 description1: "Uses Borrower Qualifying Income (HomeReady). Available as a 7/6 ARM.",
                 description2: "Available in Bristol County, MA and Providence County, RI."
             }
@@ -590,8 +590,8 @@ const countyMapping = {
 const apiToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI2IiwianRpIjoiZmM3YWYxYzMwNjBhYmM1NTVjN2IyYzc0YzFiOWQ3YTBmYmIzMjg1NzkxYTYwNTVmOTMyOGIxNTk1MzczNjM3MDAwY2Y1YzQ1MmZmMjYwZWUiLCJpYXQiOjE3MTk2OTE3MTQuMTI0MjAyLCJuYmYiOjE3MTk2OTE3MTQuMTI0MjA0LCJleHAiOjIwMzUyMjQ1MTQuMTIwNjc3LCJzdWIiOiI3MzA3NCIsInNjb3BlcyI6W119.QOAzQdjx3I_j6sHIHNMKTYaE7UIag-sXs5AQQZvRDfCTVuko2IOYrIMDObisKgZgWMy01RcWAOUtQxkAVDn1Fg';
 
 // Constants for program limits
-const MASSHOUSING_INCOME_LIMIT = 146205; // $146,205
-const HOMEREADY_INCOME_LIMIT = 92080; // $92,080
+const MASSHOUSING_INCOME_LIMIT = 153090; // $153,090
+const HOMEREADY_INCOME_LIMIT = 90720; // $90,720
 
 // Money formatter
 const formatter = new Intl.NumberFormat('en-US', {
