@@ -116,6 +116,134 @@
             display: none !important;
         }
 
+        /* Program Snapshot */
+        .snapshot-intro {
+            margin-bottom: 1.25rem;
+            color: var(--dark);
+        }
+
+        .snapshot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .snapshot-fact {
+            background-color: var(--light);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.25rem;
+            text-align: center;
+        }
+
+        .snapshot-icon {
+            width: 46px;
+            height: 46px;
+            margin: 0 auto 0.75rem;
+            border-radius: 50%;
+            background-color: rgba(0, 102, 72, 0.1);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .snapshot-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.35rem;
+        }
+
+        .snapshot-label {
+            font-size: 0.85rem;
+            color: var(--secondary);
+            line-height: 1.4;
+        }
+
+        .snapshot-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            background-color: var(--primary-light);
+            border-left: 4px solid var(--primary);
+            border-radius: var(--border-radius);
+            padding: 0.9rem 1rem;
+            font-size: 0.9rem;
+            color: var(--dark);
+            margin-bottom: 1.75rem;
+        }
+
+        .snapshot-note i {
+            color: var(--primary);
+            margin-top: 0.15rem;
+            flex-shrink: 0;
+        }
+
+        .workflow-heading {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+        }
+
+        .workflow-steps {
+            list-style: none;
+            counter-reset: workflow;
+            padding: 0;
+            margin: 0;
+        }
+
+        .workflow-steps li {
+            counter-increment: workflow;
+            position: relative;
+            padding-left: 3rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .workflow-steps li:last-child {
+            padding-bottom: 0;
+        }
+
+        .workflow-steps li:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 34px;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--border-color);
+        }
+
+        .workflow-steps li::after {
+            content: counter(workflow);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .workflow-step-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            padding-top: 0.35rem;
+        }
+
+        .workflow-step-text {
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+
         @media (max-width: 600px) {
             .form-row {
                 flex-direction: column;
@@ -140,21 +268,51 @@
         <div class="card">
             <div class="card-header"><i class="fas fa-lightbulb"></i> Program Snapshot</div>
             <div class="card-body">
-                <p>Equip yourself to advise clients on BCSB's construction-to-permanent solution. Core program elements include:</p>
-                <ul>
-                    <li>Finance up to <strong>90% loan-to-value (LTV)</strong> using the lower of total acquisition cost (lot + construction) or the appraised value.</li>
-                    <li><strong>Single close</strong> structure with 12 months of interest-only payments on funds disbursed for construction.</li>
-                    <li>Automatic conversion to a fully amortizing loan for up to a <strong>30-year term</strong> after the project reaches completion.</li>
-                    <li>Initial closing disbursement is calculated as <strong>Loan Amount − Build Price</strong>; the construction budget is managed through future draws.</li>
-                </ul>
-                <details>
-                    <summary><strong>One-time close workflow</strong></summary>
-                    <ol>
-                        <li><strong>Closing:</strong> The entire construction-to-permanent loan is documented at once. Funds beyond the construction budget release at the table.</li>
-                        <li><strong>Construction phase (up to 12 months):</strong> Draws are distributed as inspections confirm progress. The borrower remits interest-only on dollars advanced.</li>
-                        <li><strong>Conversion:</strong> When the home is complete, the note automatically transitions to long-term amortization with no second closing required.</li>
-                    </ol>
-                </details>
+                <p class="snapshot-intro">BCSB's construction-to-permanent loan lets your clients finance the lot, the build, and the permanent mortgage in a single closing. Here are the key terms at a glance:</p>
+
+                <div class="snapshot-grid">
+                    <div class="snapshot-fact">
+                        <div class="snapshot-icon"><i class="fas fa-percent"></i></div>
+                        <div class="snapshot-value">Up to 90% LTV</div>
+                        <div class="snapshot-label">Based on the lower of total acquisition cost (lot + construction) or the appraised value.</div>
+                    </div>
+                    <div class="snapshot-fact">
+                        <div class="snapshot-icon"><i class="fas fa-file-signature"></i></div>
+                        <div class="snapshot-value">Single Close</div>
+                        <div class="snapshot-label">One closing covers both the construction and permanent financing — no second closing required.</div>
+                    </div>
+                    <div class="snapshot-fact">
+                        <div class="snapshot-icon"><i class="fas fa-hourglass-half"></i></div>
+                        <div class="snapshot-value">12 Months Interest-Only</div>
+                        <div class="snapshot-label">During construction, clients pay interest only on the funds actually disbursed.</div>
+                    </div>
+                    <div class="snapshot-fact">
+                        <div class="snapshot-icon"><i class="fas fa-calendar-check"></i></div>
+                        <div class="snapshot-value">Up to 30-Year Term</div>
+                        <div class="snapshot-label">Automatically converts to a fully amortizing loan once the project is complete.</div>
+                    </div>
+                </div>
+
+                <div class="snapshot-note">
+                    <i class="fas fa-info-circle"></i>
+                    <span>The initial disbursement at closing equals <strong>Loan Amount − Build Price</strong>. The rest of the construction budget is released to the builder through future draws.</span>
+                </div>
+
+                <h4 class="workflow-heading">How the one-time close works</h4>
+                <ol class="workflow-steps">
+                    <li>
+                        <div class="workflow-step-title">Closing</div>
+                        <div class="workflow-step-text">The entire construction-to-permanent loan is documented at once. Funds beyond the construction budget release at the table.</div>
+                    </li>
+                    <li>
+                        <div class="workflow-step-title">Construction phase (up to 12 months)</div>
+                        <div class="workflow-step-text">Draws are distributed as inspections confirm progress. The borrower pays interest only on the dollars advanced.</div>
+                    </li>
+                    <li>
+                        <div class="workflow-step-title">Conversion</div>
+                        <div class="workflow-step-text">When the home is complete, the note automatically transitions to long-term amortization — no second closing required.</div>
+                    </li>
+                </ol>
             </div>
         </div>
 
