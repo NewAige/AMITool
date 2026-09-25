@@ -1,3 +1,46 @@
+// Canonical program name/product-code lookups, keyed by program id.
+// Applied on top of whatever settings object is produced below so that a
+// stale name or missing product codes in an old saved settings object
+// (e.g. from localStorage) never leak into the displayed results.
+const PROGRAM_NAME_OVERRIDES = {
+    exclusive80: "BCSB CRA Opportunity"
+};
+
+const PROGRAM_PRODUCT_CODES = {
+    bcsb1: ["DPA01"],
+    bcsb2: ["DPA02"],
+    bcsb3: ["DPA03"],
+    fthb: ["FM05", "FM06"],
+    pcp: ["FM04"],
+    exclusive80: ["FM02"],
+    buycities: ["FM03"],
+    affordablehousing: ["FM01"]
+};
+
+// Ensures every program in a list has its canonical name and product codes,
+// regardless of where the program object originally came from.
+function applyProgramDefaults(programs) {
+    if (!Array.isArray(programs)) return programs;
+    programs.forEach(program => {
+        if (!program || !program.id) return;
+        if (PROGRAM_NAME_OVERRIDES[program.id]) {
+            program.name = PROGRAM_NAME_OVERRIDES[program.id];
+        }
+        program.productCodes = PROGRAM_PRODUCT_CODES[program.id] || program.productCodes || [];
+    });
+    return programs;
+}
+
+// Renders the clickable product-code badges shown on a program result card.
+function renderProductCodeBadges(program) {
+    const codes = program && program.productCodes;
+    if (!codes || !codes.length) return '';
+    const badges = codes.map(code =>
+        `<span class="product-code-badge" data-product-code="${code}" tabindex="0" role="button" title="View product details for ${code}">${code}</span>`
+    ).join('');
+    return `<div class="product-code-badges">${badges}</div>`;
+}
+
 // Load settings from localStorage or server with fallback to defaults
 // Updated loadAmiToolSettings function with Buy Cities using town names
 function loadAmiToolSettings() {
@@ -5,7 +48,7 @@ function loadAmiToolSettings() {
 
     // Return complete hardcoded settings
     // These settings come directly from script.js and ignore localStorage
-    return {
+    const settings = {
         year: "2026",
         dpaPrograms: [
             {
@@ -142,7 +185,7 @@ function loadAmiToolSettings() {
             },
             {
                 id: "exclusive80",
-                name: "Exclusive BCSB HomeBuyer",
+                name: "BCSB CRA Opportunity",
                 active: true,
                 eligibilityType: "county",
                 states: {
@@ -202,6 +245,11 @@ function loadAmiToolSettings() {
             }
         ]
     };
+
+    applyProgramDefaults(settings.dpaPrograms);
+    applyProgramDefaults(settings.mortgagePrograms);
+
+    return settings;
 }
 
 // Initialize when DOM is loaded
@@ -1000,6 +1048,7 @@ function checkEligibility() {
                 </div>
                 <p>${program.description1 || ''}</p>
                 <p>${program.description2 || ''}</p>
+                ${renderProductCodeBadges(program)}
                 <p>Your Household Income: ${formatter.format(incomeValue)}</p>
             `;
             dpaContainer.appendChild(programCard);
@@ -1037,6 +1086,7 @@ function checkEligibility() {
                             <span class="badge ${isIncomeEligible ? 'badge-success' : 'badge-danger'}">${isIncomeEligible ? 'Eligible' : 'Not Eligible'}</span>
                         </div>
                         <p>${program.description1 || ''}</p><p>${program.description2 || ''}</p>
+                        ${renderProductCodeBadges(program)}
                         <p>Your Borrower Compliance Income: ${formatter.format(userData.borrowerComplianceIncome || 0)}</p>
                         <p>Max Income Allowed: ${formatter.format(program.maxComplianceIncome)}</p>`;
                 }
@@ -1053,6 +1103,7 @@ function checkEligibility() {
                             <span class="badge ${isIncomeEligible ? 'badge-success' : 'badge-danger'}">${isIncomeEligible ? 'Eligible' : 'Not Eligible'}</span>
                         </div>
                         <p>${program.description1 || ''}</p><p>${program.description2 || ''}</p>
+                        ${renderProductCodeBadges(program)}
                         <p>Your Borrower Qualifying Income: ${formatter.format(userData.borrowerQualifyingIncome || 0)}</p>
                         <p>Max Income Allowed: ${formatter.format(program.maxQualifyingIncome)}</p>`;
                 }
@@ -1076,6 +1127,7 @@ function checkEligibility() {
                             <span class="badge ${isIncomeEligible ? 'badge-success' : 'badge-danger'}">${isIncomeEligible ? 'Eligible' : 'Not Eligible'}</span>
                         </div>
                         <p>${program.description1 || ''}</p><p>${program.description2 || ''}</p>
+                        ${renderProductCodeBadges(program)}
                         <p>Your Household Income: ${formatter.format(incomeValue)}</p>`;
                 }
             }
@@ -1092,6 +1144,7 @@ function checkEligibility() {
                             <span class="badge badge-danger">Not Eligible</span>
                         </div>
                         <p>${program.description1 || ''}</p><p>${program.description2 || ''}</p>
+                        ${renderProductCodeBadges(program)}
                         <p>Your ${incomeTypeString}: ${formatter.format(incomeToCheck || 0)}</p>
                         ${maxIncome !== "N/A" ? `<p>Max Allowed: ${formatter.format(maxIncome)}</p>` : ''}
                         <p>Reason: Income criteria not met or specific income type not provided.</p>`;
@@ -1652,4 +1705,121 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initial call to set visibility and status based on default/loaded state
     updateComplianceIncomeVisibility();
+});
+
+// ---------------------------------------------------------------------------
+// Product code badge modal
+// Clicking a product-code badge on a program result card opens a modal with
+// that product's details, pulled from the CSV data loaded by product-loader.js.
+// ---------------------------------------------------------------------------
+
+let productCodeDataPromise = null;
+
+// Resolves with the merged product list, loading it on demand if
+// product-loader.js's own DOMContentLoaded fetch hasn't populated it yet
+// (or came back empty because of a fetch failure).
+function ensureProductCodeData() {
+    if (typeof fullProductData !== 'undefined' && fullProductData && fullProductData.length > 0) {
+        return Promise.resolve(fullProductData);
+    }
+    if (!productCodeDataPromise) {
+        productCodeDataPromise = Promise.all([
+            fetchProducts(),
+            fetchArmTable(),
+            fetchArmTranslationTable()
+        ]).then(([products, armTable, armTranslationTable]) => {
+            const merged = mergeProductData(products, armTable, armTranslationTable);
+            if (merged && merged.length > 0) {
+                fullProductData = merged;
+                allProducts = products;
+            }
+            return merged;
+        }).catch(error => {
+            debug('Error loading product data for modal:', error);
+            return [];
+        });
+    }
+    return productCodeDataPromise;
+}
+
+function openProductCodeModal(code) {
+    const modal = document.getElementById('product-detail-modal');
+    const body = document.getElementById('product-detail-modal-body');
+    if (!modal || !body) return;
+
+    body.innerHTML = `<p><i class="fas fa-spinner fa-spin"></i> Loading product ${code}...</p>`;
+    modal.style.display = 'block';
+    modal.setAttribute('aria-hidden', 'false');
+
+    ensureProductCodeData().then(products => {
+        const product = (products || []).find(p => p.id === code);
+
+        if (!product) {
+            body.innerHTML = `
+                <h2>Product ${code}</h2>
+                <p>Sorry, we couldn't load details for this product right now. Please try again later, or view it directly on the <a href="product-detail.html?id=${encodeURIComponent(code)}">product detail page</a>.</p>
+            `;
+            return;
+        }
+
+        const detailHTML = (typeof buildProductDetailHTML === 'function')
+            ? buildProductDetailHTML(product)
+            : '';
+
+        body.innerHTML = `
+            <h2>${product.program_name || product.id}</h2>
+            <div class="subtitle">${[product.category, product.sub_category].filter(Boolean).join(' > ')}</div>
+            ${detailHTML}
+            <div class="modal-actions">
+                <a href="product-detail.html?id=${encodeURIComponent(product.id)}" class="btn btn-primary">View full details</a>
+            </div>
+        `;
+    });
+}
+
+function closeProductCodeModal() {
+    const modal = document.getElementById('product-detail-modal');
+    if (!modal) return;
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const programsContainer = document.getElementById('programs-container');
+    const modal = document.getElementById('product-detail-modal');
+    if (!programsContainer || !modal) return;
+
+    // Event delegation: badges are re-created every time results render.
+    programsContainer.addEventListener('click', function(event) {
+        const badge = event.target.closest('.product-code-badge');
+        if (badge) {
+            openProductCodeModal(badge.dataset.productCode);
+        }
+    });
+
+    programsContainer.addEventListener('keydown', function(event) {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        const badge = event.target.closest('.product-code-badge');
+        if (badge) {
+            event.preventDefault();
+            openProductCodeModal(badge.dataset.productCode);
+        }
+    });
+
+    const closeBtn = modal.querySelector('.close-btn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeProductCodeModal);
+    }
+
+    modal.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            closeProductCodeModal();
+        }
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && modal.style.display === 'block') {
+            closeProductCodeModal();
+        }
+    });
 });

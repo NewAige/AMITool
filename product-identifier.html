@@ -133,7 +133,7 @@
                 Enter Your Household Income:
                 <div class="tooltip">
                     <i class="fas fa-info-circle"></i>
-                    <span class="tooltip-text">Enter the total compliance income for all household members. This limit is for: BCSB DPA Procuts, Exclusive BCSB HomeBuyer, and Providence County Pathway. </span>
+                    <span class="tooltip-text">Enter the total compliance income for all household members. This limit is for: BCSB DPA Products, BCSB CRA Opportunity, and Providence County Pathway. </span>
                 </div>
             </label>
             <div class="income-input-group">
@@ -365,6 +365,15 @@
         }
     </style>
 
+    <!-- Product code detail modal, opened from the product-code badges on the results cards -->
+    <div id="product-detail-modal" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <span class="close-btn" id="product-detail-modal-close" aria-label="Close">&times;</span>
+            <div id="product-detail-modal-body"></div>
+        </div>
+    </div>
+
+    <script src="product-loader.js"></script>
     <script src="script.js"></script>
     <script src="settings.js"></script>
 </body>

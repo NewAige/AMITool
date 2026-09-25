@@ -338,6 +338,67 @@ function closeCompareModal() {
     modal.style.display = 'none';
 }
 
+// Builds the "Parameters" (+ "ARM Details", when present) table markup for a
+// single product. Shared by the full product-detail page and the product
+// code modal on the Product Identifier page.
+function buildProductDetailHTML(product) {
+    let html = `
+        <div class="arm-detail-section card">
+            <div class="card-header">
+                <i class="fas fa-info-circle"></i> Parameters
+            </div>
+            <div class="card-body">
+                <table class="arm-detail-table">
+    `;
+
+    html += `
+                <tr>
+                    <td>Product ID</td>
+                    <td>${product.id}</td>
+                </tr>
+            `;
+    const headers = Object.keys(product);
+    headers.forEach(key => {
+        if (key !== 'id' && key !== 'program_name' && key !== 'category' && key !== 'sub_category' && product[key] && key !== 'armDetails') {
+            html += `
+                <tr>
+                    <td>${key.replace(/_/g, ' ')}</td>
+                    <td>${product[key]}</td>
+                </tr>
+            `;
+        }
+    });
+
+    html += `
+                </table>
+            </div>
+        </div>
+    `;
+
+    // Add ARM details if they exist
+    if (product.armDetails) {
+        html += `
+            <div class="arm-detail-section card">
+                <div class="card-header">
+                    <i class="fas fa-table"></i> ARM Details
+                </div>
+                <div class="card-body">
+                    <table class="arm-detail-table">
+                        ${Object.entries(product.armDetails).map(([key, value]) => `
+                            <tr>
+                                <td>${key.replace(/_/g, ' ')}</td>
+                                <td>${value}</td>
+                            </tr>
+                        `).join('')}
+                    </table>
+                </div>
+            </div>
+        `;
+    }
+
+    return html;
+}
+
 function loadProductDetail() {
     const productDetailContainer = document.getElementById('product-detail-container');
     if (!productDetailContainer) return;
@@ -359,59 +420,7 @@ function loadProductDetail() {
             pageSubtitle.textContent = `${product.category} > ${product.sub_category}`;
         }
 
-        let html = `
-            <div class="arm-detail-section card">
-                <div class="card-header">
-                    <i class="fas fa-info-circle"></i> Parameters
-                </div>
-                <div class="card-body">
-                    <table class="arm-detail-table">
-        `;
-
-        html += `
-                    <tr>
-                        <td>Product ID</td>
-                        <td>${product.id}</td>
-                    </tr>
-                `;
-        const headers = Object.keys(product);
-        headers.forEach(key => {
-            if (key !== 'id' && key !== 'program_name' && key !== 'category' && key !== 'sub_category' && product[key] && key !== 'armDetails') {
-                html += `
-                    <tr>
-                        <td>${key.replace(/_/g, ' ')}</td>
-                        <td>${product[key]}</td>
-                    </tr>
-                `;
-            }
-        });
-
-        html += `
-                    </table>
-                </div>
-            </div>
-        `;
-
-        // Add ARM details if they exist
-        if (product.armDetails) {
-            html += `
-                <div class="arm-detail-section card">
-                    <div class="card-header">
-                        <i class="fas fa-table"></i> ARM Details
-                    </div>
-                    <div class="card-body">
-                        <table class="arm-detail-table">
-                            ${Object.entries(product.armDetails).map(([key, value]) => `
-                                <tr>
-                                    <td>${key.replace(/_/g, ' ')}</td>
-                                    <td>${value}</td>
-                                </tr>
-                            `).join('')}
-                        </table>
-                    </div>
-                </div>
-            `;
-        }
+        let html = buildProductDetailHTML(product);
 
         html += `
             <div class="back-to-list">

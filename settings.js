@@ -196,6 +196,7 @@ const defaultSettings = {
                 from100to120: false,
                 above120: false
             },
+            productCodes: ["DPA01"],
             description1: "For households with income at or below 80% AMI",
             description2: "Provides $20,000 in downpayment assistance"
         },
@@ -213,6 +214,7 @@ const defaultSettings = {
                 from100to120: false,
                 above120: false
             },
+            productCodes: ["DPA02"],
             description1: "For households with income between 80.01% and 100% AMI",
             description2: "Provides $15,000 in downpayment assistance"
         },
@@ -230,6 +232,7 @@ const defaultSettings = {
                 from100to120: true,
                 above120: false
             },
+            productCodes: ["DPA03"],
             description1: "For households with income between 100.01% and 120% AMI",
             description2: "Provides $10,000 in downpayment assistance"
         },
@@ -283,6 +286,7 @@ const defaultSettings = {
                 from100to120: true,
                 above120: true
             },
+            productCodes: ["FM05", "FM06"],
             description1: "No income limit, but must be a first-time homebuyer",
             description2: "Available in Providence County, RI or Bristol County, MA"
         },
@@ -300,12 +304,13 @@ const defaultSettings = {
                 from100to120: true,
                 above120: false
             },
+            productCodes: ["FM04"],
             description1: "Must be at or below 120% AMI",
             description2: "Only available in Providence County, RI"
         },
         {
             id: "exclusive80",
-            name: "Exclusive BCSB HomeBuyer",
+            name: "BCSB CRA Opportunity",
             active: true,
             counties: {
                 bristol: true,
@@ -317,16 +322,47 @@ const defaultSettings = {
                 from100to120: false,
                 above120: false
             },
+            productCodes: ["FM02"],
             description1: "Must be at or below 80% AMI",
             description2: "Available in Bristol County, MA or Providence County, RI"
         }
     ]
 };
 
+// Canonical program name/product-code overrides, keyed by program id. Applied
+// after loading so a stale name (e.g. saved to localStorage before a rename)
+// or missing product codes never show up in the admin UI.
+const SETTINGS_PROGRAM_NAME_OVERRIDES = {
+    exclusive80: "BCSB CRA Opportunity"
+};
+
+const SETTINGS_PROGRAM_PRODUCT_CODES = {
+    bcsb1: ["DPA01"],
+    bcsb2: ["DPA02"],
+    bcsb3: ["DPA03"],
+    fthb: ["FM05", "FM06"],
+    pcp: ["FM04"],
+    exclusive80: ["FM02"],
+    buycities: ["FM03"],
+    affordablehousing: ["FM01"]
+};
+
+function applySettingsProgramDefaults(programs) {
+    if (!Array.isArray(programs)) return programs;
+    programs.forEach(program => {
+        if (!program || !program.id) return;
+        if (SETTINGS_PROGRAM_NAME_OVERRIDES[program.id]) {
+            program.name = SETTINGS_PROGRAM_NAME_OVERRIDES[program.id];
+        }
+        program.productCodes = SETTINGS_PROGRAM_PRODUCT_CODES[program.id] || program.productCodes || [];
+    });
+    return programs;
+}
+
 // Load settings from localStorage or use defaults
 function loadSettings() {
     let settings;
-    
+
     try {
         const savedSettings = localStorage.getItem('amiToolSettings');
         settings = savedSettings ? JSON.parse(savedSettings) : defaultSettings;
@@ -334,7 +370,10 @@ function loadSettings() {
         console.error('Error loading settings:', error);
         settings = defaultSettings;
     }
-    
+
+    applySettingsProgramDefaults(settings.dpaPrograms);
+    applySettingsProgramDefaults(settings.mortgagePrograms);
+
     // Set year dropdown
     const yearSelect = document.getElementById('settings-year');
     if (yearSelect) {
