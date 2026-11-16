@@ -1,0 +1,47 @@
+name: Update HUD data
+
+on:
+  schedule:
+    # Monthly, on the 3rd at 09:17 UTC. HUD publishes new income limits once a year (usually spring).
+    - cron: '17 9 3 * *'
+  workflow_dispatch:
+    inputs:
+      years:
+        description: 'Years to fetch, space separated (blank = current and previous year)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-hud-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch HUD data
+        env:
+          HUD_API_TOKEN: ${{ secrets.HUD_API_TOKEN }}
+          YEARS: ${{ github.event.inputs.years }}
+        run: node scripts/fetch-hud-data.mjs $YEARS
+
+      - name: Commit changes
+        run: |
+          git add data/hud
+          if git diff --cached --quiet; then
+            echo "HUD data unchanged."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update HUD town and income limit data"
+          git push
