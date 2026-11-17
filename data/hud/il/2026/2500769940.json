@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Dukes County, MA",
+  "counties_msa": "",
+  "town_name": "Tisbury town",
+  "metro_status": "0",
+  "metro_name": "",
+  "area_name": "Dukes County, MA",
+  "year": "2026",
+  "median_income": 163100,
+  "very_low": {
+   "il50_p1": 57100,
+   "il50_p2": 65250,
+   "il50_p3": 73400,
+   "il50_p4": 81550,
+   "il50_p5": 88100,
+   "il50_p6": 94600,
+   "il50_p7": 101150,
+   "il50_p8": 107650
+  },
+  "extremely_low": {
+   "il30_p1": 34300,
+   "il30_p2": 39200,
+   "il30_p3": 44100,
+   "il30_p4": 48950,
+   "il30_p5": 52900,
+   "il30_p6": 56800,
+   "il30_p7": 60700,
+   "il30_p8": 64650
+  },
+  "low": {
+   "il80_p1": 74800,
+   "il80_p2": 85450,
+   "il80_p3": 96150,
+   "il80_p4": 106800,
+   "il80_p5": 115350,
+   "il80_p6": 123900,
+   "il80_p7": 132450,
+   "il80_p8": 141000
+  }
+ }
+}

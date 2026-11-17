@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Worcester County, MA",
+  "counties_msa": "",
+  "town_name": "Millbury town",
+  "metro_status": "1.0",
+  "metro_name": "Worcester, MA",
+  "area_name": "Worcester, MA HUD Metro FMR Area",
+  "year": "2025",
+  "median_income": 122200,
+  "very_low": {
+   "il50_p1": 43650,
+   "il50_p2": 49900,
+   "il50_p3": 56150,
+   "il50_p4": 62350,
+   "il50_p5": 67350,
+   "il50_p6": 72350,
+   "il50_p7": 77350,
+   "il50_p8": 82350
+  },
+  "extremely_low": {
+   "il30_p1": 26200,
+   "il30_p2": 29950,
+   "il30_p3": 33700,
+   "il30_p4": 37400,
+   "il30_p5": 40400,
+   "il30_p6": 43400,
+   "il30_p7": 48650,
+   "il30_p8": 54150
+  },
+  "low": {
+   "il80_p1": 69850,
+   "il80_p2": 79800,
+   "il80_p3": 89800,
+   "il80_p4": 99750,
+   "il80_p5": 107750,
+   "il80_p6": 115750,
+   "il80_p7": 123700,
+   "il80_p8": 131700
+  }
+ }
+}

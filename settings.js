@@ -401,15 +401,11 @@ function loadSettings() {
 
 // Fetch town data for MA and RI
 async function fetchTowns() {
-    const apiToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI2IiwianRpIjoiZmM3YWYxYzMwNjBhYmM1NTVjN2IyYzc0YzFiOWQ3YTBmYmIzMjg1NzkxYTYwNTVmOTMyOGIxNTk1MzczNjM3MDAwY2Y1YzQ1MmZmMjYwZWUiLCJpYXQiOjE3MTk2OTE3MTQuMTI0MjAyLCJuYmYiOjE3MTk2OTE3MTQuMTI0MjA0LCJleHAiOjIwMzUyMjQ1MTQuMTIwNjc3LCJzdWIiOiI3MzA3NCIsInNjb3BlcyI6W119.QOAzQdjx3I_j6sHIHNMKTYaE7UIag-sXs5AQQZvRDfCTVuko2IOYrIMDObisKgZgWMy01RcWAOUtQxkAVDn1Fg';
+    // Town lists are pre-fetched from HUD into data/hud/towns/ by scripts/fetch-hud-data.mjs (run manually).
     
     try {
         // Fetch MA towns
-        const maResponse = await fetch(`https://www.huduser.gov/hudapi/public/fmr/listCounties/MA`, {
-            headers: {
-                'Authorization': `Bearer ${apiToken}`
-            }
-        });
+        const maResponse = await fetch('data/hud/towns/MA.json', { cache: 'no-cache' });
         const maData = await maResponse.json();
         if (Array.isArray(maData)) {
             maTowns = maData.map(town => ({
@@ -431,11 +427,7 @@ async function fetchTowns() {
         }
         
         // Fetch RI towns
-        const riResponse = await fetch(`https://www.huduser.gov/hudapi/public/fmr/listCounties/RI`, {
-            headers: {
-                'Authorization': `Bearer ${apiToken}`
-            }
-        });
+        const riResponse = await fetch('data/hud/towns/RI.json', { cache: 'no-cache' });
         const riData = await riResponse.json();
         if (Array.isArray(riData)) {
             riTowns = riData.map(town => ({

@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Nantucket County, MA",
+  "counties_msa": "",
+  "town_name": "Nantucket town",
+  "metro_status": "0",
+  "metro_name": "",
+  "area_name": "Nantucket County, MA",
+  "year": "2026",
+  "median_income": 163200,
+  "very_low": {
+   "il50_p1": 63750,
+   "il50_p2": 72850,
+   "il50_p3": 81950,
+   "il50_p4": 91050,
+   "il50_p5": 98350,
+   "il50_p6": 105650,
+   "il50_p7": 112950,
+   "il50_p8": 120200
+  },
+  "extremely_low": {
+   "il30_p1": 38300,
+   "il30_p2": 43750,
+   "il30_p3": 49200,
+   "il30_p4": 54650,
+   "il30_p5": 59050,
+   "il30_p6": 63400,
+   "il30_p7": 67800,
+   "il30_p8": 72150
+  },
+  "low": {
+   "il80_p1": 92200,
+   "il80_p2": 105350,
+   "il80_p3": 118550,
+   "il80_p4": 131700,
+   "il80_p5": 142250,
+   "il80_p6": 152800,
+   "il80_p7": 163350,
+   "il80_p8": 173850
+  }
+ }
+}

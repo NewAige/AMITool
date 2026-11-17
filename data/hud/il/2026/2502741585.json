@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Worcester County, MA",
+  "counties_msa": "",
+  "town_name": "Millville town",
+  "metro_status": "1.0",
+  "metro_name": "Worcester, MA",
+  "area_name": "Eastern Worcester County, MA HUD Metro FMR Area",
+  "year": "2026",
+  "median_income": 149400,
+  "very_low": {
+   "il50_p1": 53550,
+   "il50_p2": 61200,
+   "il50_p3": 68850,
+   "il50_p4": 76500,
+   "il50_p5": 82650,
+   "il50_p6": 88750,
+   "il50_p7": 94900,
+   "il50_p8": 101000
+  },
+  "extremely_low": {
+   "il30_p1": 32150,
+   "il30_p2": 36750,
+   "il30_p3": 41350,
+   "il30_p4": 45900,
+   "il30_p5": 49600,
+   "il30_p6": 53250,
+   "il30_p7": 56950,
+   "il30_p8": 60600
+  },
+  "low": {
+   "il80_p1": 74800,
+   "il80_p2": 85450,
+   "il80_p3": 96150,
+   "il80_p4": 106800,
+   "il80_p5": 115350,
+   "il80_p6": 123900,
+   "il80_p7": 132450,
+   "il80_p8": 141000
+  }
+ }
+}

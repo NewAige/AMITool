@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Washington County, RI",
+  "counties_msa": "",
+  "town_name": "Hopkinton town",
+  "metro_status": "1.0",
+  "metro_name": "Providence-Warwick, RI-MA",
+  "area_name": "Westerly-Hopkinton-New Shoreham, RI HUD Metro FMR Area",
+  "year": "2026",
+  "median_income": 129000,
+  "very_low": {
+   "il50_p1": 45150,
+   "il50_p2": 51600,
+   "il50_p3": 58050,
+   "il50_p4": 64500,
+   "il50_p5": 69700,
+   "il50_p6": 74850,
+   "il50_p7": 80000,
+   "il50_p8": 85150
+  },
+  "extremely_low": {
+   "il30_p1": 27100,
+   "il30_p2": 31000,
+   "il30_p3": 34850,
+   "il30_p4": 38700,
+   "il30_p5": 41800,
+   "il30_p6": 44900,
+   "il30_p7": 50040,
+   "il30_p8": 55720
+  },
+  "low": {
+   "il80_p1": 72250,
+   "il80_p2": 82600,
+   "il80_p3": 92900,
+   "il80_p4": 103200,
+   "il80_p5": 111500,
+   "il80_p6": 119750,
+   "il80_p7": 128000,
+   "il80_p8": 136250
+  }
+ }
+}

@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Norfolk County, MA",
+  "counties_msa": "",
+  "town_name": "Bellingham town",
+  "metro_status": "1.0",
+  "metro_name": "Boston-Cambridge-Newton, MA-NH",
+  "area_name": "Boston-Cambridge-Quincy, MA-NH HUD Metro FMR Area",
+  "year": "2025",
+  "median_income": 160900,
+  "very_low": {
+   "il50_p1": 57900,
+   "il50_p2": 66200,
+   "il50_p3": 74450,
+   "il50_p4": 82700,
+   "il50_p5": 89350,
+   "il50_p6": 95950,
+   "il50_p7": 102550,
+   "il50_p8": 109200
+  },
+  "extremely_low": {
+   "il30_p1": 34750,
+   "il30_p2": 39700,
+   "il30_p3": 44650,
+   "il30_p4": 49600,
+   "il30_p5": 53600,
+   "il30_p6": 57550,
+   "il30_p7": 61550,
+   "il30_p8": 65500
+  },
+  "low": {
+   "il80_p1": 92650,
+   "il80_p2": 105850,
+   "il80_p3": 119100,
+   "il80_p4": 132300,
+   "il80_p5": 142900,
+   "il80_p6": 153500,
+   "il80_p7": 164100,
+   "il80_p8": 174650
+  }
+ }
+}

@@ -497,13 +497,9 @@ document.addEventListener('DOMContentLoaded', function() {
             submitButton.disabled = true;
 
             // Fetch income limit data
-            fetch(`https://www.huduser.gov/hudapi/public/il/data/${townCode}?year=${year}`, {
-                headers: {
-                    'Authorization': `Bearer ${apiToken}`
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
+            loadHudIncomeLimits(townCode, year)
+            .then(({ year: dataYear, response: data }) => {
+                userData.year = dataYear;
                 debug('API response for income limits:', data);
 
                 if (data && data.data) {
@@ -544,7 +540,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error fetching income limits:', error);
-                alert('Error calculating income limits. Please try again.');
+                alert(`Error calculating income limits. ${error.message}`);
                 submitButton.innerHTML = originalButtonText;
                 submitButton.disabled = false;
             });
@@ -634,8 +630,45 @@ const countyMapping = {
     'Woonsocket': 'Providence'
 };
 
-// API Token
-const apiToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI2IiwianRpIjoiZmM3YWYxYzMwNjBhYmM1NTVjN2IyYzc0YzFiOWQ3YTBmYmIzMjg1NzkxYTYwNTVmOTMyOGIxNTk1MzczNjM3MDAwY2Y1YzQ1MmZmMjYwZWUiLCJpYXQiOjE3MTk2OTE3MTQuMTI0MjAyLCJuYmYiOjE3MTk2OTE3MTQuMTI0MjA0LCJleHAiOjIwMzUyMjQ1MTQuMTIwNjc3LCJzdWIiOiI3MzA3NCIsInNjb3BlcyI6W119.QOAzQdjx3I_j6sHIHNMKTYaE7UIag-sXs5AQQZvRDfCTVuko2IOYrIMDObisKgZgWMy01RcWAOUtQxkAVDn1Fg';
+// HUD data is pre-fetched into data/hud/ by running scripts/fetch-hud-data.mjs manually.
+// The browser cannot call the HUD API directly (it sends no CORS headers).
+const HUD_DATA_BASE = 'data/hud';
+
+function fetchLocalJson(url) {
+    return fetch(url, { cache: 'no-cache' }).then(response => {
+        if (response.status === 404) return null;
+        if (!response.ok) throw new Error(`Could not load ${url} (${response.status})`);
+        return response.json();
+    });
+}
+
+function loadHudTowns(state) {
+    return fetchLocalJson(`${HUD_DATA_BASE}/towns/${state}.json`).then(data => {
+        if (!Array.isArray(data) || data.length === 0) {
+            throw new Error('Town data has not been downloaded yet. Run the "Update HUD data" GitHub Action.');
+        }
+        return data;
+    });
+}
+
+// Resolves to { year, response } using the requested year if available,
+// otherwise the most recent year that has been downloaded.
+function loadHudIncomeLimits(townCode, year) {
+    return fetchLocalJson(`${HUD_DATA_BASE}/il/${year}/${townCode}.json`).then(response => {
+        if (response) return { year: String(year), response };
+        return fetchLocalJson(`${HUD_DATA_BASE}/manifest.json`).then(manifest => {
+            const fallback = (manifest && manifest.years || []).map(String).find(y => y !== String(year));
+            if (!fallback) {
+                throw new Error('Income limit data has not been downloaded yet. Run the "Update HUD data" GitHub Action.');
+            }
+            return fetchLocalJson(`${HUD_DATA_BASE}/il/${fallback}/${townCode}.json`).then(fallbackResponse => {
+                if (!fallbackResponse) throw new Error(`No income limit data for this town in ${year} or ${fallback}.`);
+                debug(`No ${year} income limits downloaded; using ${fallback}.`);
+                return { year: fallback, response: fallbackResponse };
+            });
+        });
+    });
+}
 
 // Constants for program limits
 const MASSHOUSING_INCOME_LIMIT = 153090; // $153,090
@@ -1402,13 +1435,7 @@ function handleStateSelection(state) {
         selectedCard.innerHTML = `<div class="state-icon"><i class="fas fa-spinner fa-spin"></i></div><div class="state-name">Loading...</div>`;
     }
 
-    fetch(`https://www.huduser.gov/hudapi/public/fmr/listCounties/${state}`, { // listCounties gives town_name for MA/RI
-        headers: { 'Authorization': `Bearer ${apiToken}` }
-    })
-        .then(response => {
-            if (!response.ok) throw new Error(`API error: ${response.status}`);
-            return response.json();
-        })
+    loadHudTowns(state) // HUD listCounties output (town_name + fips_code for MA/RI)
         .then(data => {
             // debug(`API response for towns in ${state}:`, data);
             if (selectedCard) selectedCard.innerHTML = originalCardContent; // Restore card

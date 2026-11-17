@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Middlesex County, MA",
+  "counties_msa": "",
+  "town_name": "Groton town",
+  "metro_status": "1.0",
+  "metro_name": "Boston-Cambridge-Newton, MA-NH",
+  "area_name": "Lowell, MA HUD Metro FMR Area",
+  "year": "2026",
+  "median_income": 143000,
+  "very_low": {
+   "il50_p1": 50050,
+   "il50_p2": 57200,
+   "il50_p3": 64350,
+   "il50_p4": 71500,
+   "il50_p5": 77250,
+   "il50_p6": 82950,
+   "il50_p7": 88700,
+   "il50_p8": 94400
+  },
+  "extremely_low": {
+   "il30_p1": 30050,
+   "il30_p2": 34350,
+   "il30_p3": 38650,
+   "il30_p4": 42900,
+   "il30_p5": 46350,
+   "il30_p6": 49800,
+   "il30_p7": 53200,
+   "il30_p8": 56650
+  },
+  "low": {
+   "il80_p1": 76750,
+   "il80_p2": 87700,
+   "il80_p3": 98650,
+   "il80_p4": 109600,
+   "il80_p5": 118400,
+   "il80_p6": 127150,
+   "il80_p7": 135950,
+   "il80_p8": 144700
+  }
+ }
+}
