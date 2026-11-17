@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Hampden County, MA",
+  "counties_msa": "",
+  "town_name": "Montgomery town",
+  "metro_status": "1.0",
+  "metro_name": "Springfield, MA",
+  "area_name": "Springfield, MA MSA",
+  "year": "2026",
+  "median_income": 96700,
+  "very_low": {
+   "il50_p1": 46000,
+   "il50_p2": 52550,
+   "il50_p3": 59200,
+   "il50_p4": 65750,
+   "il50_p5": 71050,
+   "il50_p6": 76300,
+   "il50_p7": 81550,
+   "il50_p8": 86800
+  },
+  "extremely_low": {
+   "il30_p1": 27650,
+   "il30_p2": 31600,
+   "il30_p3": 35550,
+   "il30_p4": 39450,
+   "il30_p5": 42650,
+   "il30_p6": 45800,
+   "il30_p7": 50040,
+   "il30_p8": 55720
+  },
+  "low": {
+   "il80_p1": 73650,
+   "il80_p2": 84200,
+   "il80_p3": 94700,
+   "il80_p4": 105200,
+   "il80_p5": 113650,
+   "il80_p6": 122050,
+   "il80_p7": 130450,
+   "il80_p8": 138900
+  }
+ }
+}

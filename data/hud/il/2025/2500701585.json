@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Dukes County, MA",
+  "counties_msa": "",
+  "town_name": "Aquinnah town",
+  "metro_status": "0",
+  "metro_name": "",
+  "area_name": "Dukes County, MA",
+  "year": "2025",
+  "median_income": 153300,
+  "very_low": {
+   "il50_p1": 52550,
+   "il50_p2": 60050,
+   "il50_p3": 67550,
+   "il50_p4": 75050,
+   "il50_p5": 81100,
+   "il50_p6": 87100,
+   "il50_p7": 93100,
+   "il50_p8": 99100
+  },
+  "extremely_low": {
+   "il30_p1": 31550,
+   "il30_p2": 36050,
+   "il30_p3": 40550,
+   "il30_p4": 45050,
+   "il30_p5": 48700,
+   "il30_p6": 52300,
+   "il30_p7": 55900,
+   "il30_p8": 59500
+  },
+  "low": {
+   "il80_p1": 72950,
+   "il80_p2": 83400,
+   "il80_p3": 93800,
+   "il80_p4": 104200,
+   "il80_p5": 112550,
+   "il80_p6": 120900,
+   "il80_p7": 129250,
+   "il80_p8": 137550
+  }
+ }
+}

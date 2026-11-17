@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Plymouth County, MA",
+  "counties_msa": "",
+  "town_name": "Hanson town",
+  "metro_status": "1.0",
+  "metro_name": "Boston-Cambridge-Newton, MA-NH",
+  "area_name": "Brockton, MA HUD Metro FMR Area",
+  "year": "2026",
+  "median_income": 127800,
+  "very_low": {
+   "il50_p1": 47150,
+   "il50_p2": 53900,
+   "il50_p3": 60650,
+   "il50_p4": 67350,
+   "il50_p5": 72750,
+   "il50_p6": 78150,
+   "il50_p7": 83550,
+   "il50_p8": 88950
+  },
+  "extremely_low": {
+   "il30_p1": 28300,
+   "il30_p2": 32350,
+   "il30_p3": 36400,
+   "il30_p4": 40400,
+   "il30_p5": 43650,
+   "il30_p6": 46900,
+   "il30_p7": 50100,
+   "il30_p8": 55720
+  },
+  "low": {
+   "il80_p1": 75450,
+   "il80_p2": 86200,
+   "il80_p3": 97000,
+   "il80_p4": 107750,
+   "il80_p5": 116400,
+   "il80_p6": 125000,
+   "il80_p7": 133650,
+   "il80_p8": 142250
+  }
+ }
+}

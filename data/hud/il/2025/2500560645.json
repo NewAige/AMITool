@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Bristol County, MA",
+  "counties_msa": "",
+  "town_name": "Seekonk town",
+  "metro_status": "1.0",
+  "metro_name": "Providence-Warwick, RI-MA",
+  "area_name": "Providence-Fall River, RI-MA HUD Metro FMR Area",
+  "year": "2025",
+  "median_income": 114300,
+  "very_low": {
+   "il50_p1": 40050,
+   "il50_p2": 45750,
+   "il50_p3": 51450,
+   "il50_p4": 57150,
+   "il50_p5": 61750,
+   "il50_p6": 66300,
+   "il50_p7": 70900,
+   "il50_p8": 75450
+  },
+  "extremely_low": {
+   "il30_p1": 24050,
+   "il30_p2": 27450,
+   "il30_p3": 30900,
+   "il30_p4": 34300,
+   "il30_p5": 37650,
+   "il30_p6": 43150,
+   "il30_p7": 48650,
+   "il30_p8": 54150
+  },
+  "low": {
+   "il80_p1": 64050,
+   "il80_p2": 73200,
+   "il80_p3": 82350,
+   "il80_p4": 91450,
+   "il80_p5": 98800,
+   "il80_p6": 106100,
+   "il80_p7": 113400,
+   "il80_p8": 120750
+  }
+ }
+}

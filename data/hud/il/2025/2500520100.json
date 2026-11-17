@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Bristol County, MA",
+  "counties_msa": "",
+  "town_name": "Easton town",
+  "metro_status": "1.0",
+  "metro_name": "Providence-Warwick, RI-MA",
+  "area_name": "Easton-Raynham, MA HUD Metro FMR Area",
+  "year": "2025",
+  "median_income": 161700,
+  "very_low": {
+   "il50_p1": 56600,
+   "il50_p2": 64700,
+   "il50_p3": 72800,
+   "il50_p4": 80850,
+   "il50_p5": 87350,
+   "il50_p6": 93800,
+   "il50_p7": 100300,
+   "il50_p8": 106750
+  },
+  "extremely_low": {
+   "il30_p1": 33950,
+   "il30_p2": 38800,
+   "il30_p3": 43650,
+   "il30_p4": 48500,
+   "il30_p5": 52400,
+   "il30_p6": 56300,
+   "il30_p7": 60150,
+   "il30_p8": 64050
+  },
+  "low": {
+   "il80_p1": 78500,
+   "il80_p2": 89700,
+   "il80_p3": 100900,
+   "il80_p4": 112100,
+   "il80_p5": 121100,
+   "il80_p6": 130050,
+   "il80_p7": 139050,
+   "il80_p8": 148000
+  }
+ }
+}

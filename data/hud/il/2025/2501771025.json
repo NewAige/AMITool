@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Middlesex County, MA",
+  "counties_msa": "",
+  "town_name": "Tyngsborough town",
+  "metro_status": "1.0",
+  "metro_name": "Boston-Cambridge-Newton, MA-NH",
+  "area_name": "Lowell, MA HUD Metro FMR Area",
+  "year": "2025",
+  "median_income": 136900,
+  "very_low": {
+   "il50_p1": 47950,
+   "il50_p2": 54800,
+   "il50_p3": 61650,
+   "il50_p4": 68450,
+   "il50_p5": 73950,
+   "il50_p6": 79450,
+   "il50_p7": 84900,
+   "il50_p8": 90400
+  },
+  "extremely_low": {
+   "il30_p1": 28750,
+   "il30_p2": 32850,
+   "il30_p3": 36950,
+   "il30_p4": 41050,
+   "il30_p5": 44350,
+   "il30_p6": 47650,
+   "il30_p7": 50950,
+   "il30_p8": 54200
+  },
+  "low": {
+   "il80_p1": 73200,
+   "il80_p2": 83650,
+   "il80_p3": 94100,
+   "il80_p4": 104550,
+   "il80_p5": 112950,
+   "il80_p6": 121300,
+   "il80_p7": 129650,
+   "il80_p8": 138050
+  }
+ }
+}

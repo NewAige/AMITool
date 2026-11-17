@@ -1,0 +1,2459 @@
+[
+ {
+  "state_code": "MA",
+  "fips_code": "2502300170",
+  "county_name": "Plymouth County",
+  "town_name": "Abington town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501700380",
+  "county_name": "Middlesex County",
+  "town_name": "Acton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500500520",
+  "county_name": "Bristol County",
+  "town_name": "Acushnet town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500300555",
+  "county_name": "Berkshire County",
+  "town_name": "Adams town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501300840",
+  "county_name": "Hampden County",
+  "town_name": "Agawam Town city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500300975",
+  "county_name": "Berkshire County",
+  "town_name": "Alford town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500901260",
+  "county_name": "Essex County",
+  "town_name": "Amesbury Town city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501501370",
+  "county_name": "Hampshire County",
+  "town_name": "Amherst Town city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500901465",
+  "county_name": "Essex County",
+  "town_name": "Andover town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500701585",
+  "county_name": "Dukes County",
+  "town_name": "Aquinnah town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501701605",
+  "county_name": "Middlesex County",
+  "town_name": "Arlington town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502701885",
+  "county_name": "Worcester County",
+  "town_name": "Ashburnham town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501701955",
+  "county_name": "Middlesex County",
+  "town_name": "Ashby town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501102095",
+  "county_name": "Franklin County",
+  "town_name": "Ashfield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501702130",
+  "county_name": "Middlesex County",
+  "town_name": "Ashland town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502702480",
+  "county_name": "Worcester County",
+  "town_name": "Athol town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500502690",
+  "county_name": "Bristol County",
+  "town_name": "Attleboro city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502702760",
+  "county_name": "Worcester County",
+  "town_name": "Auburn town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502102935",
+  "county_name": "Norfolk County",
+  "town_name": "Avon town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501703005",
+  "county_name": "Middlesex County",
+  "town_name": "Ayer town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500103690",
+  "county_name": "Barnstable County",
+  "town_name": "Barnstable Town city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502703740",
+  "county_name": "Worcester County",
+  "town_name": "Barre town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500304545",
+  "county_name": "Berkshire County",
+  "town_name": "Becket town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501704615",
+  "county_name": "Middlesex County",
+  "town_name": "Bedford town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501504825",
+  "county_name": "Hampshire County",
+  "town_name": "Belchertown town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502104930",
+  "county_name": "Norfolk County",
+  "town_name": "Bellingham town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501705070",
+  "county_name": "Middlesex County",
+  "town_name": "Belmont town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500505280",
+  "county_name": "Bristol County",
+  "town_name": "Berkley town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502705490",
+  "county_name": "Worcester County",
+  "town_name": "Berlin town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501105560",
+  "county_name": "Franklin County",
+  "town_name": "Bernardston town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500905595",
+  "county_name": "Essex County",
+  "town_name": "Beverly city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501705805",
+  "county_name": "Middlesex County",
+  "town_name": "Billerica town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502706015",
+  "county_name": "Worcester County",
+  "town_name": "Blackstone town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501306085",
+  "county_name": "Hampden County",
+  "town_name": "Blandford town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502706365",
+  "county_name": "Worcester County",
+  "town_name": "Bolton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502507000",
+  "county_name": "Suffolk County",
+  "town_name": "Boston city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500107175",
+  "county_name": "Barnstable County",
+  "town_name": "Bourne town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501707350",
+  "county_name": "Middlesex County",
+  "town_name": "Boxborough town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500907420",
+  "county_name": "Essex County",
+  "town_name": "Boxford town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502707525",
+  "county_name": "Worcester County",
+  "town_name": "Boylston town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502107740",
+  "county_name": "Norfolk County",
+  "town_name": "Braintree Town city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500107980",
+  "county_name": "Barnstable County",
+  "town_name": "Brewster town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502308130",
+  "county_name": "Plymouth County",
+  "town_name": "Bridgewater city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501308470",
+  "county_name": "Hampden County",
+  "town_name": "Brimfield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502309000",
+  "county_name": "Plymouth County",
+  "town_name": "Brockton city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502709105",
+  "county_name": "Worcester County",
+  "town_name": "Brookfield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502109175",
+  "county_name": "Norfolk County",
+  "town_name": "Brookline town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501109595",
+  "county_name": "Franklin County",
+  "town_name": "Buckland town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501709840",
+  "county_name": "Middlesex County",
+  "town_name": "Burlington town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501711000",
+  "county_name": "Middlesex County",
+  "town_name": "Cambridge city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502111315",
+  "county_name": "Norfolk County",
+  "town_name": "Canton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501711525",
+  "county_name": "Middlesex County",
+  "town_name": "Carlisle town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502311665",
+  "county_name": "Plymouth County",
+  "town_name": "Carver town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501112505",
+  "county_name": "Franklin County",
+  "town_name": "Charlemont town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502712715",
+  "county_name": "Worcester County",
+  "town_name": "Charlton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500112995",
+  "county_name": "Barnstable County",
+  "town_name": "Chatham town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501713135",
+  "county_name": "Middlesex County",
+  "town_name": "Chelmsford town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502513205",
+  "county_name": "Suffolk County",
+  "town_name": "Chelsea city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500313345",
+  "county_name": "Berkshire County",
+  "town_name": "Cheshire town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501313485",
+  "county_name": "Hampden County",
+  "town_name": "Chester town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501513590",
+  "county_name": "Hampshire County",
+  "town_name": "Chesterfield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501313660",
+  "county_name": "Hampden County",
+  "town_name": "Chicopee city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500713800",
+  "county_name": "Dukes County",
+  "town_name": "Chilmark town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500314010",
+  "county_name": "Berkshire County",
+  "town_name": "Clarksburg town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502714395",
+  "county_name": "Worcester County",
+  "town_name": "Clinton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502114640",
+  "county_name": "Norfolk County",
+  "town_name": "Cohasset town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501114885",
+  "county_name": "Franklin County",
+  "town_name": "Colrain town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501715060",
+  "county_name": "Middlesex County",
+  "town_name": "Concord town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501115200",
+  "county_name": "Franklin County",
+  "town_name": "Conway town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501516040",
+  "county_name": "Hampshire County",
+  "town_name": "Cummington town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500316180",
+  "county_name": "Berkshire County",
+  "town_name": "Dalton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500916250",
+  "county_name": "Essex County",
+  "town_name": "Danvers town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500516425",
+  "county_name": "Bristol County",
+  "town_name": "Dartmouth town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502116495",
+  "county_name": "Norfolk County",
+  "town_name": "Dedham town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501116670",
+  "county_name": "Franklin County",
+  "town_name": "Deerfield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500116775",
+  "county_name": "Barnstable County",
+  "town_name": "Dennis town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500516950",
+  "county_name": "Bristol County",
+  "town_name": "Dighton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502717300",
+  "county_name": "Worcester County",
+  "town_name": "Douglas town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502117405",
+  "county_name": "Norfolk County",
+  "town_name": "Dover town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501717475",
+  "county_name": "Middlesex County",
+  "town_name": "Dracut town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502717685",
+  "county_name": "Worcester County",
+  "town_name": "Dudley town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501717825",
+  "county_name": "Middlesex County",
+  "town_name": "Dunstable town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502317895",
+  "county_name": "Plymouth County",
+  "town_name": "Duxbury town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502318455",
+  "county_name": "Plymouth County",
+  "town_name": "East Bridgewater town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502718560",
+  "county_name": "Worcester County",
+  "town_name": "East Brookfield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501319645",
+  "county_name": "Hampden County",
+  "town_name": "East Longmeadow town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500119295",
+  "county_name": "Barnstable County",
+  "town_name": "Eastham town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501519370",
+  "county_name": "Hampshire County",
+  "town_name": "Easthampton Town city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500520100",
+  "county_name": "Bristol County",
+  "town_name": "Easton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500721150",
+  "county_name": "Dukes County",
+  "town_name": "Edgartown town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500321360",
+  "county_name": "Berkshire County",
+  "town_name": "Egremont town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501121780",
+  "county_name": "Franklin County",
+  "town_name": "Erving town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500921850",
+  "county_name": "Essex County",
+  "town_name": "Essex town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501721990",
+  "county_name": "Middlesex County",
+  "town_name": "Everett city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500522130",
+  "county_name": "Bristol County",
+  "town_name": "Fairhaven town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500523000",
+  "county_name": "Bristol County",
+  "town_name": "Fall River city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500123105",
+  "county_name": "Barnstable County",
+  "town_name": "Falmouth town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502723875",
+  "county_name": "Worcester County",
+  "town_name": "Fitchburg city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500324120",
+  "county_name": "Berkshire County",
+  "town_name": "Florida town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502124820",
+  "county_name": "Norfolk County",
+  "town_name": "Foxborough town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501724960",
+  "county_name": "Middlesex County",
+  "town_name": "Framingham city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502125172",
+  "county_name": "Norfolk County",
+  "town_name": "Franklin Town city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500525240",
+  "county_name": "Bristol County",
+  "town_name": "Freetown town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502725485",
+  "county_name": "Worcester County",
+  "town_name": "Gardner city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500925625",
+  "county_name": "Essex County",
+  "town_name": "Georgetown town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501125730",
+  "county_name": "Franklin County",
+  "town_name": "Gill town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500926150",
+  "county_name": "Essex County",
+  "town_name": "Gloucester city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501526290",
+  "county_name": "Hampshire County",
+  "town_name": "Goshen town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500726325",
+  "county_name": "Dukes County",
+  "town_name": "Gosnold town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502726430",
+  "county_name": "Worcester County",
+  "town_name": "Grafton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501526535",
+  "county_name": "Hampshire County",
+  "town_name": "Granby town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501326675",
+  "county_name": "Hampden County",
+  "town_name": "Granville town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500326815",
+  "county_name": "Berkshire County",
+  "town_name": "Great Barrington town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501127060",
+  "county_name": "Franklin County",
+  "town_name": "Greenfield city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501727480",
+  "county_name": "Middlesex County",
+  "town_name": "Groton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500927620",
+  "county_name": "Essex County",
+  "town_name": "Groveland town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501527690",
+  "county_name": "Hampshire County",
+  "town_name": "Hadley town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502327795",
+  "county_name": "Plymouth County",
+  "town_name": "Halifax town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500927900",
+  "county_name": "Essex County",
+  "town_name": "Hamilton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501328075",
+  "county_name": "Hampden County",
+  "town_name": "Hampden town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500328180",
+  "county_name": "Berkshire County",
+  "town_name": "Hancock town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502328285",
+  "county_name": "Plymouth County",
+  "town_name": "Hanover town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502328495",
+  "county_name": "Plymouth County",
+  "town_name": "Hanson town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502728740",
+  "county_name": "Worcester County",
+  "town_name": "Hardwick town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502728950",
+  "county_name": "Worcester County",
+  "town_name": "Harvard town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500129020",
+  "county_name": "Barnstable County",
+  "town_name": "Harwich town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501529265",
+  "county_name": "Hampshire County",
+  "town_name": "Hatfield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500929405",
+  "county_name": "Essex County",
+  "town_name": "Haverhill city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501129475",
+  "county_name": "Franklin County",
+  "town_name": "Hawley town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501129650",
+  "county_name": "Franklin County",
+  "town_name": "Heath town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502330210",
+  "county_name": "Plymouth County",
+  "town_name": "Hingham town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500330315",
+  "county_name": "Berkshire County",
+  "town_name": "Hinsdale town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502130455",
+  "county_name": "Norfolk County",
+  "town_name": "Holbrook town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502730560",
+  "county_name": "Worcester County",
+  "town_name": "Holden town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501330665",
+  "county_name": "Hampden County",
+  "town_name": "Holland town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501730700",
+  "county_name": "Middlesex County",
+  "town_name": "Holliston town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501330840",
+  "county_name": "Hampden County",
+  "town_name": "Holyoke city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502730945",
+  "county_name": "Worcester County",
+  "town_name": "Hopedale town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501731085",
+  "county_name": "Middlesex County",
+  "town_name": "Hopkinton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502731435",
+  "county_name": "Worcester County",
+  "town_name": "Hubbardston town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501731540",
+  "county_name": "Middlesex County",
+  "town_name": "Hudson town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502331645",
+  "county_name": "Plymouth County",
+  "town_name": "Hull town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501531785",
+  "county_name": "Hampshire County",
+  "town_name": "Huntington town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500932310",
+  "county_name": "Essex County",
+  "town_name": "Ipswich town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502333220",
+  "county_name": "Plymouth County",
+  "town_name": "Kingston town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502333920",
+  "county_name": "Plymouth County",
+  "town_name": "Lakeville town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502734165",
+  "county_name": "Worcester County",
+  "town_name": "Lancaster town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500334340",
+  "county_name": "Berkshire County",
+  "town_name": "Lanesborough town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500934550",
+  "county_name": "Essex County",
+  "town_name": "Lawrence city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500334655",
+  "county_name": "Berkshire County",
+  "town_name": "Lee town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502734795",
+  "county_name": "Worcester County",
+  "town_name": "Leicester town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500334970",
+  "county_name": "Berkshire County",
+  "town_name": "Lenox town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502735075",
+  "county_name": "Worcester County",
+  "town_name": "Leominster city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501135180",
+  "county_name": "Franklin County",
+  "town_name": "Leverett town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501735215",
+  "county_name": "Middlesex County",
+  "town_name": "Lexington town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501135285",
+  "county_name": "Franklin County",
+  "town_name": "Leyden town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501735425",
+  "county_name": "Middlesex County",
+  "town_name": "Lincoln town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501735950",
+  "county_name": "Middlesex County",
+  "town_name": "Littleton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501336300",
+  "county_name": "Hampden County",
+  "town_name": "Longmeadow town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501737000",
+  "county_name": "Middlesex County",
+  "town_name": "Lowell city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501337175",
+  "county_name": "Hampden County",
+  "town_name": "Ludlow town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502737420",
+  "county_name": "Worcester County",
+  "town_name": "Lunenburg town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500937490",
+  "county_name": "Essex County",
+  "town_name": "Lynn city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500937560",
+  "county_name": "Essex County",
+  "town_name": "Lynnfield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501737875",
+  "county_name": "Middlesex County",
+  "town_name": "Malden city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500937995",
+  "county_name": "Essex County",
+  "town_name": "Manchester-by-the-Sea town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500538225",
+  "county_name": "Bristol County",
+  "town_name": "Mansfield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500938400",
+  "county_name": "Essex County",
+  "town_name": "Marblehead town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502338540",
+  "county_name": "Plymouth County",
+  "town_name": "Marion town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501738715",
+  "county_name": "Middlesex County",
+  "town_name": "Marlborough city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502338855",
+  "county_name": "Plymouth County",
+  "town_name": "Marshfield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500139100",
+  "county_name": "Barnstable County",
+  "town_name": "Mashpee town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502339450",
+  "county_name": "Plymouth County",
+  "town_name": "Mattapoisett town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501739625",
+  "county_name": "Middlesex County",
+  "town_name": "Maynard town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502139765",
+  "county_name": "Norfolk County",
+  "town_name": "Medfield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501739835",
+  "county_name": "Middlesex County",
+  "town_name": "Medford city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502139975",
+  "county_name": "Norfolk County",
+  "town_name": "Medway town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501740115",
+  "county_name": "Middlesex County",
+  "town_name": "Melrose city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502740255",
+  "county_name": "Worcester County",
+  "town_name": "Mendon town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500940430",
+  "county_name": "Essex County",
+  "town_name": "Merrimac town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500940710",
+  "county_name": "Essex County",
+  "town_name": "Methuen city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502340850",
+  "county_name": "Plymouth County",
+  "town_name": "Middleborough town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501540990",
+  "county_name": "Hampshire County",
+  "town_name": "Middlefield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500941095",
+  "county_name": "Essex County",
+  "town_name": "Middleton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502741165",
+  "county_name": "Worcester County",
+  "town_name": "Milford town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502741340",
+  "county_name": "Worcester County",
+  "town_name": "Millbury town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502141515",
+  "county_name": "Norfolk County",
+  "town_name": "Millis town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502741585",
+  "county_name": "Worcester County",
+  "town_name": "Millville town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502141690",
+  "county_name": "Norfolk County",
+  "town_name": "Milton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501142040",
+  "county_name": "Franklin County",
+  "town_name": "Monroe town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501342145",
+  "county_name": "Hampden County",
+  "town_name": "Monson town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501142285",
+  "county_name": "Franklin County",
+  "town_name": "Montague town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500342460",
+  "county_name": "Berkshire County",
+  "town_name": "Monterey town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501342530",
+  "county_name": "Hampden County",
+  "town_name": "Montgomery town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500343300",
+  "county_name": "Berkshire County",
+  "town_name": "Mount Washington town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500943580",
+  "county_name": "Essex County",
+  "town_name": "Nahant town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501943790",
+  "county_name": "Nantucket County",
+  "town_name": "Nantucket town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501743895",
+  "county_name": "Middlesex County",
+  "town_name": "Natick town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502144105",
+  "county_name": "Norfolk County",
+  "town_name": "Needham town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500344385",
+  "county_name": "Berkshire County",
+  "town_name": "New Ashford town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500545000",
+  "county_name": "Bristol County",
+  "town_name": "New Bedford city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502745105",
+  "county_name": "Worcester County",
+  "town_name": "New Braintree town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500345420",
+  "county_name": "Berkshire County",
+  "town_name": "New Marlborough town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501145490",
+  "county_name": "Franklin County",
+  "town_name": "New Salem town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500945175",
+  "county_name": "Essex County",
+  "town_name": "Newbury town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500945245",
+  "county_name": "Essex County",
+  "town_name": "Newburyport city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501745560",
+  "county_name": "Middlesex County",
+  "town_name": "Newton city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502146050",
+  "county_name": "Norfolk County",
+  "town_name": "Norfolk town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500346225",
+  "county_name": "Berkshire County",
+  "town_name": "North Adams city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500946365",
+  "county_name": "Essex County",
+  "town_name": "North Andover town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500546598",
+  "county_name": "Bristol County",
+  "town_name": "North Attleborough Town city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502747135",
+  "county_name": "Worcester County",
+  "town_name": "North Brookfield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501748955",
+  "county_name": "Middlesex County",
+  "town_name": "North Reading town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501546330",
+  "county_name": "Hampshire County",
+  "town_name": "Northampton city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502746820",
+  "county_name": "Worcester County",
+  "town_name": "Northborough town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502746925",
+  "county_name": "Worcester County",
+  "town_name": "Northbridge town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501147835",
+  "county_name": "Franklin County",
+  "town_name": "Northfield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500549970",
+  "county_name": "Bristol County",
+  "town_name": "Norton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502350145",
+  "county_name": "Plymouth County",
+  "town_name": "Norwell town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502150250",
+  "county_name": "Norfolk County",
+  "town_name": "Norwood town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500750390",
+  "county_name": "Dukes County",
+  "town_name": "Oak Bluffs town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502750670",
+  "county_name": "Worcester County",
+  "town_name": "Oakham town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501151265",
+  "county_name": "Franklin County",
+  "town_name": "Orange town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500151440",
+  "county_name": "Barnstable County",
+  "town_name": "Orleans town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500351580",
+  "county_name": "Berkshire County",
+  "town_name": "Otis town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502751825",
+  "county_name": "Worcester County",
+  "town_name": "Oxford town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501352144",
+  "county_name": "Hampden County",
+  "town_name": "Palmer Town city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502752420",
+  "county_name": "Worcester County",
+  "town_name": "Paxton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500952490",
+  "county_name": "Essex County",
+  "town_name": "Peabody city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501552560",
+  "county_name": "Hampshire County",
+  "town_name": "Pelham town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502352630",
+  "county_name": "Plymouth County",
+  "town_name": "Pembroke town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501752805",
+  "county_name": "Middlesex County",
+  "town_name": "Pepperell town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500353050",
+  "county_name": "Berkshire County",
+  "town_name": "Peru town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502753120",
+  "county_name": "Worcester County",
+  "town_name": "Petersham town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502753225",
+  "county_name": "Worcester County",
+  "town_name": "Phillipston town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500353960",
+  "county_name": "Berkshire County",
+  "town_name": "Pittsfield city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501554030",
+  "county_name": "Hampshire County",
+  "town_name": "Plainfield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502154100",
+  "county_name": "Norfolk County",
+  "town_name": "Plainville town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502354310",
+  "county_name": "Plymouth County",
+  "town_name": "Plymouth town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502354415",
+  "county_name": "Plymouth County",
+  "town_name": "Plympton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502755395",
+  "county_name": "Worcester County",
+  "town_name": "Princeton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500155500",
+  "county_name": "Barnstable County",
+  "town_name": "Provincetown town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502155745",
+  "county_name": "Norfolk County",
+  "town_name": "Quincy city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502156000",
+  "county_name": "Norfolk County",
+  "town_name": "Randolph city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500556060",
+  "county_name": "Bristol County",
+  "town_name": "Raynham town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501756130",
+  "county_name": "Middlesex County",
+  "town_name": "Reading town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500556375",
+  "county_name": "Bristol County",
+  "town_name": "Rehoboth town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502556585",
+  "county_name": "Suffolk County",
+  "town_name": "Revere city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500356795",
+  "county_name": "Berkshire County",
+  "town_name": "Richmond town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502357600",
+  "county_name": "Plymouth County",
+  "town_name": "Rochester town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502357775",
+  "county_name": "Plymouth County",
+  "town_name": "Rockland town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500957880",
+  "county_name": "Essex County",
+  "town_name": "Rockport town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501158335",
+  "county_name": "Franklin County",
+  "town_name": "Rowe town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500958405",
+  "county_name": "Essex County",
+  "town_name": "Rowley town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502758580",
+  "county_name": "Worcester County",
+  "town_name": "Royalston town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501358650",
+  "county_name": "Hampden County",
+  "town_name": "Russell town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502758825",
+  "county_name": "Worcester County",
+  "town_name": "Rutland town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500959105",
+  "county_name": "Essex County",
+  "town_name": "Salem city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500959245",
+  "county_name": "Essex County",
+  "town_name": "Salisbury town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500359665",
+  "county_name": "Berkshire County",
+  "town_name": "Sandisfield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500159735",
+  "county_name": "Barnstable County",
+  "town_name": "Sandwich town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500960015",
+  "county_name": "Essex County",
+  "town_name": "Saugus town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500360225",
+  "county_name": "Berkshire County",
+  "town_name": "Savoy town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502360330",
+  "county_name": "Plymouth County",
+  "town_name": "Scituate town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500560645",
+  "county_name": "Bristol County",
+  "town_name": "Seekonk town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502160785",
+  "county_name": "Norfolk County",
+  "town_name": "Sharon town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500361065",
+  "county_name": "Berkshire County",
+  "town_name": "Sheffield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501161135",
+  "county_name": "Franklin County",
+  "town_name": "Shelburne town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501761380",
+  "county_name": "Middlesex County",
+  "town_name": "Sherborn town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501761590",
+  "county_name": "Middlesex County",
+  "town_name": "Shirley town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502761800",
+  "county_name": "Worcester County",
+  "town_name": "Shrewsbury town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501161905",
+  "county_name": "Franklin County",
+  "town_name": "Shutesbury town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500562430",
+  "county_name": "Bristol County",
+  "town_name": "Somerset town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501762535",
+  "county_name": "Middlesex County",
+  "town_name": "Somerville city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501564145",
+  "county_name": "Hampshire County",
+  "town_name": "South Hadley town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501562745",
+  "county_name": "Hampshire County",
+  "town_name": "Southampton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502763165",
+  "county_name": "Worcester County",
+  "town_name": "Southborough town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502763345",
+  "county_name": "Worcester County",
+  "town_name": "Southbridge Town city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501365825",
+  "county_name": "Hampden County",
+  "town_name": "Southwick town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502766105",
+  "county_name": "Worcester County",
+  "town_name": "Spencer town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501367000",
+  "county_name": "Hampden County",
+  "town_name": "Springfield city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502767385",
+  "county_name": "Worcester County",
+  "town_name": "Sterling town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500367595",
+  "county_name": "Berkshire County",
+  "town_name": "Stockbridge town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501767665",
+  "county_name": "Middlesex County",
+  "town_name": "Stoneham town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502167945",
+  "county_name": "Norfolk County",
+  "town_name": "Stoughton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501768050",
+  "county_name": "Middlesex County",
+  "town_name": "Stow town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502768155",
+  "county_name": "Worcester County",
+  "town_name": "Sturbridge town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501768260",
+  "county_name": "Middlesex County",
+  "town_name": "Sudbury town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501168400",
+  "county_name": "Franklin County",
+  "town_name": "Sunderland town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502768610",
+  "county_name": "Worcester County",
+  "town_name": "Sutton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500968645",
+  "county_name": "Essex County",
+  "town_name": "Swampscott town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500568750",
+  "county_name": "Bristol County",
+  "town_name": "Swansea town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500569170",
+  "county_name": "Bristol County",
+  "town_name": "Taunton city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502769275",
+  "county_name": "Worcester County",
+  "town_name": "Templeton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501769415",
+  "county_name": "Middlesex County",
+  "town_name": "Tewksbury town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500769940",
+  "county_name": "Dukes County",
+  "town_name": "Tisbury town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501370045",
+  "county_name": "Hampden County",
+  "town_name": "Tolland town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500970150",
+  "county_name": "Essex County",
+  "town_name": "Topsfield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501770360",
+  "county_name": "Middlesex County",
+  "town_name": "Townsend town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500170605",
+  "county_name": "Barnstable County",
+  "town_name": "Truro town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501771025",
+  "county_name": "Middlesex County",
+  "town_name": "Tyngsborough town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500371095",
+  "county_name": "Berkshire County",
+  "town_name": "Tyringham town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502771480",
+  "county_name": "Worcester County",
+  "town_name": "Upton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502771620",
+  "county_name": "Worcester County",
+  "town_name": "Uxbridge town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501772215",
+  "county_name": "Middlesex County",
+  "town_name": "Wakefield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501372390",
+  "county_name": "Hampden County",
+  "town_name": "Wales town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502172495",
+  "county_name": "Norfolk County",
+  "town_name": "Walpole town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501772600",
+  "county_name": "Middlesex County",
+  "town_name": "Waltham city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501572880",
+  "county_name": "Hampshire County",
+  "town_name": "Ware town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502372985",
+  "county_name": "Plymouth County",
+  "town_name": "Wareham town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502773090",
+  "county_name": "Worcester County",
+  "town_name": "Warren town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501173265",
+  "county_name": "Franklin County",
+  "town_name": "Warwick town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500373335",
+  "county_name": "Berkshire County",
+  "town_name": "Washington town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501773440",
+  "county_name": "Middlesex County",
+  "town_name": "Watertown city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501773790",
+  "county_name": "Middlesex County",
+  "town_name": "Wayland town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502773895",
+  "county_name": "Worcester County",
+  "town_name": "Webster town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502174175",
+  "county_name": "Norfolk County",
+  "town_name": "Wellesley town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500174385",
+  "county_name": "Barnstable County",
+  "town_name": "Wellfleet town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501174525",
+  "county_name": "Franklin County",
+  "town_name": "Wendell town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500974595",
+  "county_name": "Essex County",
+  "town_name": "Wenham town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502775155",
+  "county_name": "Worcester County",
+  "town_name": "West Boylston town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502375260",
+  "county_name": "Plymouth County",
+  "town_name": "West Bridgewater town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502775400",
+  "county_name": "Worcester County",
+  "town_name": "West Brookfield town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500977150",
+  "county_name": "Essex County",
+  "town_name": "West Newbury town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501377890",
+  "county_name": "Hampden County",
+  "town_name": "West Springfield Town city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500377990",
+  "county_name": "Berkshire County",
+  "town_name": "West Stockbridge town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500778235",
+  "county_name": "Dukes County",
+  "town_name": "West Tisbury town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502775015",
+  "county_name": "Worcester County",
+  "town_name": "Westborough town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501376030",
+  "county_name": "Hampden County",
+  "town_name": "Westfield city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501776135",
+  "county_name": "Middlesex County",
+  "town_name": "Westford town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501576380",
+  "county_name": "Hampshire County",
+  "town_name": "Westhampton town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502777010",
+  "county_name": "Worcester County",
+  "town_name": "Westminster town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501777255",
+  "county_name": "Middlesex County",
+  "town_name": "Weston town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500577570",
+  "county_name": "Bristol County",
+  "town_name": "Westport town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502178690",
+  "county_name": "Norfolk County",
+  "town_name": "Westwood town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502178972",
+  "county_name": "Norfolk County",
+  "town_name": "Weymouth Town city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501179110",
+  "county_name": "Franklin County",
+  "town_name": "Whately town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502379530",
+  "county_name": "Plymouth County",
+  "town_name": "Whitman town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501379740",
+  "county_name": "Hampden County",
+  "town_name": "Wilbraham town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501579915",
+  "county_name": "Hampshire County",
+  "town_name": "Williamsburg town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500379985",
+  "county_name": "Berkshire County",
+  "town_name": "Williamstown town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501780230",
+  "county_name": "Middlesex County",
+  "town_name": "Wilmington town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502780405",
+  "county_name": "Worcester County",
+  "town_name": "Winchendon town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501780510",
+  "county_name": "Middlesex County",
+  "town_name": "Winchester town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500380685",
+  "county_name": "Berkshire County",
+  "town_name": "Windsor town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502581005",
+  "county_name": "Suffolk County",
+  "town_name": "Winthrop Town city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501781035",
+  "county_name": "Middlesex County",
+  "town_name": "Woburn city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502782000",
+  "county_name": "Worcester County",
+  "town_name": "Worcester city",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2501582175",
+  "county_name": "Hampshire County",
+  "town_name": "Worthington town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2502182315",
+  "county_name": "Norfolk County",
+  "town_name": "Wrentham town",
+  "category": "County"
+ },
+ {
+  "state_code": "MA",
+  "fips_code": "2500182525",
+  "county_name": "Barnstable County",
+  "town_name": "Yarmouth town",
+  "category": "County"
+ }
+]

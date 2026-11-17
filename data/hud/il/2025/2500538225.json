@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Bristol County, MA",
+  "counties_msa": "",
+  "town_name": "Mansfield town",
+  "metro_status": "1.0",
+  "metro_name": "Providence-Warwick, RI-MA",
+  "area_name": "Taunton-Mansfield-Norton, MA HUD Metro FMR Area",
+  "year": "2025",
+  "median_income": 125600,
+  "very_low": {
+   "il50_p1": 44000,
+   "il50_p2": 50250,
+   "il50_p3": 56550,
+   "il50_p4": 62800,
+   "il50_p5": 67850,
+   "il50_p6": 72850,
+   "il50_p7": 77900,
+   "il50_p8": 82900
+  },
+  "extremely_low": {
+   "il30_p1": 26400,
+   "il30_p2": 30200,
+   "il30_p3": 33950,
+   "il30_p4": 37700,
+   "il30_p5": 40750,
+   "il30_p6": 43750,
+   "il30_p7": 48650,
+   "il30_p8": 54150
+  },
+  "low": {
+   "il80_p1": 70350,
+   "il80_p2": 80400,
+   "il80_p3": 90450,
+   "il80_p4": 100500,
+   "il80_p5": 108550,
+   "il80_p6": 116600,
+   "il80_p7": 124650,
+   "il80_p8": 132700
+  }
+ }
+}

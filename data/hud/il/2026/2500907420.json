@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Essex County, MA",
+  "counties_msa": "",
+  "town_name": "Boxford town",
+  "metro_status": "1.0",
+  "metro_name": "Boston-Cambridge-Newton, MA-NH",
+  "area_name": "Lawrence, MA-NH HUD Metro FMR Area",
+  "year": "2026",
+  "median_income": 137300,
+  "very_low": {
+   "il50_p1": 48100,
+   "il50_p2": 54950,
+   "il50_p3": 61800,
+   "il50_p4": 68650,
+   "il50_p5": 74150,
+   "il50_p6": 79650,
+   "il50_p7": 85150,
+   "il50_p8": 90650
+  },
+  "extremely_low": {
+   "il30_p1": 28850,
+   "il30_p2": 33000,
+   "il30_p3": 37100,
+   "il30_p4": 41200,
+   "il30_p5": 44500,
+   "il30_p6": 47800,
+   "il30_p7": 51100,
+   "il30_p8": 55720
+  },
+  "low": {
+   "il80_p1": 74800,
+   "il80_p2": 85450,
+   "il80_p3": 96150,
+   "il80_p4": 106800,
+   "il80_p5": 115350,
+   "il80_p6": 123900,
+   "il80_p7": 132450,
+   "il80_p8": 141000
+  }
+ }
+}

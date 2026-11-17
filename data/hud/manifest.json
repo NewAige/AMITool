@@ -1,1 +1,7 @@
-{ "years": [], "source": "HUD User API (www.huduser.gov/hudapi)" }
+{
+ "years": [
+  2026,
+  2025
+ ],
+ "source": "HUD User API (www.huduser.gov/hudapi)"
+}

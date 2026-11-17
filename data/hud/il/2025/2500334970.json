@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Berkshire County, MA",
+  "counties_msa": "",
+  "town_name": "Lenox town",
+  "metro_status": "1.0",
+  "metro_name": "Pittsfield, MA",
+  "area_name": "Pittsfield, MA HUD Metro FMR Area",
+  "year": "2025",
+  "median_income": 103800,
+  "very_low": {
+   "il50_p1": 43000,
+   "il50_p2": 49150,
+   "il50_p3": 55300,
+   "il50_p4": 61400,
+   "il50_p5": 66350,
+   "il50_p6": 71250,
+   "il50_p7": 76150,
+   "il50_p8": 81050
+  },
+  "extremely_low": {
+   "il30_p1": 25800,
+   "il30_p2": 29500,
+   "il30_p3": 33200,
+   "il30_p4": 36850,
+   "il30_p5": 39800,
+   "il30_p6": 43150,
+   "il30_p7": 48650,
+   "il30_p8": 54150
+  },
+  "low": {
+   "il80_p1": 68800,
+   "il80_p2": 78600,
+   "il80_p3": 88450,
+   "il80_p4": 98250,
+   "il80_p5": 106150,
+   "il80_p6": 114000,
+   "il80_p7": 121850,
+   "il80_p8": 129700
+  }
+ }
+}

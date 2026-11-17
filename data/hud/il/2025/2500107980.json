@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Barnstable County, MA",
+  "counties_msa": "",
+  "town_name": "Brewster town",
+  "metro_status": "1.0",
+  "metro_name": "Barnstable Town, MA",
+  "area_name": "Barnstable Town, MA MSA",
+  "year": "2025",
+  "median_income": 124100,
+  "very_low": {
+   "il50_p1": 47850,
+   "il50_p2": 54700,
+   "il50_p3": 61550,
+   "il50_p4": 68350,
+   "il50_p5": 73850,
+   "il50_p6": 79300,
+   "il50_p7": 84800,
+   "il50_p8": 90250
+  },
+  "extremely_low": {
+   "il30_p1": 28700,
+   "il30_p2": 32800,
+   "il30_p3": 36900,
+   "il30_p4": 41000,
+   "il30_p5": 44300,
+   "il30_p6": 47600,
+   "il30_p7": 50850,
+   "il30_p8": 54150
+  },
+  "low": {
+   "il80_p1": 74800,
+   "il80_p2": 85450,
+   "il80_p3": 96150,
+   "il80_p4": 106800,
+   "il80_p5": 115350,
+   "il80_p6": 123900,
+   "il80_p7": 132450,
+   "il80_p8": 141000
+  }
+ }
+}

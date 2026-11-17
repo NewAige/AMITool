@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Essex County, MA",
+  "counties_msa": "",
+  "town_name": "North Andover town",
+  "metro_status": "1.0",
+  "metro_name": "Boston-Cambridge-Newton, MA-NH",
+  "area_name": "Lawrence, MA-NH HUD Metro FMR Area",
+  "year": "2025",
+  "median_income": 141300,
+  "very_low": {
+   "il50_p1": 49500,
+   "il50_p2": 56550,
+   "il50_p3": 63600,
+   "il50_p4": 70650,
+   "il50_p5": 76350,
+   "il50_p6": 82000,
+   "il50_p7": 87650,
+   "il50_p8": 93300
+  },
+  "extremely_low": {
+   "il30_p1": 29700,
+   "il30_p2": 33950,
+   "il30_p3": 38200,
+   "il30_p4": 42400,
+   "il30_p5": 45800,
+   "il30_p6": 49200,
+   "il30_p7": 52600,
+   "il30_p8": 56000
+  },
+  "low": {
+   "il80_p1": 72950,
+   "il80_p2": 83400,
+   "il80_p3": 93800,
+   "il80_p4": 104200,
+   "il80_p5": 112550,
+   "il80_p6": 120900,
+   "il80_p7": 129250,
+   "il80_p8": 137550
+  }
+ }
+}

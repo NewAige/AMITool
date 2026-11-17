@@ -401,7 +401,7 @@ function loadSettings() {
 
 // Fetch town data for MA and RI
 async function fetchTowns() {
-    // Town lists are pre-fetched from HUD into data/hud/towns/ by a GitHub Action.
+    // Town lists are pre-fetched from HUD into data/hud/towns/ by scripts/fetch-hud-data.mjs (run manually).
     
     try {
         // Fetch MA towns

@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Hampden County, MA",
+  "counties_msa": "",
+  "town_name": "Chicopee city",
+  "metro_status": "1.0",
+  "metro_name": "Springfield, MA",
+  "area_name": "Springfield, MA MSA",
+  "year": "2025",
+  "median_income": 96200,
+  "very_low": {
+   "il50_p1": 41850,
+   "il50_p2": 47800,
+   "il50_p3": 53850,
+   "il50_p4": 59800,
+   "il50_p5": 64600,
+   "il50_p6": 69400,
+   "il50_p7": 74150,
+   "il50_p8": 78950
+  },
+  "extremely_low": {
+   "il30_p1": 25150,
+   "il30_p2": 28750,
+   "il30_p3": 32350,
+   "il30_p4": 35900,
+   "il30_p5": 38800,
+   "il30_p6": 43150,
+   "il30_p7": 48650,
+   "il30_p8": 54150
+  },
+  "low": {
+   "il80_p1": 67000,
+   "il80_p2": 76550,
+   "il80_p3": 86100,
+   "il80_p4": 95650,
+   "il80_p5": 103350,
+   "il80_p6": 111000,
+   "il80_p7": 118650,
+   "il80_p8": 126300
+  }
+ }
+}

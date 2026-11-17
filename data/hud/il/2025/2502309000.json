@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Plymouth County, MA",
+  "counties_msa": "",
+  "town_name": "Brockton city",
+  "metro_status": "1.0",
+  "metro_name": "Boston-Cambridge-Newton, MA-NH",
+  "area_name": "Brockton, MA HUD Metro FMR Area",
+  "year": "2025",
+  "median_income": 131400,
+  "very_low": {
+   "il50_p1": 46000,
+   "il50_p2": 52600,
+   "il50_p3": 59150,
+   "il50_p4": 65700,
+   "il50_p5": 71000,
+   "il50_p6": 76250,
+   "il50_p7": 81500,
+   "il50_p8": 86750
+  },
+  "extremely_low": {
+   "il30_p1": 27600,
+   "il30_p2": 31550,
+   "il30_p3": 35500,
+   "il30_p4": 39400,
+   "il30_p5": 42600,
+   "il30_p6": 45750,
+   "il30_p7": 48900,
+   "il30_p8": 54150
+  },
+  "low": {
+   "il80_p1": 72950,
+   "il80_p2": 83400,
+   "il80_p3": 93800,
+   "il80_p4": 104200,
+   "il80_p5": 112550,
+   "il80_p6": 120900,
+   "il80_p7": 129250,
+   "il80_p8": 137550
+  }
+ }
+}

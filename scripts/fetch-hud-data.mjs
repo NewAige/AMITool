@@ -7,13 +7,15 @@
 // With no years given, fetches the current and previous calendar year.
 // A year HUD has not published yet is skipped.
 
-import { mkdir, writeFile, readFile } from 'node:fs/promises';
+import { mkdir, writeFile, readFile, access } from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const API = 'https://www.huduser.gov/hudapi/public';
 const STATES = ['MA', 'RI'];
-const OUT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', 'data', 'hud');
-const DELAY_MS = 150;
+const OUT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'data', 'hud');
+// HUD allows 60 requests per minute per token.
+const DELAY_MS = 1100;
 
 const token = process.env.HUD_API_TOKEN;
 if (!token) {
@@ -29,7 +31,7 @@ async function getJson(url) {
         if (res.ok) return res.json();
         if (res.status === 404) return null;
         if (res.status === 429 || res.status >= 500) {
-            const wait = 2000 * attempt;
+            const wait = res.status === 429 ? 61000 : 2000 * attempt;
             console.warn(`  ${res.status} for ${url}, retrying in ${wait}ms`);
             await sleep(wait);
             continue;
@@ -79,13 +81,18 @@ async function main() {
         let count = 0;
         for (const state of STATES) {
             for (const town of towns[state]) {
+                const file = path.join(OUT, 'il', String(year), `${town.fips_code}.json`);
+                if (await access(file).then(() => true, () => false)) {
+                    count++;
+                    continue;
+                }
                 const res = town.fips_code === probe
                     ? probeRes
                     : await getJson(`${API}/il/data/${town.fips_code}?year=${year}`);
                 if (!res || !res.data) {
                     console.warn(`  ${year} ${state} ${town.town_name} (${town.fips_code}): no data`);
                 } else {
-                    await writeJson(path.join(OUT, 'il', String(year), `${town.fips_code}.json`), res);
+                    await writeJson(file, res);
                     count++;
                 }
                 await sleep(DELAY_MS);

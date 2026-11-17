@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Worcester County, MA",
+  "counties_msa": "",
+  "town_name": "Phillipston town",
+  "metro_status": "1.0",
+  "metro_name": "Worcester, MA",
+  "area_name": "Western Worcester County, MA HUD Metro FMR Area",
+  "year": "2026",
+  "median_income": 102000,
+  "very_low": {
+   "il50_p1": 46100,
+   "il50_p2": 52700,
+   "il50_p3": 59300,
+   "il50_p4": 65850,
+   "il50_p5": 71150,
+   "il50_p6": 76400,
+   "il50_p7": 81700,
+   "il50_p8": 86950
+  },
+  "extremely_low": {
+   "il30_p1": 27650,
+   "il30_p2": 31600,
+   "il30_p3": 35550,
+   "il30_p4": 39500,
+   "il30_p5": 42700,
+   "il30_p6": 45850,
+   "il30_p7": 50040,
+   "il30_p8": 55720
+  },
+  "low": {
+   "il80_p1": 73750,
+   "il80_p2": 84300,
+   "il80_p3": 94850,
+   "il80_p4": 105350,
+   "il80_p5": 113800,
+   "il80_p6": 122250,
+   "il80_p7": 130650,
+   "il80_p8": 139100
+  }
+ }
+}

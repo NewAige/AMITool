@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Bristol County, RI",
+  "counties_msa": "",
+  "town_name": "Warren town",
+  "metro_status": "1.0",
+  "metro_name": "Providence-Warwick, RI-MA",
+  "area_name": "Providence-Fall River, RI-MA HUD Metro FMR Area",
+  "year": "2026",
+  "median_income": 112100,
+  "very_low": {
+   "il50_p1": 39250,
+   "il50_p2": 44850,
+   "il50_p3": 50450,
+   "il50_p4": 56050,
+   "il50_p5": 60550,
+   "il50_p6": 65050,
+   "il50_p7": 69550,
+   "il50_p8": 74000
+  },
+  "extremely_low": {
+   "il30_p1": 23600,
+   "il30_p2": 26950,
+   "il30_p3": 30300,
+   "il30_p4": 33650,
+   "il30_p5": 38680,
+   "il30_p6": 44360,
+   "il30_p7": 50040,
+   "il30_p8": 55720
+  },
+  "low": {
+   "il80_p1": 62800,
+   "il80_p2": 71800,
+   "il80_p3": 80750,
+   "il80_p4": 89700,
+   "il80_p5": 96900,
+   "il80_p6": 104100,
+   "il80_p7": 111250,
+   "il80_p8": 118450
+  }
+ }
+}

@@ -630,7 +630,7 @@ const countyMapping = {
     'Woonsocket': 'Providence'
 };
 
-// HUD data is pre-fetched into data/hud/ by .github/workflows/update-hud-data.yml.
+// HUD data is pre-fetched into data/hud/ by running scripts/fetch-hud-data.mjs manually.
 // The browser cannot call the HUD API directly (it sends no CORS headers).
 const HUD_DATA_BASE = 'data/hud';
 

@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Barnstable County, MA",
+  "counties_msa": "",
+  "town_name": "Dennis town",
+  "metro_status": "1.0",
+  "metro_name": "Barnstable Town, MA",
+  "area_name": "Barnstable Town, MA MSA",
+  "year": "2026",
+  "median_income": 123600,
+  "very_low": {
+   "il50_p1": 49450,
+   "il50_p2": 56500,
+   "il50_p3": 63550,
+   "il50_p4": 70600,
+   "il50_p5": 76250,
+   "il50_p6": 81900,
+   "il50_p7": 87550,
+   "il50_p8": 93200
+  },
+  "extremely_low": {
+   "il30_p1": 29650,
+   "il30_p2": 33900,
+   "il30_p3": 38150,
+   "il30_p4": 42350,
+   "il30_p5": 45750,
+   "il30_p6": 49150,
+   "il30_p7": 52550,
+   "il30_p8": 55950
+  },
+  "low": {
+   "il80_p1": 79100,
+   "il80_p2": 90400,
+   "il80_p3": 101700,
+   "il80_p4": 112950,
+   "il80_p5": 122000,
+   "il80_p6": 131050,
+   "il80_p7": 140100,
+   "il80_p8": 149100
+  }
+ }
+}

@@ -1,0 +1,275 @@
+[
+ {
+  "state_code": "RI",
+  "fips_code": "4400105140",
+  "county_name": "Bristol County",
+  "town_name": "Barrington town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400109280",
+  "county_name": "Bristol County",
+  "town_name": "Bristol town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400711800",
+  "county_name": "Providence County",
+  "town_name": "Burrillville town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400714140",
+  "county_name": "Providence County",
+  "town_name": "Central Falls city",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400914500",
+  "county_name": "Washington County",
+  "town_name": "Charlestown town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400318640",
+  "county_name": "Kent County",
+  "town_name": "Coventry town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400719180",
+  "county_name": "Providence County",
+  "town_name": "Cranston city",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400720080",
+  "county_name": "Providence County",
+  "town_name": "Cumberland town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400322240",
+  "county_name": "Kent County",
+  "town_name": "East Greenwich town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400722960",
+  "county_name": "Providence County",
+  "town_name": "East Providence city",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400925300",
+  "county_name": "Washington County",
+  "town_name": "Exeter town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400727460",
+  "county_name": "Providence County",
+  "town_name": "Foster town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400730340",
+  "county_name": "Providence County",
+  "town_name": "Glocester town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400935380",
+  "county_name": "Washington County",
+  "town_name": "Hopkinton town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400536820",
+  "county_name": "Newport County",
+  "town_name": "Jamestown town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400737720",
+  "county_name": "Providence County",
+  "town_name": "Johnston town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400741500",
+  "county_name": "Providence County",
+  "town_name": "Lincoln town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400542400",
+  "county_name": "Newport County",
+  "town_name": "Little Compton town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400545460",
+  "county_name": "Newport County",
+  "town_name": "Middletown town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400948340",
+  "county_name": "Washington County",
+  "town_name": "Narragansett town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400950500",
+  "county_name": "Washington County",
+  "town_name": "New Shoreham town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400549960",
+  "county_name": "Newport County",
+  "town_name": "Newport city",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400951580",
+  "county_name": "Washington County",
+  "town_name": "North Kingstown town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400751760",
+  "county_name": "Providence County",
+  "town_name": "North Providence town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400752480",
+  "county_name": "Providence County",
+  "town_name": "North Smithfield town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400754640",
+  "county_name": "Providence County",
+  "town_name": "Pawtucket city",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400557880",
+  "county_name": "Newport County",
+  "town_name": "Portsmouth town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400759000",
+  "county_name": "Providence County",
+  "town_name": "Providence city",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400961160",
+  "county_name": "Washington County",
+  "town_name": "Richmond town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400764220",
+  "county_name": "Providence County",
+  "town_name": "Scituate town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400766200",
+  "county_name": "Providence County",
+  "town_name": "Smithfield town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400967460",
+  "county_name": "Washington County",
+  "town_name": "South Kingstown town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400570880",
+  "county_name": "Newport County",
+  "town_name": "Tiverton town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400173760",
+  "county_name": "Bristol County",
+  "town_name": "Warren town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400374300",
+  "county_name": "Kent County",
+  "town_name": "Warwick city",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400377720",
+  "county_name": "Kent County",
+  "town_name": "West Greenwich town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400378440",
+  "county_name": "Kent County",
+  "town_name": "West Warwick town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400977000",
+  "county_name": "Washington County",
+  "town_name": "Westerly town",
+  "category": "County"
+ },
+ {
+  "state_code": "RI",
+  "fips_code": "4400780780",
+  "county_name": "Providence County",
+  "town_name": "Woonsocket city",
+  "category": "County"
+ }
+]

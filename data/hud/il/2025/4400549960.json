@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Newport County, RI",
+  "counties_msa": "",
+  "town_name": "Newport city",
+  "metro_status": "1.0",
+  "metro_name": "Providence-Warwick, RI-MA",
+  "area_name": "Newport-Middleton-Portsmouth, RI HUD Metro FMR Area",
+  "year": "2025",
+  "median_income": 139500,
+  "very_low": {
+   "il50_p1": 48850,
+   "il50_p2": 55800,
+   "il50_p3": 62800,
+   "il50_p4": 69750,
+   "il50_p5": 75350,
+   "il50_p6": 80950,
+   "il50_p7": 86500,
+   "il50_p8": 92100
+  },
+  "extremely_low": {
+   "il30_p1": 29300,
+   "il30_p2": 33500,
+   "il30_p3": 37700,
+   "il30_p4": 41850,
+   "il30_p5": 45200,
+   "il30_p6": 48550,
+   "il30_p7": 51900,
+   "il30_p8": 55250
+  },
+  "low": {
+   "il80_p1": 72950,
+   "il80_p2": 83400,
+   "il80_p3": 93800,
+   "il80_p4": 104200,
+   "il80_p5": 112550,
+   "il80_p6": 120900,
+   "il80_p7": 129250,
+   "il80_p8": 137550
+  }
+ }
+}
